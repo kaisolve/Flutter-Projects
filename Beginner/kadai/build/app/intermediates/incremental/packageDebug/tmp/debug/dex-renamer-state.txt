@@ -1,4 +1,0 @@
-#Thu Aug 24 18:09:03 AST 2023
-base.0=W\:\\Projects\\Beginner\\kadai\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
