@@ -1,0 +1,1 @@
+ E:\\Projects\\Flutter\\Flutter-Projects\\Beginner\\okane\\.dart_tool\\flutter_build\\d018460a80492aeffabc0e5022ff1cbc\\native_assets.yaml: 

@@ -4,7 +4,7 @@
             "outputFile": "com.example.okane.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "W:\\Projects\\Beginner\\okane\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "E:\\Projects\\Flutter\\Flutter-Projects\\Beginner\\okane\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

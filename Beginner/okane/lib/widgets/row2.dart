@@ -16,8 +16,7 @@ class Row2 extends StatelessWidget {
       var now = DateTime.now();
       String date = now.day.toString();
       String month = now.month.toString();
-      String year = now.year.toString();
-      return '$date/$month/$year';
+      return '$date/$month';
     }
 
     return Row(

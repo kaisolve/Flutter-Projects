@@ -17,19 +17,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ExpenseData()),
         ChangeNotifierProvider(create: (_) => BudgetData()),
       ],
-      child: const MyApp()وزئششطكشةطئوشكشمكطزئشظئكئشئءوءزطكك"ءةءكزءوءطءطئشنشكمشكطش
-        \
-        شدشئ
-
-        دءكءطء
-
-        ءbuilder: ءططء
-        ء
-
-        ء
-        ءكطء
-        شش
-        طش,",
+      child: const MyApp(),
     ),
   );
 }
