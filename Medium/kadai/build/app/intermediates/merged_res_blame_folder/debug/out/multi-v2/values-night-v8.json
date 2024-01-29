@@ -4,7 +4,7 @@
             "outputFile": "com.example.kadai.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "E:\\Projects\\Flutter\\Flutter-Projects\\Beginner\\kadai\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "E:\\Projects\\Flutter\\Flutter-Projects\\Medium\\kadai\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

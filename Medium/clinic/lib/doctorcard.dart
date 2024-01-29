@@ -8,7 +8,6 @@ class DoctorCard extends StatelessWidget {
   final String name;
   final String doctorimage;
   final String specialization;
-  final String experience;
   final double rating;
 
   const DoctorCard({
@@ -16,7 +15,6 @@ class DoctorCard extends StatelessWidget {
     required this.name,
     required this.doctorimage,
     required this.specialization,
-    required this.experience,
     required this.rating,
   });
 
@@ -43,19 +41,21 @@ class DoctorCard extends StatelessWidget {
                   backgroundImage: AssetImage(doctorimage),
                   // Replace with the actual image data
                 ),
-                title: Text(name),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(name),
+                    IconButton(
+                      onPressed: () {
+                        // Handle favorite button press
+                      },
+                      icon: const Icon(Icons.favorite_border),
+                    ),
+                  ],
+                ),
                 subtitle: Text(specialization),
               ),
               const SizedBox(height: 8),
-              Text('Experience: $experience'),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(Icons.star, color: Colors.yellow),
-                  const SizedBox(width: 4),
-                  Text('$rating'),
-                ],
-              ),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,11 +67,12 @@ class DoctorCard extends StatelessWidget {
                     },
                     child: const Text('Appoint Me'),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      // Handle favorite button press
-                    },
-                    icon: const Icon(Icons.favorite_border),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.yellow),
+                      const SizedBox(width: 8),
+                      Text('$rating'),
+                    ],
                   ),
                 ],
               ),

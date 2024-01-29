@@ -12,14 +12,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Clinico',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
+      title: 'Clinico',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: Color(0xFFE9FCFA), // Set background color
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor:
+                Color(0xFF2DACA3), // Set secondary color for buttons
+            foregroundColor:
+                Colors.white, // Set text color inside buttons to white
+          ),
         ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const StartPage(),
-          '/home': (context) => HomePage(),
-        });
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.white), // Set text color to white
+          bodyMedium: TextStyle(color: Colors.black), // Set text color to white
+        ),
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const StartPage(),
+        '/home': (context) => HomePage(),
+      },
+    );
   }
 }

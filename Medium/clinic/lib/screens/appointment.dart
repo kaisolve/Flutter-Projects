@@ -1,13 +1,12 @@
-// appointment_page.dart
-
 import 'package:clinic/screens/payments.dart';
 import 'package:flutter/material.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppointmentPage extends StatefulWidget {
-  const AppointmentPage({super.key});
+  const AppointmentPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _AppointmentPageState createState() => _AppointmentPageState();
 }
 
@@ -67,10 +66,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
   }
 
   Widget _buildAppointmentsList() {
-    // Replace the following with actual appointment data from your database
     List<Appointment> appointments = [
       Appointment(
-        name: 'Dr.fsdf dsf',
+        name: 'Dr. name of doc',
         doctorImage: 'asset/logo.png',
         date: 'Jan 10, 2023',
         time: '10:30 AM',
@@ -97,49 +95,71 @@ class _AppointmentPageState extends State<AppointmentPage> {
       itemCount: filteredAppointments.length,
       itemBuilder: (context, index) {
         Appointment appointment = filteredAppointments[index];
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(appointment.doctorImage),
-                radius: 40,
-              ),
-              Center(
-                child: Text(
-                  appointment.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+        return Card(
+          elevation: 5,
+          margin: const EdgeInsets.all(16.0),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage(appointment.doctorImage),
+                  radius: 40,
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Date: ${appointment.date} ${appointment.time}',
-              ),
-              const SizedBox(height: 8),
-              Text('Number: ${appointment.number}'),
-              const SizedBox(height: 8),
-              Text('Direction: ${appointment.direction}'),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle cancel appointment
-                    },
-                    child: const Text('Cancel'),
+                const SizedBox(height: 16),
+                Center(
+                  child: Text(
+                    appointment.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      MaterialPageRoute(builder: (context) => PaymentPage());
-                    },
-                    child: const Text('Reschedule'),
-                  ),
-                ],
-              ),
-              const Divider(color: Colors.green),
-            ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Date: ${appointment.date} ${appointment.time}',
+                ),
+                const SizedBox(height: 8),
+                Text('Number: ${appointment.number}'),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () {
+                        _copyToClipboard(appointment.number);
+                      },
+                      icon: const Icon(Icons.phone),
+                      label: Text(appointment.number),
+                    ),
+                    TextButton.icon(
+                      onPressed: () {
+                        _launchMaps(appointment.direction);
+                      },
+                      icon: const Icon(Icons.map),
+                      label: const Text('Get Direction'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle cancel appointment
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        MaterialPageRoute(builder: (context) => PaymentPage());
+                      },
+                      child: const Text('Reschedule'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -163,4 +183,32 @@ class Appointment {
     required this.direction,
     required this.name,
   });
+}
+
+void _launchMaps(String location) async {
+  final url =
+      Uri.parse('https://www.google.com/maps/search/?api=1&query=$location');
+  if (await canLaunch(url.toString())) {
+    await launch(url.toString());
+  } else {
+    throw 'Could not launch Maps';
+  }
+}
+
+void _copyToClipboard(String text) {
+//   FlutterClipboard.copy(text).then((result) {
+//     if (result) {
+//       Fluttertoast.showToast(
+//         msg: 'Copied to clipboard',
+//         toastLength: Toast.LENGTH_SHORT,
+//         gravity: ToastGravity.BOTTOM,
+//       );
+//     } else {
+//       Fluttertoast.showToast(
+//         msg: 'Failed to copy to clipboard',
+//         toastLength: Toast.LENGTH_SHORT,
+//         gravity: ToastGravity.BOTTOM,
+//       );
+//     }
+//   });
 }

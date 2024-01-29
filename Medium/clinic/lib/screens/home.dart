@@ -1,11 +1,13 @@
+import 'package:clinic/doctorcard.dart';
 import 'package:flutter/material.dart';
 import 'appointment.dart';
 import 'settings.dart';
 import 'doctor.dart';
 import 'notifications.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +68,8 @@ class HomePage extends StatelessWidget {
         );
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.transparent,
-        shadowColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        shadowColor: Colors.white,
       ),
       child: Text(
         category,
@@ -82,16 +84,16 @@ class HomePage extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: isGreen ? Colors.green : Colors.transparent,
-        boxShadow: isGreen
-            ? [
-                BoxShadow(
-                  color: Colors.green.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 8,
-                  offset: Offset(0, 3),
-                ),
-              ]
-            : [],
+        // boxShadow: isGreen
+        //     ? [
+        //         BoxShadow(
+        //           color: Colors.green.withOpacity(0.5),
+        //           spreadRadius: 2,
+        //           blurRadius: 8,
+        //           offset: Offset(0, 3),
+        //         ),
+        //       ]
+        //     : [],
       ),
       child: IconButton(
         icon: Icon(iconData, color: isGreen ? Colors.white : Colors.black),
@@ -144,13 +146,30 @@ class HomePage extends StatelessWidget {
     }
   }
 
+  List<String> filteredDoctorNames = [
+    'Doctor 1',
+    'Doctor 2',
+    'Doctor 3',
+    'Doctor 4',
+    'Doctor 5'
+  ];
+
   Widget _buildDoctorsList() {
     // Replace this with your actual list of doctors
     // For now, let's just show a placeholder text
     return Center(
-      child: Text(
-        'List of Doctors',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      child: Expanded(
+        child: ListView.builder(
+          itemCount: filteredDoctorNames.length,
+          itemBuilder: (context, index) {
+            return DoctorCard(
+              doctorimage: "asset/logo.png",
+              name: filteredDoctorNames[index],
+              specialization: 'Specialization $index',
+              rating: 4.5, // Replace with the actual rating
+            );
+          },
+        ),
       ),
     );
   }

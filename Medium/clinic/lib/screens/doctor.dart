@@ -70,7 +70,6 @@ class _DoctorListPageState extends State<DoctorListPage> {
                   doctorimage: "asset/logo.png",
                   name: filteredDoctorNames[index],
                   specialization: 'Specialization $index',
-                  experience: 'Experience $index years',
                   rating: 4.5, // Replace with the actual rating
                 );
               },

@@ -80,13 +80,10 @@ class _HomeState extends State<Home> {
             child: Bubble(),
           ), // Bubble(),
 
-          Expanded(
-            child:
-          TaskList(categoryN: CategoryList.category)
+          Expanded(child: TaskList(categoryN: CategoryList.category)
               // ?Container():TaskList(categoryN: CategoryList.category),
 
-
-          ),
+              ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
