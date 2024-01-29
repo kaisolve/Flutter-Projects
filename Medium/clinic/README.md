@@ -1,16 +1,11 @@
 # clinic
 
-A new Flutter project.
+Clinc app to see near doctors and appoint them
+![Finished Project](https://github.com/kaisolve/Flutter-Projects/blob/main/Videos/2024-01-29%2014-23-06.mkv)
+# Todo
+1. connect to database
+2. add payment
+3. add notifications
+4. add locations
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
