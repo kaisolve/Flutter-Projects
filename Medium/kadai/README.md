@@ -1,5 +1,6 @@
 # kadai
 
+
 -Create an application that lets you manage daily tasks
 -built-in calendars, tasks are organized under various categories
 -local database storage using Hive
@@ -8,5 +9,4 @@
 ToDo:
 adding some functionality in the app like categories and subtasks etc
 
-to see the app follow the link:
-
+to see the app follow the link: https://drive.google.com/file/d/1-OnK8DCmtSNl6ACNaCMN8QazxV7cRYpH/view?usp=drive_link
