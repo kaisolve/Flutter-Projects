@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class NotificationPage extends StatelessWidget {
   final String pageName;
 
-  NotificationPage(this.pageName);
+  const NotificationPage(this.pageName, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,6 @@ class NotificationPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(pageName),
       ),
-
     );
   }
 }

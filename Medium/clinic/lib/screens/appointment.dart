@@ -7,6 +7,7 @@ class AppointmentPage extends StatefulWidget {
   const AppointmentPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _AppointmentPageState createState() => _AppointmentPageState();
 }
 
@@ -152,7 +153,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        MaterialPageRoute(builder: (context) => PaymentPage());
+                        MaterialPageRoute(builder: (context) => const PaymentPage());
                       },
                       child: const Text('Reschedule'),
                     ),

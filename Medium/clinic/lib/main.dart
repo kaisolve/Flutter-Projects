@@ -1,5 +1,6 @@
-import 'package:clinic/screens/home.dart';
+import 'package:clinic/screens/buttonbar.dart';
 import 'package:clinic/screens/logo.dart';
+import 'package:clinic/screens/payments.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,11 +16,12 @@ class MyApp extends StatelessWidget {
       title: 'Clinico',
       theme: ThemeData(
         primarySwatch: Colors.green,
-        scaffoldBackgroundColor: Color(0xFFE9FCFA), // Set background color
+        scaffoldBackgroundColor:
+            const Color(0xFFE9FCFA), // Set background color
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor:
-                Color(0xFF2DACA3), // Set secondary color for buttons
+                const Color(0xFF2DACA3), // Set secondary color for buttons
             foregroundColor:
                 Colors.white, // Set text color inside buttons to white
           ),
@@ -32,7 +34,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const StartPage(),
-        '/home': (context) => HomePage(),
+        '/home': (context) => Home(),
+        '/payment': (context) => const PaymentPage(),
       },
     );
   }
