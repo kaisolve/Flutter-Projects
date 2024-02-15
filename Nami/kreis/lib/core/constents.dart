@@ -1,15 +1,19 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:kreis/features/categories/presentation/pages/categories.dart';
+import 'package:kreis/features/home/presentation/pages/home.dart';
+import 'package:kreis/features/maps/presentation/pages/map.dart';
+import 'package:kreis/features/settings/presentation/pages/settings.dart';
 
 const languages = [Locale('ar'), Locale('en')];
 
-// const List<Widget> _pages = <Widget>[
-//   HomePage(),
-//   CategoriesPage(),
-//   MapPage(),
-//   SettingsPage(),
-// ];
+const List<Widget> pages = <Widget>[
+  HomePage(),
+  CategoryPage(),
+  MapPage(),
+  SettingPage(),
+];
 
 const TextStyle optionStyle =
     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
