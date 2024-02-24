@@ -1,3 +1,15 @@
 {
-    "app_name":"kreis"
+    "app_name":"kreis",
+    "show_all":"show all",
+    "categories":"Categories",
+    "new_items":"New Items",
+    "sites":"Sites",
+    "more":"More >",
+    "items":"Items",
+    "item_details":"Item Details",
+    "pay_deliver":"Pay Deliver",
+    "payment":"Payment",
+    "place":"Place",
+    "how_to_pay":"How To Pay",
+    "create_account": "Create Account"
 }

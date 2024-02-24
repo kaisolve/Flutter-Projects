@@ -1,3 +1,15 @@
 {
-    "app_name":"kreis"
+    "app_name":"kreis",
+    "show_all":"عرض الكل",
+    "categories":"الاقسام",
+    "new_items":"أحدث المنتجات",
+    "sites":"الفروع",
+    "more":"< المزيد",
+    "items":"المنتجات",
+    "item_details":"تفاصيل المنتج",
+    "pay_deliver":"الدفع والتوصيل",
+    "payment":"الفاتورة",
+    "place":"عنوان التوصيل",
+    "how_to_pay":"طريقة الدفع",
+    "create_account":"انشاء حساب"
 }
