@@ -11,5 +11,11 @@
     "payment":"Payment",
     "place":"Place",
     "how_to_pay":"How To Pay",
-    "create_account": "Create Account"
+    "create_account": "Create Account",
+    "settings":"settings",
+    "edit_account":"edit_account",
+    "language":"language",
+    "contact_us":"contact_us",
+    "about":"about app",
+    "rate":"rate app"
 }

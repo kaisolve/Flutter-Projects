@@ -4,6 +4,7 @@ import 'package:kreis/core/constents.dart';
 import 'package:kreis/multiprovider.dart';
 import 'package:kreis/presentation/splash_page/splash.dart';
 
+var navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -12,17 +13,28 @@ void main() async {
     child: EasyLocalization(
         supportedLocales: languages,
         path: 'assets/languages',
-        // fallbackLocale: Locale('ar', 'EG'),
+        saveLocale: true,
+        useOnlyLangCode: true,
         startLocale: const Locale('ar'),
         child: const MyApp()),
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  void rebuild() {}
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

@@ -5,7 +5,7 @@ import 'package:kreis/presentation/home_page/home.dart';
 
 class HomeProvider extends ChangeNotifier {
   int selectedindex = 0;
-  List<Widget> pages = [HomePage(), CategoryPage(), ProfilePage()];
+  List<Widget> pages = [const HomePage(), const CategoryPage(), const ProfilePage()];
   void updateSelectedIndex(int index) {
     selectedindex = index;
     notifyListeners();

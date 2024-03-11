@@ -4,7 +4,7 @@ import 'package:kreis/presentation/home_page/provider/provider.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   // final PageController _pageController = PageController();
 

@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
           ..duration = composition.duration
           ..forward().whenComplete(() => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyHomePage()),
+                MaterialPageRoute(builder: (context) => const MyHomePage()),
               ));
       }),
     );

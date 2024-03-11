@@ -11,5 +11,11 @@
     "payment":"الفاتورة",
     "place":"عنوان التوصيل",
     "how_to_pay":"طريقة الدفع",
-    "create_account":"انشاء حساب"
+    "create_account":"انشاء حساب",
+    "settings":"الإعدادات",
+    "edit_account":"تعديل الحساب",
+    "language":"اللغة",
+    "contact_us":"تواصل معنا",
+    "about":"معلومات التطبيق",
+    "rate":"تقييم التطبيق"
 }
