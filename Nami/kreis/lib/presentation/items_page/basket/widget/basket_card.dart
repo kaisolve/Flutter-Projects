@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kreis/presentation/items_page/provider/provider.dart';
-import 'package:provider/provider.dart';
+import 'package:kreis/presentation/items_page/single_item.dart/single_item.dart';
 
 // ignore: must_be_immutable
 class BasketCard extends StatelessWidget {
   String image;
   String text;
   String price;
+  int weight;
   BasketCard(
       {super.key,
       required this.image,
       required this.price,
-      required this.text});
+      required this.text,
+      required this.weight});
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +49,30 @@ class BasketCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BasketRoundIcons(
-                    image: 'assets/images/svgs/minus.svg',
-                    ontap: () =>
-                        Provider.of<ItemsProvider>(context, listen: false)
-                            .updateNum(1)),
-                Container(
-                  width: 124,
-                  height: 48,
-                  padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: const Color(0xffeeeeee)),
-                  child: Center(
-                      child: Text(Provider.of<ItemsProvider>(
-                    context,
-                  ).n.toString())),
-                ),
-                BasketRoundIcons(
-                  image: 'assets/images/svgs/add.svg',
-                  ontap: () =>
-                      Provider.of<ItemsProvider>(context, listen: false)
-                          .updateNum(0),
-                ),
+                // BasketRoundIcons(
+                //     image: 'assets/images/svgs/minus.svg',
+                //     ontap: () =>
+                //         Provider.of<ItemsProvider>(context, listen: false)
+                //             .updateNum(1)),
+                // Container(
+                //   width: 124,
+                //   height: 48,
+                //   padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(16),
+                //       color: const Color(0xffeeeeee)),
+                //   child: Center(
+                //       child: Text(Provider.of<ItemsProvider>(
+                //     context,
+                //   ).n.toString())),
+                // ),
+                // BasketRoundIcons(
+                //   image: 'assets/images/svgs/add.svg',
+                //   ontap: () =>
+                //       Provider.of<ItemsProvider>(context, listen: false)
+                //           .updateNum(0),
+                // ),
+                AddMinusItems(text: weight),
                 Text(price),
               ],
             )

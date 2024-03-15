@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 class BuyButtonContainer extends StatelessWidget {
   void Function() ontap;
   int price;
-  BuyButtonContainer({super.key, required this.ontap, required this.price});
+  String text;
+  BuyButtonContainer(
+      {super.key,
+      required this.ontap,
+      required this.price,
+      required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,7 @@ class BuyButtonContainer extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12)),
                   child: Center(
                     child: Text(
-                      'add_item + icon'.tr(),
+                      text.tr(),
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),

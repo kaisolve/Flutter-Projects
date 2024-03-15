@@ -46,6 +46,29 @@ class HomeRepository {
     }
   }
 
+  Future<List> getSubCategories(int cId) async {
+    String apiUrl =
+        'https://ecommerce.project-nami.xyz/api/user/home/sub-categories/$cId';
+
+    try {
+      DioClient dioClient = DioClient(baseUrl: apiUrl);
+      Response response = await dioClient.get(apiUrl);
+
+      if (response.statusCode == 200) {
+        List<dynamic> subCategories = response.data['data'];
+        final List<SubCategoryItem> subCategoryItems = List.generate(
+            subCategories.length,
+            (index) => SubCategoryItem.fromJson(subCategories[index]));
+
+        return subCategoryItems.reversed.toList();
+      } else {
+        throw Exception('Failed to load categories');
+      }
+    } catch (error) {
+      throw Exception('Failed to load categories: $error');
+    }
+  }
+
   Future<List> getLatestProducts() async {
     const String apiUrl =
         'https://ecommerce.project-nami.xyz/api/user/home/latestProducts';

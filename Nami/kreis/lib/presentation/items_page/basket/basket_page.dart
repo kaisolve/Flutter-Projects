@@ -1,67 +1,63 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kreis/data/models/products_model.dart';
-import 'package:kreis/data/repositories/items_repository.dart';
+import 'package:kreis/data/repositories/bakset_repository.dart';
 import 'package:kreis/presentation/items_page/basket/widget/basket_card.dart';
+import 'package:kreis/presentation/items_page/payment/payment.dart';
+import 'package:kreis/presentation/items_page/widgets/buttom_container.dart';
 import 'package:kreis/widgets/custom_app_bar/app_bar.dart';
 
 class BasketPage extends StatefulWidget {
   const BasketPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<BasketPage> createState() => _BasketPageState();
 }
 
 class _BasketPageState extends State<BasketPage> {
-  late Future<List<String>?> keysList;
-  late ItemsRepository itemsRepository;
+  late BasketRepository basketRepository;
 
   @override
   void initState() {
     super.initState();
-    itemsRepository = ItemsRepository();
-    keysList = itemsRepository.getKeys();
+    basketRepository = BasketRepository();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppbar(page: 'basket'.tr(), arrow: true),
-      body: FutureBuilder<List<String>?>(
-        future: keysList,
-        builder: (context, keysSnapshot) {
-          if (keysSnapshot.connectionState == ConnectionState.done) {
-            return FutureBuilder<List<ProductModel>>(
-              future: itemsRepository.getSavedProducts(keysSnapshot.data!),
-              builder: (context, productsSnapshot) {
-                if (productsSnapshot.connectionState == ConnectionState.done) {
-                  return ListView.builder(
-                    itemCount: productsSnapshot.data?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      final product = productsSnapshot.data![index];
-                      return BasketCard(
-                        image: product.image,
-                        text: product.title,
-                        price: product.price.toString(),
-                      );
-                    },
-                  );
-                } else if (productsSnapshot.hasError) {
-                  return Text('Error: ${productsSnapshot.error}');
-                } else {
-                  return const CircularProgressIndicator();
-                }
+    return FutureBuilder(
+      future: basketRepository.getBasketItems(),
+      builder: (context, productsSnapshot) {
+        if (productsSnapshot.connectionState == ConnectionState.done) {
+          return Scaffold(
+            appBar: CustomAppbar(page: 'basket'.tr(), arrow: true),
+            body: ListView.builder(
+              itemCount: productsSnapshot.data?.length ?? 0,
+              itemBuilder: (context, index) {
+                List product = productsSnapshot.data![index].values.toList();
+                return BasketCard(
+                  image: product[0]['image'],
+                  text: product[0]['name'],
+                  price: product[0]['price'].toString(),
+                  weight: product[0]['weight'],
+                );
               },
-            );
-          } else if (keysSnapshot.hasError) {
-            return Text('Error: ${keysSnapshot.error}');
-          } else {
-            return const CircularProgressIndicator();
-          }
-        },
-      ),
+            ),
+            bottomNavigationBar: BuyButtonContainer(
+              text: 'order_now'.tr(),
+              price: 20,
+              ontap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PaymentPage(),
+              )),
+            ),
+          );
+        } else if (productsSnapshot.hasError) {
+          return Text('Error: ${productsSnapshot.error}');
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }

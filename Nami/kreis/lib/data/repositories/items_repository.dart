@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:kreis/data/datasources/remote/dio/dio_client.dart';
 import 'package:kreis/data/models/products_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ItemsRepository {
   Future<List> getProducts() async {
@@ -59,47 +56,5 @@ class ItemsRepository {
     } catch (error) {
       throw Exception('Failed to load items: $error');
     }
-  }
-
-  Future<void> saveProduct(ProductModel product, String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = jsonEncode(product.toJson());
-    prefs.setString(key, jsonString);
-  }
-
-  Future<void> saveKeys(List<String> keysList) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('keys', keysList);
-  }
-
-  Future<List<String>?> getKeys() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? keysList = prefs.getStringList('keys');
-    return keysList ?? [];
-  }
-
-  Future<List<ProductModel>> getSavedProducts(List<String> keys) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    List<ProductModel> allProducts = [];
-
-    for (String key in keys) {
-      String? jsonString = prefs.getString(key);
-
-      if (jsonString != null) {
-        List<dynamic> jsonList = jsonDecode(jsonString);
-        List<ProductModel> products = jsonList
-            .map((jsonItem) => ProductModel.fromJson(jsonItem))
-            .toList();
-        allProducts.addAll(products);
-      }
-    }
-
-    return allProducts;
-  }
-
-  Future<void> clearBasket(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(key);
   }
 }

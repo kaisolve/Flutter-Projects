@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kreis/data/models/products_model.dart';
 
 class ItemsProvider extends ChangeNotifier {
   int selectedindex = 0;
   int subselectedindex = 0;
-
   int categories_id = 39;
   int sub_categories_id = 172;
   int n = 1;
-  List<String>? basket_items;
+  ProductModel? item;
   // int items_index
   void updateSelectedIndex(int index) {
     selectedindex = index;
@@ -35,16 +34,8 @@ class ItemsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addToSP(String text, List<String> itemDetails) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(text, itemDetails);
+  void setItems(ProductModel? data) {
+    item = data;
     notifyListeners();
-  }
-
-  Future<List<String>?> getFromSP(String text) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    basket_items = prefs.getStringList(text); // image, text, price
-    notifyListeners();
-    return null;
   }
 }
