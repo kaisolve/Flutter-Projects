@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "161099138507",
+    "project_id": "kreis-417313",
+    "storage_bucket": "kreis-417313.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161099138507:android:7f1c8845127df9708ea24e",
+        "android_client_info": {
+          "package_name": "com.example.kreis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoyxqkJBQ9hj9dVfzXZMDDBwt5lRhRVtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

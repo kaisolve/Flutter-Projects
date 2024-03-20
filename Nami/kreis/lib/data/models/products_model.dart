@@ -1,27 +1,27 @@
 import 'package:kreis/data/models/category_model.dart';
 
 class ProductModel {
-  int id;
-  String title;
-  String image;
-  int categoryId;
-  CategoryModel category;
-  int subCategoryId;
-  SubCategoryItem subCategory;
-  String details;
+  num? id;
+  String? title;
+  String? image;
+  num? categoryId;
+  CategoryModel? category;
+  num? subCategoryId;
+  SubCategoryItem? subCategory;
+  String? details;
   dynamic salesLimit;
-  double price;
-  String unit;
-  int weightUnit;
-  double priceWeightUnit;
-  bool isOffer;
-  int isActive;
+  num? price;
+  String? unit;
+  int? amount;
+  num? priceWeightUnit;
+  bool? isOffer;
+  num? isActive;
   dynamic offerType;
-  int offerValue;
-  String offerStartDate;
-  String offerEndDate;
-  double oldPrice;
-  bool isFavorite;
+  num? offerValue;
+  String? offerStartDate;
+  String? offerEndDate;
+  num? oldPrice;
+  bool? isFavorite;
 
   ProductModel({
     required this.id,
@@ -35,7 +35,7 @@ class ProductModel {
     required this.salesLimit,
     required this.price,
     required this.unit,
-    required this.weightUnit,
+    required this.amount,
     required this.priceWeightUnit,
     required this.isOffer,
     required this.isActive,
@@ -58,20 +58,21 @@ class ProductModel {
       subCategory: SubCategoryItem.fromJson(json['sub_category']),
       details: json['details'],
       salesLimit: json['sales_limit'],
-      price: json['price'].toDouble(),
+      price: json['price'],
       unit: json['unit'],
-      weightUnit: json['weight_unit'],
-      priceWeightUnit: json['price_weight_unit'].toDouble(),
+      amount: json['weight_unit'],
+      priceWeightUnit: json['price_weight_unit'],
       isOffer: json['is_offer'],
       isActive: json['is_active'],
       offerType: json['offer_type'],
       offerValue: json['offer_value'],
       offerStartDate: json['offer_start_date'],
       offerEndDate: json['offer_end_date'],
-      oldPrice: json['old_price'].toDouble(),
+      oldPrice: json['old_price'],
       isFavorite: json['is_favorite'],
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -79,15 +80,15 @@ class ProductModel {
       'image': image,
       'category_id': categoryId,
       'category':
-          category.toJson(), // Assuming CategoryModel has a toJson method
+          category?.toJson(), // Assuming CategoryModel has a toJson method
       'sub_category_id': subCategoryId,
       'sub_category':
-          subCategory.toJson(), // Assuming SubCategoryItem has a toJson method
+          subCategory?.toJson(), // Assuming SubCategoryItem has a toJson method
       'details': details,
       'sales_limit': salesLimit,
       'price': price,
       'unit': unit,
-      'weight_unit': weightUnit,
+      'weight_unit': amount,
       'price_weight_unit': priceWeightUnit,
       'is_offer': isOffer,
       'is_active': isActive,

@@ -1,17 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:kreis/core/app_url/app_url.dart';
 import 'package:kreis/data/datasources/remote/dio/dio_client.dart';
 import 'package:kreis/data/models/products_model.dart';
 
 class ItemsRepository {
   Future<List> getProducts() async {
-    const String apiUrl =
-        'https://ecommerce.project-nami.xyz/api/user/home/products';
-
     try {
       DioClient dioClient = DioClient(
-        baseUrl: apiUrl,
+        baseUrl: AppUrls.baseUrl,
       );
-      Response response = await dioClient.get(apiUrl);
+      Response response = await dioClient.get(AppUrls.products);
 
       if (response.statusCode == 200) {
         List<dynamic> products = response.data['data'];
@@ -29,14 +27,13 @@ class ItemsRepository {
 
   Future<List<ProductModel>> getProductsByCategoryAndSubcategory(
       int categoryId, int subcategoryId) async {
-    String apiUrl =
-        'https://ecommerce.project-nami.xyz/api/user/home/products?category_id=$categoryId&sub_category_id=$subcategoryId';
-
     try {
       DioClient dioClient = DioClient(
-        baseUrl: apiUrl,
+        baseUrl: AppUrls.baseUrl,
       );
-      Response response = await dioClient.get(apiUrl);
+      AppUrls.categoryId = categoryId;
+      AppUrls.categoryId = subcategoryId;
+      Response response = await dioClient.get(AppUrls.productsDetails);
 
       if (response.statusCode == 200) {
         List<dynamic> products = response.data['data'];

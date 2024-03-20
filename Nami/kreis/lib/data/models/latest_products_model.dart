@@ -1,27 +1,27 @@
 import 'package:kreis/data/models/category_model.dart';
 
 class LatestProductModel {
-  int id;
-  String title;
-  String image;
-  int categoryId;
-  CategoryModel category;
-  int subCategoryId;
-  SubCategoryItem subCategory;
-  String details;
-  int? salesLimit;
-  double price;
-  String unit;
-  int weightUnit;
-  double priceWeightUnit;
-  bool isOffer;
-  int isActive;
+  num? id;
+  String? title;
+  String? image;
+  num? categoryId;
+  CategoryModel? category;
+  num? subCategoryId;
+  SubCategoryItem? subCategory;
+  String? details;
+  num? salesLimit;
+  num? price;
+  String? unit;
+  num? weightUnit;
+  num? priceWeightUnit;
+  bool? isOffer;
+  num? isActive;
   String? offerType;
-  int offerValue;
-  String offerStartDate;
-  String offerEndDate;
-  double oldPrice;
-  bool isFavorite;
+  num? offerValue;
+  String? offerStartDate;
+  String? offerEndDate;
+  num? oldPrice;
+  bool? isFavorite;
 
   LatestProductModel({
     required this.id,
@@ -58,17 +58,17 @@ class LatestProductModel {
       subCategory: SubCategoryItem.fromJson(json['sub_category']),
       details: json['details'],
       salesLimit: json['sales_limit'],
-      price: json['price'].toDouble(),
+      price: json['price'],
       unit: json['unit'],
       weightUnit: json['weight_unit'],
-      priceWeightUnit: json['price_weight_unit'].toDouble(),
+      priceWeightUnit: json['price_weight_unit'],
       isOffer: json['is_offer'],
       isActive: json['is_active'],
       offerType: json['offer_type'],
       offerValue: json['offer_value'],
       offerStartDate: json['offer_start_date'],
       offerEndDate: json['offer_end_date'],
-      oldPrice: json['old_price'].toDouble(),
+      oldPrice: json['old_price'],
       isFavorite: json['is_favorite'],
     );
   }

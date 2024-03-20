@@ -1,7 +1,7 @@
 class CategoryModel {
-  final int id;
-  final String image;
-  final String title;
+  final num? id;
+  final String? image;
+  final String? title;
   final List<SubCategoryItem> subCategories;
 
   CategoryModel({
@@ -37,9 +37,9 @@ class CategoryModel {
 }
 
 class SubCategoryItem {
-  final int id;
-  final String image;
-  final String title;
+  final num? id;
+  final String? image;
+  final String? title;
 
   SubCategoryItem({
     required this.id,

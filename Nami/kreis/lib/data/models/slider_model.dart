@@ -1,8 +1,8 @@
 class SliderModel {
-  int id;
-  String image;
-  int categoryId;
-  int subCategoryId;
+  num? id;
+  String? image;
+  num? categoryId;
+  num? subCategoryId;
 
   SliderModel({
     required this.id,
@@ -20,13 +20,4 @@ class SliderModel {
       subCategoryId: json['slider']['sub_category_id'],
     );
   }
-
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     "id": id,
-  //     "image": image,
-  //     "category_id": categoryId,
-  //     "sub_category_id": subCategoryId
-  //   };
-  // }
 }

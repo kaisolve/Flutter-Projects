@@ -36,7 +36,7 @@ class LoggingInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  Future onError(DioError err, ErrorInterceptorHandler handler) async {
+  Future onError(DioException err, ErrorInterceptorHandler handler) async {
     log(_tag,
         "ERROR[${err.response?.statusCode}] \nURL: ${err.requestOptions.baseUrl}${err.requestOptions.path} \nRequest Data[${err.response?.data}]");
 

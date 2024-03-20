@@ -13,7 +13,7 @@ class DioClient {
   DioClient({required this.baseUrl}) {
     dio = Dio();
     dio
-      // ..options.baseUrl = baseUrl
+      ..options.baseUrl = baseUrl
       ..options.connectTimeout = const Duration(minutes: 5)
       ..options.receiveTimeout = const Duration(minutes: 5)
       ..httpClientAdapter

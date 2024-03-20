@@ -1,13 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kreis/core/constents.dart';
+import 'package:flutter/services.dart';
+import 'package:kreis/core/app_theme/theme.dart';
+import 'package:kreis/core/constants/constants.dart';
+import 'package:kreis/injection.dart';
 import 'package:kreis/multiprovider.dart';
-import 'package:kreis/presentation/splash_page/splash.dart';
+import 'package:kreis/presentation/splash_screen/splash.dart';
 
 var navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await init();
+
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyCoyxqkJBQ9hj9dVfzXZMDDBwt5lRhRVtw',
+          appId: '1:161099138507:android:7f1c8845127df9708ea24e',
+          messagingSenderId: '161099138507',
+          projectId: 'kreis-417313',
+          storageBucket: 'kreis-417313.appspot.com'));
   await EasyLocalization.ensureInitialized();
 
   runApp(AppMultiProvider(
@@ -17,6 +29,8 @@ void main() async {
         saveLocale: true,
         useOnlyLangCode: true,
         startLocale: const Locale('ar'),
+        // useFallbackTranslations: true,
+        // fallbackLocale: languages[0],
         child: const MyApp()),
   ));
 }
@@ -26,14 +40,21 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
-
-  void rebuild() {}
 }
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: AppTheme.theme(context),
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,

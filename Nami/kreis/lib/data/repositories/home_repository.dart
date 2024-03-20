@@ -1,16 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:kreis/core/app_url/app_url.dart';
 import 'package:kreis/data/datasources/remote/dio/dio_client.dart';
 import 'package:kreis/data/models/category_model.dart';
 import 'package:kreis/data/models/latest_products_model.dart';
 
 class HomeRepository {
   Future<List> getSliderAndNotificationCount() async {
-    const String apiUrl =
-        'https://ecommerce.project-nami.xyz/api/user/home/slider';
-
     try {
-      DioClient dioClient = DioClient(baseUrl: apiUrl);
-      Response response = await dioClient.get(apiUrl);
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      Response response = await dioClient.get(AppUrls.baseUrl + AppUrls.slider);
 
       if (response.statusCode == 200) {
         final List<dynamic> sliders = response.data['data']['slider'];
@@ -25,12 +23,10 @@ class HomeRepository {
   }
 
   Future<List> getCategories() async {
-    const String apiUrl =
-        'https://ecommerce.project-nami.xyz/api/user/home/categories';
-
     try {
-      DioClient dioClient = DioClient(baseUrl: apiUrl);
-      Response response = await dioClient.get(apiUrl);
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      Response response =
+          await dioClient.get(AppUrls.baseUrl + AppUrls.categories);
 
       if (response.statusCode == 200) {
         List<dynamic> categories = response.data['data'];
@@ -47,12 +43,10 @@ class HomeRepository {
   }
 
   Future<List> getSubCategories(int cId) async {
-    String apiUrl =
-        'https://ecommerce.project-nami.xyz/api/user/home/sub-categories/$cId';
-
     try {
-      DioClient dioClient = DioClient(baseUrl: apiUrl);
-      Response response = await dioClient.get(apiUrl);
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      Response response = await dioClient
+          .get(AppUrls.baseUrl + AppUrls.subCategories + cId.toString());
 
       if (response.statusCode == 200) {
         List<dynamic> subCategories = response.data['data'];
@@ -70,12 +64,10 @@ class HomeRepository {
   }
 
   Future<List> getLatestProducts() async {
-    const String apiUrl =
-        'https://ecommerce.project-nami.xyz/api/user/home/latestProducts';
-
     try {
-      DioClient dioClient = DioClient(baseUrl: apiUrl);
-      Response response = await dioClient.get(apiUrl);
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      Response response =
+          await dioClient.get(AppUrls.baseUrl + AppUrls.latestProducts);
 
       if (response.statusCode == 200) {
         List<dynamic> products = response.data['data'];
