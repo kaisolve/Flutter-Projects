@@ -1,31 +1,39 @@
 class UserModel {
   String? fname;
   String? lname;
+  String? phoneCode;
   String? phone;
-  String? imagePic;
-  String? uId;
+  String? image;
+  String? invitationCode;
+  int? cityId;
   UserModel(
       {required this.fname,
       required this.lname,
+      required this.phoneCode,
       required this.phone,
-      required this.imagePic,
-      required this.uId});
+      this.image,
+      this.invitationCode,
+      required this.cityId});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-        fname: json['fname'] ?? '',
-        lname: json['lname'] ?? '',
-        phone: json['phone'] ?? '',
-        imagePic: json['imagePic'] ?? '',
-        uId: json['uId']);
+        fname: json['first_name'],
+        lname: json['last_name'],
+        phoneCode: json['phone_code'],
+        phone: json['phone'],
+        image: json['image'],
+        invitationCode: json['invitation_code'],
+        cityId: json['city_id']);
   }
   Map<String, dynamic> toJson() {
     return {
-      'fname': fname,
-      'lname': lname,
+      'first_name': fname,
+      'last_name': lname,
+      'phone_code': phoneCode,
       'phone': phone,
-      'imagePic': imagePic,
-      'uId': uId
+      'image': image,
+      'invitation_code': invitationCode,
+      'city_id': cityId
     };
   }
 }

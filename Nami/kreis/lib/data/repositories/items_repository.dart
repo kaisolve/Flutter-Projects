@@ -31,9 +31,9 @@ class ItemsRepository {
       DioClient dioClient = DioClient(
         baseUrl: AppUrls.baseUrl,
       );
-      AppUrls.categoryId = categoryId;
-      AppUrls.categoryId = subcategoryId;
-      Response response = await dioClient.get(AppUrls.productsDetails);
+
+      Response response = await dioClient
+          .get(AppUrls.productsDetails(categoryId, subcategoryId));
 
       if (response.statusCode == 200) {
         List<dynamic> products = response.data['data'];

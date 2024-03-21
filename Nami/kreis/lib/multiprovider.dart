@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kreis/presentation/auth/provider/auth_provider.dart';
-import 'package:kreis/presentation/home_screen/bottom_navigation_screens/categories_screen/provider/provider.dart';
-import 'package:kreis/presentation/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
-import 'package:kreis/presentation/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
-import 'package:kreis/presentation/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
+import 'package:kreis/presentations/auth/provider/auth_provider.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/categories_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:provider/provider.dart';
 
 class AppMultiProvider extends StatelessWidget {

@@ -6,7 +6,7 @@ import 'package:kreis/core/app_theme/theme.dart';
 import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/injection.dart';
 import 'package:kreis/multiprovider.dart';
-import 'package:kreis/presentation/splash_screen/splash.dart';
+import 'package:kreis/presentations/splash_screen/splash.dart';
 
 var navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
