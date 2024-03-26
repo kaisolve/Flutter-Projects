@@ -8,13 +8,14 @@ class CustomText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final int? maxLines;
-  const CustomText(
-      {super.key,
-      this.title,
-      this.fontColor = Colors.black,
-      this.fontSize = fontR14,
-      this.fontWeight = FontWeight.normal,
-      this.maxLines});
+  const CustomText({
+    super.key,
+    this.title,
+    this.fontColor = Colors.black,
+    this.fontSize = fontR14,
+    this.fontWeight = FontWeight.normal,
+    this.maxLines,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kreis/core/constants/constants.dart';
+import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/data/models/cart_model.dart';
 import 'package:kreis/data/models/products_model.dart';
-import 'package:kreis/data/repositories/cart_repository.dart';
-import 'package:kreis/data/repositories/items_repository.dart';
+import 'package:kreis/injection.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/widgets/buttom_container.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -21,176 +23,228 @@ class SingleItemScreen extends StatefulWidget {
 }
 
 class _SingleItemScreenState extends State<SingleItemScreen> {
-  late ItemsRepository itemsRepository;
-  late CartRepository cartRepository;
-
-  @override
-  void initState() {
-    super.initState();
-    itemsRepository = ItemsRepository();
-    cartRepository = CartRepository();
-  }
+  CartProvider cartProvider = getIt();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: itemsRepository.getProductsByCategoryAndSubcategory(
-          Provider.of<ItemsProvider>(context).categories_id,
-          Provider.of<ItemsProvider>(context).sub_categories_id),
-      builder: (context, snapshot) {
-        return Consumer<ItemsProvider>(
-          builder: (context, value, child) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              ProductModel? item = snapshot.data!
-                  .firstWhere((product) => product.id == widget.itemId);
-              Provider.of<ItemsProvider>(context, listen: false).setItems(item);
-              return Scaffold(
-                appBar: CustomAppBar(
-                    title: 'item_details'.tr(), showBackArrow: true),
-                body: SizedBox(
-                  width: 375,
-                  height: 634.67,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: 343,
-                        height: 234,
-                        child: Card(child: Image.network(item.image!)),
+    // Provider.of<ItemsProvider>(context).setItem(widget.itemId);
+    // item = Provider.of<ItemsProvider>(context).item!;
+    cartProvider = Provider.of<CartProvider>(context, listen: false);
+
+    return Scaffold(
+      appBar: CustomAppBar(title: 'Product Details'.tr(), showBackArrow: true),
+      body: FutureBuilder(
+        future: Provider.of<ItemsProvider>(context).getItem(widget.itemId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            ProductModel item = snapshot.data!;
+
+            return SingleChildScrollView(
+              child: SizedBox(
+                width: 375,
+                height: 634.67,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 343,
+                      height: 234,
+                      child: Card(child: Image.network(item.image!)),
+                    ),
+                    SizedBox(
+                      width: 343,
+                      height: 42.67,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(title: item.title!),
+                          const CustomSvgIcon(assetName: 'heart'),
+                        ],
                       ),
-                      SizedBox(
+                    ),
+                    SizedBox(
                         width: 343,
-                        height: 42.67,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(item.title!),
-                            SvgPicture.asset('assets/images/svgs/heart.svg')
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                          width: 343, height: 162, child: Text(item.details!)),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                        child: SizedBox(
-                          width: 343,
-                          height: 164,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: const Color(0xffEEEEEE),
-                                borderRadius: BorderRadius.circular(16)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(8, 16, 8, 16),
-                                  child: SizedBox(
-                                      width: 327,
-                                      height: 52,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(16)),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: SvgPicture.asset(
-                                                        'assets/images/svgs/price.svg'),
-                                                  ),
-                                                  Text('price'.tr()),
-                                                ],
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    item.price.toString(),
-                                                    style: appTextStyle),
-                                              ),
-                                            ]),
-                                      )),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 16, 0, 16),
-                                  child: SizedBox(
+                        height: 162,
+                        child: CustomText(title: item.details!)),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                      child: SizedBox(
+                        width: 343,
+                        height: 164,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: containerBorder,
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                                child: SizedBox(
                                     width: 327,
-                                    height: 48,
-                                    child: AddMinusItems(
-                                      text: item.amount!,
-                                    ),
+                                    height: 52,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(10.0),
+                                                    child: CustomSvgIcon(
+                                                        assetName: 'price')),
+                                                CustomText(title: 'Price'.tr()),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: CustomText(
+                                                title: cartProvider
+                                                    .getItemPrice(item.id!)
+                                                    .toString(),
+                                              ),
+                                            ),
+                                          ]),
+                                    )),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 16, 0, 16),
+                                child: SizedBox(
+                                  width: 327,
+                                  height: 48,
+                                  child: AddMinusItems(
+                                    item: item,
+                                    onIncrease: () {
+                                      cartProvider.increaseItemAmount(item.id!);
+                                    },
+                                    onDecrease: () {
+                                      cartProvider.decreaseItemAmount(item.id!);
+                                    },
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                bottomNavigationBar: BuyButtonContainer(
-                  text: 'add_to_basket'.tr(),
-                  price: item.price!.toInt(),
-                  ontap: () async {
-                    ProductModel item =
-                        Provider.of<ItemsProvider>(context, listen: false)
-                            .item!;
-                    cartRepository.addTocart(CartModel(
-                        id: item.id,
-                        name: item.title!,
-                        image: item.image!,
-                        price: item.price!,
-                        amount: item.amount!));
-                  },
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return const CircularProgressIndicator();
-            }
-          },
-        );
-      },
+              ),
+            );
+          }
+        },
+      ),
+      bottomNavigationBar: FutureBuilder<ProductModel>(
+        future: Provider.of<ItemsProvider>(context).getItem(widget.itemId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox(
+              height: kBottomNavigationBarHeight,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return SizedBox(
+              height: kBottomNavigationBarHeight,
+              child: Center(
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            );
+          } else {
+            ProductModel item = snapshot.data!;
+
+            return BuyButtonContainer(
+              text: 'Add To Cart'.tr(),
+              price: cartProvider.getItemPrice(item.id!),
+              ontap: () async {
+                // ProductModel item =
+                //     Provider.of<ItemsProvider>(context).item!;
+                Provider.of<CartProvider>(context, listen: false).addTocart(
+                  CartModel(
+                      id: item.id,
+                      name: item.title,
+                      image: item.image,
+                      price: item.price,
+                      amount: item.amount,
+                      priceWeightUnit: item.priceWeightUnit),
+                );
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }
 
+//   bottomNavigationBar: BuyButtonContainer(
+//     text: 'Add To Cart'.tr(),
+//     price: item.price!.toInt(),
+//     ontap: () async {
+//       ProductModel item =
+//           Provider.of<ItemsProvider>(context, listen: false).item!;
+//       cartProvider.addTocart(CartModel(
+//           id: item.id,
+//           name: item.title!,
+//           image: item.image!,
+//           price: item.price!,
+//           amount: item.amount!));
+//     },
+//   ),
+// );
+//       } else if (snapshot.hasError) {
+//         return Text('Error: ${snapshot.error}');
+//       } else {
+//         return const CircularProgressIndicator();
+//       }
+//     },
+//   );
+// },
+// );
+//   }
+// }
 // ignore: must_be_immutable
-class AddMinusItems extends StatefulWidget {
-  num text;
+class AddMinusItems extends StatelessWidget {
+  final ProductModel item;
+  final void Function() onIncrease;
+  final void Function() onDecrease;
 
-  AddMinusItems({
+  const AddMinusItems({
     super.key,
-    required this.text,
+    required this.item,
+    required this.onIncrease,
+    required this.onDecrease,
   });
 
   @override
-  State<AddMinusItems> createState() => _AddMinusItemsState();
-}
-
-class _AddMinusItemsState extends State<AddMinusItems> {
-  int count = 1;
-
-  @override
   Widget build(BuildContext context) {
+    int amount = Provider.of<CartProvider>(context).getItemAmount(item.id!);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Padding(
           padding: const EdgeInsets.all(12),
           child: GestureDetector(
-            // onTap: () => count--,
+            onTap: onDecrease,
             child: SvgPicture.asset('assets/images/svgs/minus.svg'),
           ),
         ),
@@ -199,15 +253,17 @@ class _AddMinusItemsState extends State<AddMinusItems> {
           height: 48,
           width: 199,
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(16)),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Center(
-            child: Text(count.toString()),
+            child: Text(amount.toString()),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(12),
           child: GestureDetector(
-            // onTap: () => count++,
+            onTap: onIncrease,
             child: SvgPicture.asset('assets/images/svgs/add.svg'),
           ),
         ),

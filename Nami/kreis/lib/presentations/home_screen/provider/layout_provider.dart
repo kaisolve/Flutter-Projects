@@ -1,35 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/categories_screen/categories.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/home.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_page.dart';
 
-class LayoutProvider with ChangeNotifier {
-  int currentIndex = -1;
-  Widget? currentScreen;
-  List<Widget> bottomNavigationScreen = [
-    // const ChatScreen(),const StatisticsScreen(),const HomeScreen(),const CartScreen(),const ProfileScreen()
+class LayoutProvider extends ChangeNotifier {
+  int selectedindex = 0;
+  List<Widget> pages = [
+    const HomePage(),
+    const CategoryPage(),
+    const ProfilePage(),
   ];
-  List<Widget> stack = [];
-
-  void init() {
-    currentIndex = 2;
-    currentScreen = bottomNavigationScreen[currentIndex];
-  }
-
-  void updateSelectedBottomNavigationIndex(int index) {
-    currentIndex = index;
-    currentScreen = bottomNavigationScreen[currentIndex];
-
+  void updateSelectedIndex(int index) {
+    selectedindex = index;
     notifyListeners();
-  }
-
-  void onBack() {
-    if (stack.isNotEmpty) {
-      stack.removeLast();
-      currentScreen = stack.last;
-      notifyListeners();
-    } else {
-      if (currentIndex != -1) {
-        currentScreen = bottomNavigationScreen.elementAt(currentIndex);
-        notifyListeners();
-      }
-    }
   }
 }

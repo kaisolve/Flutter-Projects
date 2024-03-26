@@ -49,25 +49,6 @@ class _ImageSliderState extends State<ImageSlider> {
               options: CarouselOptions(autoPlay: true),
             ),
           );
-          // return Column(
-          //   children: [
-          //     SizedBox(
-          //       width: 343,
-          //       height: 171.5,
-          //       child: CarouselSlider(
-
-          //         items: sliders
-          //             .map((item) =>
-          //                 Image.network(item['image'], fit: BoxFit.cover))
-          //             .toList(),
-          //         options: CarouselOptions(
-          //           viewportFraction: 1.0,
-          //           autoPlay: true,
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // );
         } else if (snapshot.hasError) {
           // Display an error message
           return Text('Error: ${snapshot.error}');

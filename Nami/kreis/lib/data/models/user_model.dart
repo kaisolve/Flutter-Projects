@@ -1,30 +1,36 @@
-class UserModel {
-  String? fname;
-  String? lname;
-  String? phoneCode;
-  String? phone;
-  String? image;
-  String? invitationCode;
-  int? cityId;
-  UserModel(
-      {required this.fname,
-      required this.lname,
-      required this.phoneCode,
-      required this.phone,
-      this.image,
-      this.invitationCode,
-      required this.cityId});
+import 'package:equatable/equatable.dart';
+
+class UserModel extends Equatable {
+  final String? fname;
+  final String? lname;
+  final String? phoneCode;
+  final String? phone;
+  final String? image;
+  final String? invitationCode;
+  final int? cityId;
+
+  const UserModel({
+    required this.fname,
+    required this.lname,
+    required this.phoneCode,
+    required this.phone,
+    this.image,
+    this.invitationCode,
+    required this.cityId,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-        fname: json['first_name'],
-        lname: json['last_name'],
-        phoneCode: json['phone_code'],
-        phone: json['phone'],
-        image: json['image'],
-        invitationCode: json['invitation_code'],
-        cityId: json['city_id']);
+      fname: json['first_name'],
+      lname: json['last_name'],
+      phoneCode: json['phone_code'],
+      phone: json['phone'],
+      image: json['image'],
+      invitationCode: json['invitation_code'],
+      cityId: json['city_id'],
+    );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'first_name': fname,
@@ -33,7 +39,11 @@ class UserModel {
       'phone': phone,
       'image': image,
       'invitation_code': invitationCode,
-      'city_id': cityId
+      'city_id': cityId,
     };
   }
+
+  @override
+  List<Object?> get props =>
+      [fname, lname, phoneCode, phone, image, invitationCode, cityId];
 }

@@ -1,50 +1,51 @@
+import 'package:equatable/equatable.dart';
 import 'package:kreis/data/models/category_model.dart';
 
-class ProductModel {
-  num? id;
-  String? title;
-  String? image;
-  num? categoryId;
-  CategoryModel? category;
-  num? subCategoryId;
-  SubCategoryItem? subCategory;
-  String? details;
-  dynamic salesLimit;
-  num? price;
-  String? unit;
-  int? amount;
-  num? priceWeightUnit;
-  bool? isOffer;
-  num? isActive;
-  dynamic offerType;
-  num? offerValue;
-  String? offerStartDate;
-  String? offerEndDate;
-  num? oldPrice;
-  bool? isFavorite;
+class ProductModel extends Equatable {
+  final num? id;
+  final String? title;
+  final String? image;
+  final num? categoryId;
+  final CategoryModel? category;
+  final num? subCategoryId;
+  final SubCategoryItem? subCategory;
+  final String? details;
+  final dynamic salesLimit;
+  final num? price;
+  final String? unit;
+  final int? amount;
+  final num? priceWeightUnit;
+  final bool? isOffer;
+  final num? isActive;
+  final dynamic offerType;
+  final num? offerValue;
+  final String? offerStartDate;
+  final String? offerEndDate;
+  final num? oldPrice;
+  final bool? isFavorite;
 
-  ProductModel({
-    required this.id,
-    required this.title,
-    required this.image,
-    required this.categoryId,
-    required this.category,
-    required this.subCategoryId,
-    required this.subCategory,
-    required this.details,
-    required this.salesLimit,
-    required this.price,
-    required this.unit,
-    required this.amount,
-    required this.priceWeightUnit,
-    required this.isOffer,
-    required this.isActive,
-    required this.offerType,
-    required this.offerValue,
-    required this.offerStartDate,
-    required this.offerEndDate,
-    required this.oldPrice,
-    required this.isFavorite,
+  const ProductModel({
+    this.id,
+    this.title,
+    this.image,
+    this.categoryId,
+    this.category,
+    this.subCategoryId,
+    this.subCategory,
+    this.details,
+    this.salesLimit,
+    this.price,
+    this.unit,
+    this.amount,
+    this.priceWeightUnit,
+    this.isOffer,
+    this.isActive,
+    this.offerType,
+    this.offerValue,
+    this.offerStartDate,
+    this.offerEndDate,
+    this.oldPrice,
+    this.isFavorite,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -100,4 +101,29 @@ class ProductModel {
       'is_favorite': isFavorite,
     };
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        image,
+        categoryId,
+        category,
+        subCategoryId,
+        subCategory,
+        details,
+        salesLimit,
+        price,
+        unit,
+        amount,
+        priceWeightUnit,
+        isOffer,
+        isActive,
+        offerType,
+        offerValue,
+        offerStartDate,
+        offerEndDate,
+        oldPrice,
+        isFavorite,
+      ];
 }

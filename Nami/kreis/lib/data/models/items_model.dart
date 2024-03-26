@@ -1,12 +1,12 @@
-import 'package:dio/dio.dart';
+import 'package:equatable/equatable.dart';
 
-class ItemsModel {
-  final int id;
-  final int categoryId;
-  final int subCategoryId;
-  final String title;
-  final String image;
-  final int price;
+class ItemsModel extends Equatable {
+  final int? id;
+  final int? categoryId;
+  final int? subCategoryId;
+  final String? title;
+  final String? image;
+  final int? price;
 
   ItemsModel({
     required this.id,
@@ -27,47 +27,19 @@ class ItemsModel {
       price: json['price'],
     );
   }
-  // Map<String, dynamic> toJson() {
-  //   jsonEncode({
-  //     "id": id,
-  //     "image": image,
-  //     "title": title,
-  //     "price": price,
-  //     "category_id": categoryId,
-  //     "sub_category_id": subCategoryId
-  //   });
-  //   return {
-  //     "id": id,
-  //     "image": image,
-  //     "title": title,
-  //     "price": price,
-  //     "category_id": categoryId,
-  //     "sub_category_id": subCategoryId
-  //   };
-  // }
-}
 
-Future<List<ItemsModel>> fetchItems() async {
-  // Replace the URL with your actual API endpoint
-  const String apiUrl =
-      'https://ecommerce.project-nami.xyz/api/user/home/products';
-
-  try {
-    final Dio dio = Dio();
-    final Response response = await dio.get(apiUrl);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> itemsData = response.data;
-
-      // Convert the list of dynamic data into a list of ItemsModel objects
-      // ignore: non_constant_identifier_names
-      List<ItemsModel> Items =
-          itemsData.map((item) => ItemsModel.fromJson(item)).toList();
-      return Items;
-    } else {
-      throw Exception('Failed to load products');
-    }
-  } catch (error) {
-    throw Exception('Failed to load products: $error');
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "image": image,
+      "title": title,
+      "price": price,
+      "category_id": categoryId,
+      "sub_category_id": subCategoryId
+    };
   }
+
+  @override
+  List<Object?> get props =>
+      [id, categoryId, subCategoryId, title, image, price];
 }

@@ -26,7 +26,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppBar(
-          title: 'categories'.tr(),
+          title: 'Categories'.tr(),
           showBackArrow: false,
         ),
         body: FutureBuilder(

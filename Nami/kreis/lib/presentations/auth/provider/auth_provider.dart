@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/data/models/user_model.dart';
 import 'package:kreis/data/repositories/auth_repository.dart';
 import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/auth/login_screen/login_screen.dart';
 import 'package:kreis/presentations/auth/register_screen/register_screen.dart';
-import 'package:kreis/presentations/home_screen/widgets/button_bar.dart';
+import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
 import 'package:kreis/presentations/widgets/dialogs/scaffold_messanger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -156,8 +157,9 @@ class AuthProvider with ChangeNotifier {
 
     if (result.success!) {
       userData = result.user!;
+      // saveUserDataToSP();
       notifyListeners();
-      NavigatorHandler.pushAndRemoveUntil(const MyHomePage());
+      NavigatorHandler.pushAndRemoveUntil(const MainAppLayout());
     } else {
       NavigatorHandler.pushAndRemoveUntil(const RegisterScreen());
     }
@@ -176,8 +178,9 @@ class AuthProvider with ChangeNotifier {
     UserAuthResult result = await authRepository.registerUser(userModel);
     if (result.success!) {
       userData = result.user!;
+      saveUserDataToSP();
       notifyListeners();
-      NavigatorHandler.pushAndRemoveUntil(const MyHomePage());
+      NavigatorHandler.pushAndRemoveUntil(const MainAppLayout());
     } else {
       CustomScaffoldMessanger.showScaffoledMessanger(
           title: 'Fill Necessary Fields'.tr());
@@ -186,11 +189,19 @@ class AuthProvider with ChangeNotifier {
 
   Future saveUserDataToSP() async {
     SharedPreferences sharedPreferences = getIt();
-    await sharedPreferences.setString("user_model", jsonEncode(UserModel));
+    await sharedPreferences.setString(userKey, jsonEncode(userData));
+  }
+
+  Future<UserModel?> getUserDataFromSP() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? userDataJson = sharedPreferences.getString(userKey);
+    if (userDataJson != null) {
+      Map<String, dynamic> userDataMap = jsonDecode(userDataJson);
+      return UserModel.fromJson(userDataMap);
+    }
+    return null;
   }
 }
-
-
 
 
 

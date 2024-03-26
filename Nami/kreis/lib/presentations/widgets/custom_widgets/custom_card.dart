@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
 class CustomCard extends StatelessWidget {
   final String title;
@@ -26,10 +27,9 @@ class CustomCard extends StatelessWidget {
           SizedBox(
               width: 66.75,
               height: 36,
-              child: Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+              child: CustomText(
+                title: title,
+                fontSize: 12,
               )),
         ],
       ),

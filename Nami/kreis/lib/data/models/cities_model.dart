@@ -1,7 +1,9 @@
-class CitiesModel {
+import 'package:equatable/equatable.dart';
+
+class CitiesModel extends Equatable {
   final int? id;
   final String? title;
-  final num? deliveryCost;
+  final double? deliveryCost;
   final int? regionId;
 
   CitiesModel({
@@ -15,8 +17,11 @@ class CitiesModel {
     return CitiesModel(
       id: json['id'],
       title: json['title'],
-      deliveryCost: json['delivery_cost'].toDouble(),
+      deliveryCost: json['delivery_cost']?.toDouble(),
       regionId: json['region_id'],
     );
   }
+
+  @override
+  List<Object?> get props => [id, title, deliveryCost, regionId];
 }

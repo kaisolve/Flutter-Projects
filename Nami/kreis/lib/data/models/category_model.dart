@@ -1,4 +1,6 @@
-class CategoryModel {
+import 'package:equatable/equatable.dart';
+
+class CategoryModel extends Equatable {
   final num? id;
   final String? image;
   final String? title;
@@ -25,6 +27,7 @@ class CategoryModel {
       subCategories: subCategories,
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -34,9 +37,12 @@ class CategoryModel {
           subCategories.map((subCategory) => subCategory.toJson()).toList(),
     };
   }
+
+  @override
+  List<Object?> get props => [id, image, title, subCategories];
 }
 
-class SubCategoryItem {
+class SubCategoryItem extends Equatable {
   final num? id;
   final String? image;
   final String? title;
@@ -54,6 +60,7 @@ class SubCategoryItem {
       title: json['title'],
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -61,4 +68,7 @@ class SubCategoryItem {
       'title': title,
     };
   }
+
+  @override
+  List<Object?> get props => [id, image, title];
 }

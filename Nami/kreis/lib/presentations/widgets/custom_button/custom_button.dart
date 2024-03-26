@@ -13,8 +13,10 @@ class CustomButton extends StatelessWidget {
   final Color bg;
   final VoidCallback onTap;
   final double? width;
+  final double? height;
+  EdgeInsetsGeometry? padding;
 
-  const CustomButton(
+  CustomButton(
       {super.key,
       required this.title,
       this.fontSize = fontR14,
@@ -22,18 +24,22 @@ class CustomButton extends StatelessWidget {
       this.fontColor = white,
       this.bg = mainColor,
       required this.onTap,
-      this.width});
+      this.width,
+      this.height,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
+        padding: padding,
         alignment: Alignment.center,
         width: width ?? Dimens.width,
-        height: 56.0,
+        height: height ?? 56.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Color(0xff707070)),
           color: bg,
         ),
         child: CustomText(

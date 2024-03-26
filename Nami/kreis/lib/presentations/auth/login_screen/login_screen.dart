@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
 import 'package:kreis/injection.dart';
 import 'package:kreis/main.dart';
@@ -126,23 +127,17 @@ void otp() {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: RichText(
                     text: TextSpan(
-                        text: 'We send a code to ( '.tr(),
+                        text: 'Please Enter SMS Code Sent To '.tr(),
                         style: AppTextStyles()
                             .normalText()
                             .textColorNormal(greyColor),
                         children: [
                       TextSpan(
                           text:
-                              '****${loginProvider.phone!.substring(loginProvider.phone!.length - 3)}',
+                              '(****${loginProvider.phone!.substring(loginProvider.phone!.length - 3)})',
                           style: AppTextStyles()
                               .normalText()
                               .textColorNormal(mainColor)),
-                      TextSpan(
-                          text:
-                              ' ). Enter it here to verify your identity'.tr(),
-                          style: AppTextStyles()
-                              .normalText()
-                              .textColorNormal(greyColor)),
                     ]))),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -197,14 +192,14 @@ void otp() {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CustomButton(
-                  title: 'Agree and confirm'.tr(),
+                  title: 'Confirm'.tr(),
                   onTap: () {
                     Navigator.of(context).pop();
 
                     loginProvider.checkSmsCode();
                   },
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: fontR16,
+                  fontWeight: FontWeight.normal,
                 )),
           ],
         ),

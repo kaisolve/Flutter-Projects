@@ -11,6 +11,7 @@ import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_asset_image/custom_asset_image.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:kreis/presentations/widgets/custom_text_form/custom_text_form.dart';
 import 'package:provider/provider.dart';
 
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                   child: CustomTextFormField(
                     controller: registerProvider.fNameController,
                     textInputType: TextInputType.name,
-                    hint: 'first name'.tr(),
+                    hint: 'First Name'.tr(),
                   ),
                 ),
               ),
@@ -97,7 +98,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                   child: CustomTextFormField(
                     controller: registerProvider.lNameController,
                     textInputType: TextInputType.name,
-                    hint: 'last name'.tr(),
+                    hint: 'Last Name'.tr(),
                   ),
                 ),
               ),
@@ -117,8 +118,9 @@ class _LoginScreenState extends State<RegisterScreen> {
                   assetName: 'city',
                   color: mainColor,
                 ),
-                title: Text(
-                    Provider.of<AuthProvider>(context).city ?? 'City'.tr()),
+                title: CustomText(
+                    title:
+                        Provider.of<AuthProvider>(context).city ?? 'City'.tr()),
                 trailing: const SizedBox(
                   width: 8,
                   height: 4,
@@ -136,7 +138,7 @@ class _LoginScreenState extends State<RegisterScreen> {
           Column(
             children: [
               CheckboxListTile(
-                title: Text("Invited By SomeOne?".tr()),
+                title: CustomText(title: "Invited By SomeOne?".tr()),
                 checkboxShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
                 checkColor: white,
@@ -194,7 +196,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                 final city = dropdownItems[index];
                 final cityId = citiesId[index];
                 return ListTile(
-                  title: Text(city),
+                  title: CustomText(title: city),
                   onTap: () {
                     Navigator.of(context).pop();
                     Provider.of<AuthProvider>(context, listen: false)

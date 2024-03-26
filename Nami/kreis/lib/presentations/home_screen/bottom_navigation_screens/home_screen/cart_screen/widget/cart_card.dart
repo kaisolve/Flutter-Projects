@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/single_item_screen/single_item.dart';
+import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
+import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CartCard extends StatelessWidget {
   String image;
   String text;
   String price;
-  int weight;
+  int amount;
+  int id;
+  void Function() onIncrease;
+  void Function() onDecrease;
+  void Function() onDelete;
   CartCard(
       {super.key,
       required this.image,
       required this.price,
       required this.text,
-      required this.weight});
+      required this.amount,
+      required this.id,
+      required this.onIncrease,
+      required this.onDecrease,
+      required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +31,7 @@ class CartCard extends StatelessWidget {
       width: 343,
       height: 147.67,
       padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-      color: const Color(0x0feeeeee),
+      color: input2Bg,
       child: SizedBox(
         width: 343,
         height: 66.67,
@@ -34,7 +44,7 @@ class CartCard extends StatelessWidget {
                   children: [
                     SizedBox(
                         width: 100, height: 66.67, child: Image.network(image)),
-                    Text(text),
+                    Text('${text.split(' ')[0]} ${text.split(' ')[1]}'),
                   ],
                 ),
                 SizedBox(
@@ -42,37 +52,31 @@ class CartCard extends StatelessWidget {
                     height: 40,
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: SvgPicture.asset('assets/images/svgs/trash.svg'),
+                      child: GestureDetector(
+                        onTap: onDelete,
+                        child: const CustomSvgIcon(assetName: 'can'),
+                      ),
                     ))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // BasketRoundIcons(
-                //     image: 'assets/images/svgs/minus.svg',
-                //     ontap: () =>
-                //         Provider.of<ItemsProvider>(context, listen: false)
-                //             .updateNum(1)),
-                // Container(
-                //   width: 124,
-                //   height: 48,
-                //   padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
-                //   decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(16),
-                //       color: const Color(0xffeeeeee)),
-                //   child: Center(
-                //       child: Text(Provider.of<ItemsProvider>(
-                //     context,
-                //   ).n.toString())),
-                // ),
-                // BasketRoundIcons(
-                //   image: 'assets/images/svgs/add.svg',
-                //   ontap: () =>
-                //       Provider.of<ItemsProvider>(context, listen: false)
-                //           .updateNum(0),
-                // ),
-                AddMinusItems(text: weight),
+                BasketRoundIcons(image: 'minus', ontap: onDecrease),
+                Container(
+                  width: 124,
+                  height: 48,
+                  padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: containerBorder),
+                  child: Center(
+                    child: Text(Provider.of<CartProvider>(context)
+                        .getItemAmount(id)
+                        .toString()),
+                  ),
+                ),
+                BasketRoundIcons(image: 'add', ontap: onIncrease),
                 Text(price),
               ],
             )
@@ -98,9 +102,10 @@ class BasketRoundIcons extends StatelessWidget {
           height: 40,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: const Color(0xffEEEEEE)),
-          child: SvgPicture.asset(image)),
+              borderRadius: BorderRadius.circular(16), color: containerBorder),
+          child: CustomSvgIcon(
+            assetName: image,
+          )),
     );
   }
 }

@@ -7,6 +7,7 @@ const Color greyColor = Color(0xff777777);
 // const Color greyColor = Color(0xff979797);
 const Color startColor = Color(0xff071633);
 
+const Color redColor = Color(0xffff0005);
 const Color inputBg = Color(0xffF9FAFB);
 const Color inputBgDark = Color(0xff363535);
 const Color input2Bg = Color(0xffffffff);

@@ -2,10 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kreis/data/repositories/home_repository.dart';
 import 'package:kreis/data/repositories/items_repository.dart';
-import 'package:kreis/presentations/home_screen/widgets/items_card.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/widgets/items_card.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/single_item_screen/single_item.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -44,7 +45,7 @@ class _ItemsPageState extends State<ItemsPage> {
             widget.sId!
         : widget.sId;
     return Scaffold(
-      appBar: CustomAppBar(title: 'items'.tr(), showBackArrow: true),
+      appBar: CustomAppBar(title: 'Products'.tr(), showBackArrow: true),
       body: FutureBuilder(
         future: homeRepository.getCategories(),
         builder: (context, snapshot) {
@@ -87,8 +88,9 @@ class _ItemsPageState extends State<ItemsPage> {
                                 color: const Color(0xffDF1C26).withAlpha(5),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child:
-                                  Center(child: Text(categories[index].title)),
+                              child: Center(
+                                  child: CustomText(
+                                      title: categories[index].title)),
                             ),
                           );
                         },
@@ -135,13 +137,10 @@ class _ItemsPageState extends State<ItemsPage> {
                                               BorderRadius.circular(4),
                                         ),
                                         child: Center(
-                                          child: Text(
-                                            subCategories[index].title,
+                                          child: CustomText(
+                                            title: subCategories[index].title,
                                             maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
+                                            // overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       );
@@ -176,6 +175,8 @@ class _ItemsPageState extends State<ItemsPage> {
                             width: 375,
                             height: 630,
                             child: GridView.builder(
+                              // physics: NeverScrollableScrollPhysics(),
+                              // shrinkWrap: true,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -341,7 +342,7 @@ class _ItemsPageState extends State<ItemsPage> {
 //                                 borderRadius: BorderRadius.circular(8),
 //                               ),
 //                               child:
-//                                   Center(child: Text(categories[index].title)),
+//                                   Center(child: CustomText(categories[index].title)),
 //                             ),
 //                           );
 //                         },
@@ -387,7 +388,7 @@ class _ItemsPageState extends State<ItemsPage> {
 //                                     borderRadius: BorderRadius.circular(4),
 //                                   ),
 //                                   child: Center(
-//                                       child: Text(subcategories[index].title)),
+//                                       child: CustomText(subcategories[index].title)),
 //                                 ),
 //                               );
 //                             },
@@ -441,7 +442,7 @@ class _ItemsPageState extends State<ItemsPage> {
 //                               ),
 //                             );
 //                           } else if (snapshot.hasError) {
-//                             return Text('Error: ${snapshot.error}');
+//                             return CustomText('Error: ${snapshot.error}');
 //                           } else {
 //                             return const CircularProgressIndicator();
 //                           }
@@ -453,7 +454,7 @@ class _ItemsPageState extends State<ItemsPage> {
 //               ),
 //             );
 //           } else if (snapshot.hasError) {
-//             return Text('Error: ${snapshot.error}');
+//             return CustomText('Error: ${snapshot.error}');
 //           } else {
 //             return const CircularProgressIndicator();
 //           }

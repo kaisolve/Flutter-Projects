@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
 // ignore: must_be_immutable
 class ItemsCard extends StatelessWidget {
@@ -26,17 +27,18 @@ class ItemsCard extends StatelessWidget {
               children: [
                 SizedBox(
                     width: 135.5, height: 90.33, child: Image.network(image)),
-                Align(
+                const Align(
                   alignment: Alignment.topRight,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 4, 5, 4),
-                    child: SvgPicture.asset('assets/images/svgs/heart.svg'),
+                    padding: EdgeInsets.fromLTRB(5, 4, 5, 4),
+                    child: CustomSvgIcon(assetName: 'heart'),
                   ),
                 ),
               ],
             ),
             Align(
-                child: SizedBox(width: 151.5, height: 21, child: Text(title))),
+                child: SizedBox(
+                    width: 151.5, height: 21, child: CustomText(title: title))),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -45,18 +47,17 @@ class ItemsCard extends StatelessWidget {
                     height: 24,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: Text(price.toString()),
+                      child: CustomText(title: price.toString()),
                     )),
-                SizedBox(
+                const SizedBox(
                   width: 32,
                   height: 32,
-                  child: SvgPicture.asset('assets/images/svgs/trash.svg'),
+                  child: CustomSvgIcon(assetName: 'trash'),
                 )
               ],
             ),
           ],
         ),
-        // ),
       ),
     );
   }

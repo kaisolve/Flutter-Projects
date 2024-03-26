@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kreis/data/repositories/home_repository.dart';
-import 'package:kreis/presentations/home_screen/widgets/items_card.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/widgets/items_card.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/items.dart';
 
 class ProductsView extends StatefulWidget {
@@ -32,6 +32,7 @@ class _ProductsViewState extends State<ProductsView> {
               width: 375,
               height: 904.33,
               child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),
                 itemCount: productsItems.length,

@@ -20,8 +20,8 @@ void main() async {
           messagingSenderId: '161099138507',
           projectId: 'kreis-417313',
           storageBucket: 'kreis-417313.appspot.com'));
-  await EasyLocalization.ensureInitialized();
 
+  await EasyLocalization.ensureInitialized();
   runApp(AppMultiProvider(
     child: EasyLocalization(
         supportedLocales: languages,
@@ -46,6 +46,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kreis/presentations/auth/provider/auth_provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/categories_screen/provider/provider.dart';
-import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/provider/layout_provider.dart';
 import 'package:provider/provider.dart';
 
 class AppMultiProvider extends StatelessWidget {
@@ -18,7 +19,7 @@ class AppMultiProvider extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => HomeProvider(),
+          create: (context) => LayoutProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => CategoriesProvider(),
@@ -28,6 +29,9 @@ class AppMultiProvider extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ProfileProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),

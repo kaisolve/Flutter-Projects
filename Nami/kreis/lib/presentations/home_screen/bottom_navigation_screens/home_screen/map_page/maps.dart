@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -24,7 +25,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'maps'.tr(), showBackArrow: true),
+      appBar: CustomAppBar(title: 'Address'.tr(), showBackArrow: true),
       body: Stack(
         children: [
           GoogleMap(
@@ -57,11 +58,10 @@ class _MapPageState extends State<MapPage> {
               markerId: const MarkerId('currentLocation'),
               position: LatLng(position.latitude, position.latitude)));
         },
-        label: Text(
-          'location'.tr(),
-          style: const TextStyle(color: Colors.white),
+        label: CustomText(
+          title: 'Address'.tr(),
         ),
-        icon: SvgPicture.asset('assets/images/svgs/lcation.svg'),
+        icon: const CustomSvgIcon(assetName: 'lcation'),
         backgroundColor: const Color(0xffDF1C26),
       ),
     );

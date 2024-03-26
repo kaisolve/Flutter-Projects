@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/presentations/home_screen/provider/layout_provider.dart';
-import 'package:kreis/presentations/home_screen/main_app_layout/widgets/bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
-import '../../../injection.dart';
-
-class MainAppLayout extends StatefulWidget {
+class MainAppLayout extends StatelessWidget {
   const MainAppLayout({super.key});
 
   @override
-  State<MainAppLayout> createState() => _MainAppLayoutState();
-}
-
-class _MainAppLayoutState extends State<MainAppLayout> {
-  LayoutProvider provider = getIt();
-  @override
-  void initState() {
-    super.initState();
-    provider.init();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Consumer<LayoutProvider>(builder: (context, provider, _) {
-      return Column(
-        children: [
-          Expanded(child: provider.currentScreen ?? const SizedBox()),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            child: const CustomBottomNavigation(),
-          )
-        ],
-      );
-    });
+    return Consumer<LayoutProvider>(
+      builder: (context, value, child) {
+        return Consumer<LayoutProvider>(
+          builder:
+              (BuildContext context, LayoutProvider provider, Widget? child) {
+            return Scaffold(
+              body: IndexedStack(
+                index: provider.selectedindex,
+                children: provider.pages,
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                  type: BottomNavigationBarType
+                      .fixed, // to be able to add 4 icons and not be whited
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  currentIndex: provider.selectedindex,
+                  onTap: (index) {
+                    provider.updateSelectedIndex(index);
+                  },
+                  items: buttonItems),
+            );
+          },
+        );
+      },
+    );
   }
 }
