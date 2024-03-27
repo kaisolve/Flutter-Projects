@@ -25,9 +25,17 @@ class _HomePageState extends State<HomePage> {
       appBar: CustomAppBar(
         leading: const Padding(
           padding: EdgeInsets.all(8.0),
-          child: CustomSvgIcon(assetName: 'circle'),
+          child: CustomSvgIcon(
+            assetName: 'can',
+            width: 32,
+            height: 22.04,
+          ),
         ),
-        title: 'Hey',
+        homeText: Text.rich(
+          TextSpan(
+              children: [TextSpan(text: 'Welcome '.tr())],
+              text: 'Welcome '.tr()),
+        ),
         actions: [
           IconContainer(
               image: 'basket',

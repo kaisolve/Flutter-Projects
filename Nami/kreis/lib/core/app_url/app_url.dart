@@ -4,6 +4,7 @@ class AppUrls {
   //endPoints
   static const String register = 'user/auth/register';
   static const String login = 'user/auth/login';
+  static const String updateProfile = 'user/profile/updateProfile';
   static const String categories = 'user/home/categories';
   static const String subCategories = 'user/home/sub-categories/';
   static const String slider = 'user/home/slider';

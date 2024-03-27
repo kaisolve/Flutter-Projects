@@ -66,6 +66,11 @@ class HomeRepository {
   Future<List> getLatestProducts() async {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      // auth checking
+      // if(){
+
+      // }
+      // dioClient.dio.options.headers['Authorization'] = '';
       Response response =
           await dioClient.get(AppUrls.baseUrl + AppUrls.latestProducts);
 

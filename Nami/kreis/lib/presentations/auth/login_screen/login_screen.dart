@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     loginProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         showBackArrow: true,
         showToolBar: true,
       ),
@@ -110,11 +111,17 @@ void otp() {
   showModalBottomSheet(
     // ignore: use_build_context_synchronously
     context: navigatorKey.currentContext!,
+    isScrollControlled: true,
     builder: (BuildContext context) {
-      return SizedBox(
-        width: 375,
-        height: 491,
+      // return SizedBox(
+      //   width: 375,
+      //   height: 491,
+      // child:
+      return Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(
                 width: 225,
@@ -134,7 +141,7 @@ void otp() {
                         children: [
                       TextSpan(
                           text:
-                              '(****${loginProvider.phone!.substring(loginProvider.phone!.length - 3)})',
+                              '(****${loginProvider.phone.substring(loginProvider.phone.length - 3)})',
                           style: AppTextStyles()
                               .normalText()
                               .textColorNormal(mainColor)),
@@ -150,6 +157,7 @@ void otp() {
                   length: 6,
                   cursorColor: mainColor,
                   controller: loginProvider.smsController,
+                  autoDisposeControllers: false,
                   pinTheme: PinTheme(
                       borderRadius: BorderRadius.circular(12),
                       fieldOuterPadding:
@@ -202,6 +210,7 @@ void otp() {
                   fontWeight: FontWeight.normal,
                 )),
           ],
+          // ),
         ),
       );
     },

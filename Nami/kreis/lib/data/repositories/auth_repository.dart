@@ -30,16 +30,32 @@ class AuthRepository {
     }
   }
 
-  Future<UserAuthResult> registerUser(UserModel userModel) async {
+  Future<UserAuthResult> registerUser({
+    required String firstName,
+    required String lastName,
+    required String phoneCode,
+    required String phone,
+    String? invitationCode,
+    String? image,
+    required int cityId,
+  }) async {
     try {
+      // upload image
+      String? imageFilePath = image;
+
+      MultipartFile? imagePart;
+      if (imageFilePath != null && !imageFilePath.startsWith('http')) {
+        imagePart = await MultipartFile.fromFile(imageFilePath);
+      }
+
       FormData formData = FormData.fromMap({
-        'first_name': userModel.fname,
-        'last_name': userModel.lname,
-        'phone_code': userModel.phoneCode,
-        'phone': userModel.phone,
-        'image': userModel.image,
-        'invitation_code': userModel.invitationCode,
-        'city_id': userModel.cityId,
+        'first_name': firstName,
+        'last_name': lastName,
+        'phone_code': phoneCode,
+        'phone': phone,
+        'image': imagePart,
+        'invitation_code': invitationCode,
+        'city_id': cityId,
       });
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       Response response =

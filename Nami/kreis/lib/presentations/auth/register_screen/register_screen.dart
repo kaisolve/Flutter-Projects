@@ -27,17 +27,9 @@ class _LoginScreenState extends State<RegisterScreen> {
 
   CitiesRepositories citiesRepositories = CitiesRepositories();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // registerProvider.init();
-  // }
-
   void selectImage() async {
     // ignore: unused_local_variable
     File? image = await pickImage(context);
-
-    setState(() {});
   }
 
   bool checkedValue = false;

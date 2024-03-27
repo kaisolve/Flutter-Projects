@@ -7,6 +7,7 @@ import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
+  final Text? homeText;
   final double? fontSize;
   final Color? fontColor;
   final bool? showBackArrow;
@@ -17,9 +18,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? elevation;
   final Color? bgColor;
 
-  const CustomAppBar(
+  CustomAppBar(
       {super.key,
       this.title,
+      this.homeText,
       this.fontSize = fontR18,
       this.fontColor = black,
       this.showBackArrow = true,
@@ -37,14 +39,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation,
       backgroundColor:
           bgColor ?? (AppTheme.isDarkMode() ? Colors.black : white),
-      title: CustomText(
-        title: title ?? '',
-        fontSize: fontSize ?? fontR18,
-        fontColor: fontColor != null
-            ? (AppTheme.isDarkMode() ? Colors.white : black)
-            : Colors.white,
-        fontWeight: FontWeight.normal,
-      ),
+      title: leading == null
+          ? CustomText(
+              title: title ?? '',
+              fontSize: fontSize ?? fontR18,
+              fontColor: fontColor != null
+                  ? (AppTheme.isDarkMode() ? Colors.white : black)
+                  : Colors.white,
+              fontWeight: FontWeight.normal,
+            )
+          : homeText,
       leadingWidth: 28,
       automaticallyImplyLeading: showBackArrow ?? false,
       centerTitle: centerTitle,

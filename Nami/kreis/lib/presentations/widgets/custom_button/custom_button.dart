@@ -4,6 +4,7 @@ import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/dimens/dimens.dart';
 
+// ignore: must_be_immutable
 class CustomButton extends StatelessWidget {
   final String title;
   final double fontSize;
@@ -39,7 +40,7 @@ class CustomButton extends StatelessWidget {
         height: height ?? 56.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Color(0xff707070)),
+          border: Border.all(color: const Color(0xff707070)),
           color: bg,
         ),
         child: CustomText(

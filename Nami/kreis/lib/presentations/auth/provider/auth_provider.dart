@@ -1,18 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/navigator/navigator.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/models/user_model.dart';
 import 'package:kreis/data/repositories/auth_repository.dart';
-import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/auth/login_screen/login_screen.dart';
 import 'package:kreis/presentations/auth/register_screen/register_screen.dart';
 import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
 import 'package:kreis/presentations/widgets/dialogs/scaffold_messanger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   TextEditingController phoneController = TextEditingController();
@@ -20,14 +17,15 @@ class AuthProvider with ChangeNotifier {
   TextEditingController fNameController = TextEditingController();
   TextEditingController lNameController = TextEditingController();
   TextEditingController invitationCode = TextEditingController();
+  AuthRepository authRepository = AuthRepository();
+  Preferences preferences = Preferences();
   String? verificationId;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late UserModel userData;
   String phoneCode = '+20';
-  String? phone;
+  late String phone;
   String? city;
-  int? cityId;
-  AuthRepository authRepository = AuthRepository();
+  late int cityId;
   String? image;
   int seconds = 60;
   Timer? timer;
@@ -84,13 +82,13 @@ class AuthProvider with ChangeNotifier {
   void checkPhoneNumber() {
     phone = phoneController.text.trim();
     notifyListeners();
-    if (phone!.length == 10) {
-      signInWithPhone(phoneCode + phone!);
-    } else if (phone!.length == 11) {
-      if (phone!.startsWith("0")) {
-        phone = phone!.replaceFirst('0', '');
+    if (phone.length == 10) {
+      signInWithPhone(phoneCode + phone);
+    } else if (phone.length == 11) {
+      if (phone.startsWith("0")) {
+        phone = phone.replaceFirst('0', '');
         notifyListeners();
-        signInWithPhone(phoneCode + phone!);
+        signInWithPhone(phoneCode + phone);
       } else {
         CustomScaffoldMessanger.showScaffoledMessanger(
             title:
@@ -153,7 +151,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   void checkSignIn() async {
-    UserAuthResult result = await authRepository.loginUser(phone!);
+    UserAuthResult result = await authRepository.loginUser(phone);
 
     if (result.success!) {
       userData = result.user!;
@@ -166,19 +164,18 @@ class AuthProvider with ChangeNotifier {
   }
 
   void register() async {
-    UserModel userModel = UserModel(
-      fname: fNameController.text.trim(),
-      lname: lNameController.text.trim(),
+    UserAuthResult result = await authRepository.registerUser(
+      firstName: fNameController.text.trim(),
+      lastName: lNameController.text.trim(),
       phoneCode: phoneCode,
       phone: phone,
       image: image,
       invitationCode: invitationCode.text.trim(),
       cityId: cityId,
     );
-    UserAuthResult result = await authRepository.registerUser(userModel);
     if (result.success!) {
       userData = result.user!;
-      saveUserDataToSP();
+      preferences.saveUserDataToSP(userData);
       notifyListeners();
       NavigatorHandler.pushAndRemoveUntil(const MainAppLayout());
     } else {
@@ -187,23 +184,8 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future saveUserDataToSP() async {
-    SharedPreferences sharedPreferences = getIt();
-    await sharedPreferences.setString(userKey, jsonEncode(userData));
-  }
-
-  Future<UserModel?> getUserDataFromSP() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? userDataJson = sharedPreferences.getString(userKey);
-    if (userDataJson != null) {
-      Map<String, dynamic> userDataMap = jsonDecode(userDataJson);
-      return UserModel.fromJson(userDataMap);
-    }
-    return null;
-  }
+  void updateProfiel(String firstName, String lastName, String? imagePath) {}
 }
-
-
 
 
 
