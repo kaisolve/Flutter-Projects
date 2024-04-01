@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
@@ -13,6 +12,7 @@ import 'package:kreis/presentations/widgets/custom_asset_image/custom_asset_imag
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:kreis/presentations/widgets/custom_text_form/custom_text_form.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
@@ -36,69 +36,78 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     loginProvider = Provider.of<AuthProvider>(context, listen: false);
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        showBackArrow: true,
-        showToolBar: true,
-      ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: 375,
-          height: 493,
-          child: Column(children: [
-            const CustomAssetImage(
-              assetName: 'circle',
-              width: 134.73,
-              height: 120,
-            ),
-            const SizedBox(
-              height: 84,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: CustomText(
-                title: 'Hi There !'.tr(),
-                fontWeight: FontWeight.bold,
-                fontColor: greyColor,
-                fontSize: 24,
+    return LoaderOverlay(
+      overlayWidth: 40,
+      overlayHeight: 40,
+      child: Scaffold(
+        appBar: const CustomAppBar(
+          showBackArrow: true,
+          showToolBar: true,
+        ),
+        body: SingleChildScrollView(
+          child: SizedBox(
+            width: 375,
+            height: 493,
+            child: Column(children: [
+              const CustomAssetImage(
+                assetName: 'circle',
+                width: 134.73,
+                height: 120,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: CustomText(
-                title: 'Welcome back, Sign in and order now'.tr(),
-                fontColor: greyColor,
-                fontSize: 16,
+              const SizedBox(
+                height: 84,
               ),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: CustomTextFormField(
-                controller: loginProvider.phoneController,
-                textInputType: TextInputType.phone,
-                hint: 'Phone number'.tr(),
-                prefix: const CustomText(
-                  title: '+20',
-                  fontColor: mainColor,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: CustomText(
+                  title: 'Hi There !'.tr(),
+                  fontWeight: FontWeight.bold,
+                  fontColor: greyColor,
+                  fontSize: 24,
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            Padding(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: CustomText(
+                  title: 'Welcome back, Sign in and order now'.tr(),
+                  fontColor: greyColor,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: CustomTextFormField(
+                  controller: loginProvider.phoneController,
+                  textInputType: TextInputType.phone,
+                  hint: 'Phone number'.tr(),
+                  prefix: const CustomText(
+                    title: '+20',
+                    fontColor: mainColor,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CustomButton(
                   title: 'Login'.tr(),
-                  onTap: () {
+                  onTap: () async {
+                    context.loaderOverlay.show();
                     loginProvider.checkPhoneNumber();
+                    await Future.delayed(const Duration(milliseconds: 500));
+
+                    context.loaderOverlay.hide();
                   },
                   fontSize: 16,
-                )),
-          ]),
+                ),
+              )
+            ]),
+          ),
         ),
       ),
     );
@@ -106,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 void otp() {
+  // context.loaderOverlay.hide();
   AuthProvider loginProvider =
       Provider.of<AuthProvider>(navigatorKey.currentContext!, listen: false);
   showModalBottomSheet(
@@ -198,17 +208,17 @@ void otp() {
               height: 12,
             ),
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CustomButton(
-                  title: 'Confirm'.tr(),
-                  onTap: () {
-                    Navigator.of(context).pop();
-
-                    loginProvider.checkSmsCode();
-                  },
-                  fontSize: fontR16,
-                  fontWeight: FontWeight.normal,
-                )),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CustomButton(
+                title: 'Confirm'.tr(),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  loginProvider.checkSmsCode();
+                },
+                fontSize: fontR16,
+                fontWeight: FontWeight.normal,
+              ),
+            )
           ],
           // ),
         ),

@@ -153,10 +153,8 @@ class AuthProvider with ChangeNotifier {
   void checkSignIn() async {
     UserAuthResult result = await authRepository.loginUser(phone);
 
-    if (result.success!) {
-      userData = result.user!;
-      // saveUserDataToSP();
-      notifyListeners();
+    if (result.success) {
+      preferences.saveUserDataToSP(result);
       NavigatorHandler.pushAndRemoveUntil(const MainAppLayout());
     } else {
       NavigatorHandler.pushAndRemoveUntil(const RegisterScreen());
@@ -173,18 +171,14 @@ class AuthProvider with ChangeNotifier {
       invitationCode: invitationCode.text.trim(),
       cityId: cityId,
     );
-    if (result.success!) {
-      userData = result.user!;
-      preferences.saveUserDataToSP(userData);
-      notifyListeners();
+    if (result.success) {
+      preferences.saveUserDataToSP(result);
       NavigatorHandler.pushAndRemoveUntil(const MainAppLayout());
     } else {
       CustomScaffoldMessanger.showScaffoledMessanger(
           title: 'Fill Necessary Fields'.tr());
     }
   }
-
-  void updateProfiel(String firstName, String lastName, String? imagePath) {}
 }
 
 

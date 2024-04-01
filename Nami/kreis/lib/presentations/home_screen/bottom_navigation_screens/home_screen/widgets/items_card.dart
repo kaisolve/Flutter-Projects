@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
@@ -7,11 +8,15 @@ class ItemsCard extends StatelessWidget {
   String image;
   String title;
   num price;
+  void Function() ontap;
+  bool isFavorite;
   ItemsCard(
       {super.key,
       required this.image,
       required this.title,
-      required this.price});
+      required this.price,
+      required this.ontap,
+      required this.isFavorite});
 
   @override
   Widget build(BuildContext context) {
@@ -23,37 +28,43 @@ class ItemsCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Stack(
-              alignment: Alignment.topCenter,
+              alignment: Alignment.topRight,
               children: [
                 SizedBox(
-                    width: 135.5, height: 90.33, child: Image.network(image)),
-                const Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(5, 4, 5, 4),
-                    child: CustomSvgIcon(assetName: 'heart'),
-                  ),
+                  width: 135.5,
+                  height: 90.33,
+                  child: Image.network(image),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: InkWell(
+                      onTap: ontap,
+                      child: CustomSvgIcon(
+                        assetName: 'heart',
+                        color: isFavorite ? mainColor : white,
+                      )),
                 ),
               ],
             ),
             Align(
-                child: SizedBox(
-                    width: 151.5, height: 21, child: CustomText(title: title))),
+              child: SizedBox(
+                width: 151.5,
+                height: 21,
+                child: CustomText(title: title),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                    width: 111.5,
-                    height: 24,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: CustomText(title: price.toString()),
-                    )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: CustomText(title: price.toString()),
+                ),
                 const SizedBox(
                   width: 32,
                   height: 32,
                   child: CustomSvgIcon(assetName: 'trash'),
-                )
+                ),
               ],
             ),
           ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/repositories/home_repository.dart';
+import 'package:kreis/data/repositories/items_repository.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/widgets/items_card.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/items.dart';
 
@@ -48,6 +50,13 @@ class _ProductsViewState extends State<ProductsView> {
                       title: productsItems[index].title,
                       image: productsItems[index].image,
                       price: productsItems[index].price,
+                      isFavorite: productsItems[index].isFavorite,
+                      ontap: () {
+                        // ItemsRepository().addDelFavorites(token, productId);
+                        ItemsRepository().addDelFavorites(
+                            Preferences().getUserData()!.userToken!,
+                            productsItems[index].id);
+                      },
                     ),
                   );
                 },

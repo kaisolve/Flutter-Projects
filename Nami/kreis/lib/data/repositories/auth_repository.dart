@@ -1,9 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/models/user_model.dart';
 import '../../core/app_url/app_url.dart';
 import '../datasources/remote/dio/dio_client.dart';
 
+class UserAuthResult {
+  final UserModel? user;
+  final String? userToken;
+  final bool success;
+
+  UserAuthResult({this.user, this.userToken, this.success = true});
+}
+
 class AuthRepository {
+  Preferences preferences = Preferences();
   Future<UserAuthResult> loginUser(String phoneNumber) async {
     try {
       FormData formData =
@@ -17,8 +27,10 @@ class AuthRepository {
             response.data['data'] != null &&
             response.data['data']['user'] != null) {
           Map<String, dynamic> userData = response.data['data']['user'];
+          String userToken = response.data['data']['auth']['token'];
           UserModel user = UserModel.fromJson(userData);
-          return UserAuthResult(user: user, success: true);
+          return UserAuthResult(
+              user: user, userToken: userToken, success: true);
         } else {
           return UserAuthResult(success: false);
         }
@@ -66,8 +78,10 @@ class AuthRepository {
             response.data['data'] != null &&
             response.data['data']['user'] != null) {
           Map<String, dynamic> userData = response.data['data']['user'];
+          String userToken = response.data['data']['auth']['token'];
           UserModel user = UserModel.fromJson(userData);
-          return UserAuthResult(user: user, success: true);
+          return UserAuthResult(
+              user: user, userToken: userToken, success: true);
         } else {
           return UserAuthResult(success: false);
         }
@@ -78,11 +92,36 @@ class AuthRepository {
       throw Exception('Failed to register user: $error');
     }
   }
-}
 
-class UserAuthResult {
-  final UserModel? user;
-  final bool? success;
+  void logoutUser(String? token) async {
+    try {
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      dioClient.dio.options.headers['Authorization'] = token;
+      Response response =
+          await dioClient.post(AppUrls.logout, formData: FormData.fromMap({}));
+      if (response.statusCode == 200) {
+        preferences.clearUserData();
+      } else {
+        throw Exception('Failed to logout user: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Failed to logout user: $error');
+    }
+  }
 
-  UserAuthResult({this.user, required this.success});
+  void deleteUser(String? token) async {
+    try {
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      dioClient.dio.options.headers['Authorization'] = token;
+      Response response = await dioClient.post(AppUrls.deleteAccount,
+          formData: FormData.fromMap({}));
+      if (response.statusCode == 200) {
+        preferences.clearUserData();
+      } else {
+        throw Exception('Failed to delete user: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Failed to delete user: $error');
+    }
+  }
 }

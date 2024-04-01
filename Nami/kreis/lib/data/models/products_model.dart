@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:kreis/data/models/category_model.dart';
 
 class ProductModel extends Equatable {
-  final num? id;
+  final int? id;
   final String? title;
   final String? image;
   final num? categoryId;

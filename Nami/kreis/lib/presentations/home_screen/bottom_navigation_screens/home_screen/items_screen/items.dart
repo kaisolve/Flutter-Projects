@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/repositories/home_repository.dart';
 import 'package:kreis/data/repositories/items_repository.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/widgets/items_card.dart';
@@ -24,15 +25,8 @@ class ItemsPage extends StatefulWidget {
 }
 
 class _ItemsPageState extends State<ItemsPage> {
-  late HomeRepository homeRepository;
-  late ItemsRepository itemsRepository;
-
-  @override
-  void initState() {
-    super.initState();
-    homeRepository = HomeRepository();
-    itemsRepository = ItemsRepository();
-  }
+  HomeRepository homeRepository = HomeRepository();
+  ItemsRepository itemsRepository = ItemsRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +38,7 @@ class _ItemsPageState extends State<ItemsPage> {
         ? Provider.of<ItemsProvider>(context, listen: false).sub_categories_id =
             widget.sId!
         : widget.sId;
+
     return Scaffold(
       appBar: CustomAppBar(title: 'Products'.tr(), showBackArrow: true),
       body: FutureBuilder(
@@ -196,6 +191,14 @@ class _ItemsPageState extends State<ItemsPage> {
                                     title: products[index].title!,
                                     image: products[index].image!,
                                     price: products[index].price,
+                                    isFavorite: products[index].isFavorite,
+                                    ontap: () {
+                                      itemsRepository.addDelFavorites(
+                                          Preferences()
+                                              .getUserData()!
+                                              .userToken!,
+                                          products[index].id);
+                                    },
                                   ),
                                 );
                               },

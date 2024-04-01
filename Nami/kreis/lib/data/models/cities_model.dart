@@ -6,7 +6,7 @@ class CitiesModel extends Equatable {
   final double? deliveryCost;
   final int? regionId;
 
-  CitiesModel({
+  const CitiesModel({
     required this.id,
     required this.title,
     required this.deliveryCost,

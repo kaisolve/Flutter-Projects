@@ -24,9 +24,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: CustomAppBar(
         leading: const Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.only(right: 4.0),
           child: CustomSvgIcon(
-            assetName: 'can',
+            assetName: 'cart',
             width: 32,
             height: 22.04,
           ),

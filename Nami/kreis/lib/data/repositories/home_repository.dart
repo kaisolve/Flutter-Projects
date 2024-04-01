@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:kreis/core/app_url/app_url.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/datasources/remote/dio/dio_client.dart';
 import 'package:kreis/data/models/category_model.dart';
 import 'package:kreis/data/models/latest_products_model.dart';
 
 class HomeRepository {
+  Preferences preferences = Preferences();
   Future<List> getSliderAndNotificationCount() async {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
@@ -67,10 +69,10 @@ class HomeRepository {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       // auth checking
-      // if(){
-
-      // }
-      // dioClient.dio.options.headers['Authorization'] = '';
+      if (Preferences().getUserData()!.success) {
+        dioClient.dio.options.headers['Authorization'] =
+            Preferences().getUserData()?.userToken;
+      }
       Response response =
           await dioClient.get(AppUrls.baseUrl + AppUrls.latestProducts);
 

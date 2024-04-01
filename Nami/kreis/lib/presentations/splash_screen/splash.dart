@@ -25,10 +25,10 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: Lottie.asset('assets/videos/splash.json',
           controller: _controller,
-          height: MediaQuery.of(context).size.height * 1,
+          // height: MediaQuery.of(context).size.height * 1,
           animate: true, onLoaded: (composition) {
         _controller
           ..duration = composition.duration

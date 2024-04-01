@@ -24,7 +24,7 @@ class LatestProductModel extends Equatable {
   final num? oldPrice;
   final bool? isFavorite;
 
-  LatestProductModel({
+  const LatestProductModel({
     required this.id,
     required this.title,
     required this.image,

@@ -121,10 +121,15 @@ class CartProvider extends ChangeNotifier {
   Future<void> getcartItems() async {
     List<String>? jsonItems = prefs.getStringList(cartKey);
 
-    // Decode the JSON and return the list of cart items
-    cartItems = jsonItems!
-        .map((item) => Map<String, dynamic>.from(jsonDecode(item)))
-        .toList();
+    // If jsonItems is null or empty, initialize cartItems as an empty list
+    if (jsonItems == null || jsonItems.isEmpty) {
+      cartItems = [];
+    } else {
+      // Decode the JSON and return the list of cart items
+      cartItems = jsonItems
+          .map((item) => Map<String, dynamic>.from(jsonDecode(item)))
+          .toList();
+    }
   }
 
   void clearcart() async {

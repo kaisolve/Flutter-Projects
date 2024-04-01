@@ -6,7 +6,7 @@ class CategoryModel extends Equatable {
   final String? title;
   final List<SubCategoryItem> subCategories;
 
-  CategoryModel({
+  const CategoryModel({
     required this.id,
     required this.image,
     required this.title,
@@ -47,7 +47,7 @@ class SubCategoryItem extends Equatable {
   final String? image;
   final String? title;
 
-  SubCategoryItem({
+  const SubCategoryItem({
     required this.id,
     required this.image,
     required this.title,

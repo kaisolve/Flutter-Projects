@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/data/models/cart_model.dart';
 import 'package:kreis/data/models/products_model.dart';
+import 'package:kreis/data/repositories/items_repository.dart';
 import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
@@ -24,11 +25,10 @@ class SingleItemScreen extends StatefulWidget {
 
 class _SingleItemScreenState extends State<SingleItemScreen> {
   CartProvider cartProvider = getIt();
+  ItemsRepository itemsRepository = ItemsRepository();
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<ItemsProvider>(context).setItem(widget.itemId);
-    // item = Provider.of<ItemsProvider>(context).item!;
     cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return Scaffold(
@@ -65,7 +65,13 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(title: item.title!),
-                          const CustomSvgIcon(assetName: 'heart'),
+                          GestureDetector(
+                              onTap: () {},
+                              child: CustomSvgIcon(
+                                assetName: 'heart',
+                                color:
+                                    item.isFavorite == true ? mainColor : white,
+                              )),
                         ],
                       ),
                     ),

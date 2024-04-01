@@ -5,8 +5,6 @@ import 'package:kreis/data/models/cities_model.dart';
 
 class CitiesRepositories {
   Future<List<CitiesModel>> getLocations() async {
-    // List<DropdownMenuItem<CitiesModel>> dropdownItems = [];
-
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       Response response = await dioClient.get(AppUrls.cities);

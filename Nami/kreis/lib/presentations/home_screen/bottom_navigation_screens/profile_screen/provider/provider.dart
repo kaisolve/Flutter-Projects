@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileProvider extends ChangeNotifier {
+  String? image;
   int selectedLanguage = 1;
   Locale language = const Locale('ar');
   void changeLang(int lang) {

@@ -4,12 +4,16 @@ class AppUrls {
   //endPoints
   static const String register = 'user/auth/register';
   static const String login = 'user/auth/login';
+  static const String logout = 'user/profile/logout';
+  static const String deleteAccount = 'user/profile/deleteAccount';
   static const String updateProfile = 'user/profile/updateProfile';
   static const String categories = 'user/home/categories';
   static const String subCategories = 'user/home/sub-categories/';
   static const String slider = 'user/home/slider';
   static const String latestProducts = 'user/home/latestProducts';
   static const String products = 'user/home/products';
+  static const String addRemfavorites = 'user/home/add-remove-favorites';
+  static const String myFavorites = 'user/profile/myFavorites';
   static String productsDetails(int categoryId, int subcategoryId) {
     return 'user/home/products?category_id=$categoryId&sub_category_id=$subcategoryId';
   }

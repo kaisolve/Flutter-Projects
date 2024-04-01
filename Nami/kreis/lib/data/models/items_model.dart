@@ -8,7 +8,7 @@ class ItemsModel extends Equatable {
   final String? image;
   final int? price;
 
-  ItemsModel({
+  const ItemsModel({
     required this.id,
     required this.categoryId,
     required this.subCategoryId,

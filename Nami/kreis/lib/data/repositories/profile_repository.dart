@@ -1,28 +1,79 @@
 import 'package:dio/dio.dart';
 import 'package:kreis/core/app_url/app_url.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/datasources/remote/dio/dio_client.dart';
+import 'package:kreis/data/models/products_model.dart';
+import 'package:kreis/data/models/user_model.dart';
+import 'package:kreis/data/repositories/auth_repository.dart';
 
 class ProfileRepository {
-  void updateProfile(String? firstName, String? lastName, String? image) async {
+  Preferences preferences = Preferences();
+
+  Future<void> updateProfile(
+    String firstName,
+    String lastName,
+    String? imagePath,
+    String token,
+  ) async {
     try {
-      String? imageFilePath = image;
+      if (imagePath != null && !imagePath.startsWith('http')) {
+        MultipartFile imagePart = await MultipartFile.fromFile(imagePath);
 
-      MultipartFile? imagePart;
-      if (imageFilePath != null && !imageFilePath.startsWith('http')) {
-        imagePart = await MultipartFile.fromFile(imageFilePath);
-      }
-      FormData formData = FormData.fromMap(
-          {'first_name': firstName, 'last_name': lastName, 'image': imagePart});
-      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
-      Response response =
-          await dioClient.post(AppUrls.updateProfile, formData: formData);
+        FormData formData = FormData.fromMap({
+          'first_name': firstName,
+          'last_name': lastName,
+          'image': imagePart,
+        });
 
-      if (response.statusCode == 200) {
+        DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+        dioClient.dio.options.headers['Authorization'] = token;
+
+        Response response = await dioClient.post(
+          AppUrls.updateProfile,
+          formData: formData,
+        );
+
+        if (response.statusCode == 200) {
+          Map<String, dynamic> userData = response.data['data']['user'];
+          UserModel user = UserModel.fromJson(userData);
+          String userToken = response.data['data']['auth']['token'];
+
+          preferences.saveUserDataToSP(
+            UserAuthResult(user: user, userToken: userToken),
+          );
+        } else {
+          throw Exception('Failed to update profile: ${response.statusCode}');
+        }
       } else {
-        throw Exception('Failed to login: ${response.statusCode}');
+        throw Exception('Invalid image file path: $imagePath');
       }
     } catch (error) {
-      throw Exception('Failed to login: $error');
+      throw Exception('Failed to update profile: $error');
+    }
+  }
+
+  Future<List> getFavorite() async {
+    try {
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      // auth checking
+      if (Preferences().getUserData()!.success) {
+        dioClient.dio.options.headers['Authorization'] =
+            Preferences().getUserData()?.userToken;
+      }
+      Response response =
+          await dioClient.get(AppUrls.baseUrl + AppUrls.myFavorites);
+
+      if (response.statusCode == 200) {
+        List<dynamic> products = response.data['data'];
+
+        final List<ProductModel> favoriteItems = List.generate(
+            products.length, (index) => ProductModel.fromJson(products[index]));
+        return favoriteItems;
+      } else {
+        throw Exception('Failed to load items');
+      }
+    } catch (error) {
+      throw Exception('Failed to load items: $error');
     }
   }
 }
