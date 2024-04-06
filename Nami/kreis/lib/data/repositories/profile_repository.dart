@@ -9,43 +9,41 @@ import 'package:kreis/data/repositories/auth_repository.dart';
 class ProfileRepository {
   Preferences preferences = Preferences();
 
-  Future<void> updateProfile(
-    String firstName,
-    String lastName,
+  Future<void> updateProfile({
+    required String firstName,
+    required String lastName,
     String? imagePath,
-    String token,
-  ) async {
+    required String token,
+  }) async {
     try {
+      MultipartFile? imagePart;
       if (imagePath != null && !imagePath.startsWith('http')) {
-        MultipartFile imagePart = await MultipartFile.fromFile(imagePath);
+        imagePart = await MultipartFile.fromFile(imagePath);
+      }
+      FormData formData = FormData.fromMap({
+        'first_name': firstName,
+        'last_name': lastName,
+        'image': imagePart,
+      });
 
-        FormData formData = FormData.fromMap({
-          'first_name': firstName,
-          'last_name': lastName,
-          'image': imagePart,
-        });
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      dioClient.dio.options.headers['Authorization'] = token;
 
-        DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
-        dioClient.dio.options.headers['Authorization'] = token;
+      Response response = await dioClient.post(
+        AppUrls.updateProfile,
+        formData: formData,
+      );
 
-        Response response = await dioClient.post(
-          AppUrls.updateProfile,
-          formData: formData,
+      if (response.statusCode == 200) {
+        Map<String, dynamic> userData = response.data['data']['user'];
+        UserModel user = UserModel.fromJson(userData);
+        String userToken = response.data['data']['auth']['token'];
+
+        await preferences.saveUserDataToSP(
+          UserAuthResult(user: user, userToken: userToken),
         );
-
-        if (response.statusCode == 200) {
-          Map<String, dynamic> userData = response.data['data']['user'];
-          UserModel user = UserModel.fromJson(userData);
-          String userToken = response.data['data']['auth']['token'];
-
-          preferences.saveUserDataToSP(
-            UserAuthResult(user: user, userToken: userToken),
-          );
-        } else {
-          throw Exception('Failed to update profile: ${response.statusCode}');
-        }
       } else {
-        throw Exception('Invalid image file path: $imagePath');
+        throw Exception('Failed to update profile: ${response.statusCode}');
       }
     } catch (error) {
       throw Exception('Failed to update profile: $error');
@@ -56,9 +54,9 @@ class ProfileRepository {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       // auth checking
-      if (Preferences().getUserData()!.success) {
+      if (Preferences().getUserData().success) {
         dioClient.dio.options.headers['Authorization'] =
-            Preferences().getUserData()?.userToken;
+            Preferences().getUserData().userToken;
       }
       Response response =
           await dioClient.get(AppUrls.baseUrl + AppUrls.myFavorites);

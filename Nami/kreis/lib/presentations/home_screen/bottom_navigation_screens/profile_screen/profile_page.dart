@@ -1,22 +1,22 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/utils/preferences.dart';
-import 'package:kreis/data/models/user_model.dart';
-import 'package:kreis/data/repositories/auth_repository.dart';
+import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/auth/login_screen/login_screen.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/about.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/contact.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/edit_profile.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/favorite.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/language.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/widgets/text_buttons.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -26,9 +26,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfilePage> {
-  AuthRepository authRepository = AuthRepository();
-  String token = Preferences().getUserData()!.userToken!;
-  UserModel user = Preferences().getUserData()!.user!;
+  ProfileProvider profileProvider = getIt();
+  String token = Preferences().getUserData().userToken!;
+
+  @override
+  void initState() {
+    super.initState();
+    profileProvider.getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,37 +50,29 @@ class _ProfileScreenState extends State<ProfilePage> {
                   SizedBox(
                     width: 343,
                     height: 140,
-                    child: Column(
-                      children: [
-                        // image == null
-                        //     ?
-                        Container(
-                          width: 96,
-                          height: 96,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(user.image!),
+                    child: Consumer<ProfileProvider>(
+                        builder: (context, provider, _) {
+                      // provider.getUser();
+                      return Column(
+                        children: [
+                          Container(
+                            width: 96,
+                            height: 96,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(provider.user.image!),
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(width: 1.46),
                             ),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(width: 1.46),
                           ),
-                        ),
-                        // : Container(
-                        //     width: 96,
-                        //     height: 96,
-                        //     decoration: BoxDecoration(
-                        //       image: DecorationImage(
-                        //         fit: BoxFit.fill,
-                        //         image: NetworkImage(user.image!),
-                        //       ),
-                        //       borderRadius: BorderRadius.circular(16),
-                        //       border: Border.all(width: 1.46),
-                        //     ),
-                        //   ),
-                        CustomText(title: '${user.fname} ${user.lname}'),
-                      ],
-                    ),
+                          CustomText(
+                              title:
+                                  '${provider.user.fname} ${provider.user.lname}'),
+                        ],
+                      );
+                    }),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -178,14 +175,14 @@ class _ProfileScreenState extends State<ProfilePage> {
                           CustomTextButton(
                             arrow: true,
                             icon: 'about',
-                            text: 'About'.tr(),
+                            text: 'About App'.tr(),
                             onPressed: () =>
                                 NavigatorHandler.push(const AboutUs()),
                           ),
                           CustomTextButton(
                             arrow: true,
                             icon: 'rate',
-                            text: 'Rate'.tr(),
+                            text: 'Rate App'.tr(),
                             onPressed: () {},
                           ),
                           CustomTextButton(
@@ -193,7 +190,7 @@ class _ProfileScreenState extends State<ProfilePage> {
                             icon: 'delete',
                             text: 'Delete Account'.tr(),
                             onPressed: () {
-                              authRepository.deleteUser(token);
+                              profileProvider.deleteUser(token);
                               NavigatorHandler.pushAndRemoveUntil(
                                   const LoginScreen());
                             },
@@ -209,7 +206,7 @@ class _ProfileScreenState extends State<ProfilePage> {
                     fontColor: const Color(0xff707070),
                     title: 'Logout'.tr(),
                     onTap: () {
-                      authRepository.logoutUser(token);
+                      profileProvider.logoutUser(token);
                       NavigatorHandler.pushAndRemoveUntil(const LoginScreen());
                     },
                   )

@@ -1,30 +1,31 @@
 import 'package:equatable/equatable.dart';
 import 'package:kreis/data/models/category_model.dart';
 
+// ignore: must_be_immutable
 class ProductModel extends Equatable {
-  final int? id;
-  final String? title;
-  final String? image;
-  final num? categoryId;
-  final CategoryModel? category;
-  final num? subCategoryId;
-  final SubCategoryItem? subCategory;
-  final String? details;
-  final dynamic salesLimit;
-  final num? price;
-  final String? unit;
-  final int? amount;
-  final num? priceWeightUnit;
-  final bool? isOffer;
-  final num? isActive;
-  final dynamic offerType;
-  final num? offerValue;
-  final String? offerStartDate;
-  final String? offerEndDate;
-  final num? oldPrice;
-  final bool? isFavorite;
+  num? id;
+  String? title;
+  String? image;
+  num? categoryId;
+  CategoryModel? category;
+  num? subCategoryId;
+  SubCategoryItem? subCategory;
+  String? details;
+  dynamic salesLimit;
+  num? price;
+  String? unit;
+  int? amount;
+  num? priceWeightUnit;
+  bool? isOffer;
+  num? isActive;
+  dynamic offerType;
+  num? offerValue;
+  String? offerStartDate;
+  String? offerEndDate;
+  num? oldPrice;
+  bool? isFavorite;
 
-  const ProductModel({
+  ProductModel({
     this.id,
     this.title,
     this.image,
@@ -80,11 +81,9 @@ class ProductModel extends Equatable {
       'title': title,
       'image': image,
       'category_id': categoryId,
-      'category':
-          category?.toJson(), // Assuming CategoryModel has a toJson method
+      'category': category?.toJson(),
       'sub_category_id': subCategoryId,
-      'sub_category':
-          subCategory?.toJson(), // Assuming SubCategoryItem has a toJson method
+      'sub_category': subCategory?.toJson(),
       'details': details,
       'sales_limit': salesLimit,
       'price': price,

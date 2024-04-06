@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/widget/cart_card.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/payment/payment.dart';
@@ -18,18 +19,14 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  late CartProvider cartProvider;
   @override
   void initState() {
     super.initState();
-    cartProvider = Provider.of<CartProvider>(context, listen: false);
-    cartProvider.getcartItems();
+    Provider.of<CartProvider>(context, listen: false).getcartItems();
   }
 
   @override
   Widget build(BuildContext context) {
-    cartProvider.calculateTotalPrice();
-
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Cart'.tr(),
@@ -51,16 +48,16 @@ class _CartPageState extends State<CartPage> {
                   image: product['image'],
                   text: product['name'],
                   price: provider.getItemPrice(product['id']).toString(),
-                  amount: product['amount'],
+                  amount: provider.getItemAmount(product['id']),
                   id: product['id'],
                   onDelete: () {
-                    cartProvider.removeItemFromCart(product['id']);
+                    provider.removeItemFromCart(product['id']);
                   },
                   onIncrease: () {
-                    cartProvider.increaseItemAmount(product['id']);
+                    provider.increaseItemAmount(product['id']);
                   },
                   onDecrease: () {
-                    cartProvider.decreaseItemAmount(product['id']);
+                    provider.decreaseItemAmount(product['id']);
                   },
                 );
               },
@@ -68,15 +65,21 @@ class _CartPageState extends State<CartPage> {
           }
         },
       ),
-      bottomNavigationBar: BuyButtonContainer(
-        text: 'Order Now'.tr(),
-        price: Provider.of<CartProvider>(context)
-            .totalPrice, // You can calculate the total price
-        ontap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PaymentPage(
-            price: Provider.of<CartProvider>(context).totalPrice,
-          ),
-        )),
+      bottomNavigationBar: Consumer<CartProvider>(
+        builder: (context, provider, _) {
+          provider.calculateTotalPrice();
+          return BuyButtonContainer(
+            text: 'Order Now'.tr(),
+            price: provider.totalPrice,
+            ontap: () => provider.cartItems.isNotEmpty
+                ? NavigatorHandler.push(
+                    PaymentPage(
+                      price: provider.totalPrice,
+                    ),
+                  )
+                : {},
+          );
+        },
       ),
     );
   }

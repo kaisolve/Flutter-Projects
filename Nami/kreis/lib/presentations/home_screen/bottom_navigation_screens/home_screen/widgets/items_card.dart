@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/core/text_styles/text_styles.dart';
+import 'package:kreis/presentations/widgets/custom_rich_text/rich_text.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
@@ -41,7 +44,7 @@ class ItemsCard extends StatelessWidget {
                       onTap: ontap,
                       child: CustomSvgIcon(
                         assetName: 'heart',
-                        color: isFavorite ? mainColor : white,
+                        color: isFavorite ? mainColor : heartColor,
                       )),
                 ),
               ],
@@ -57,13 +60,26 @@ class ItemsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: CustomText(title: price.toString()),
-                ),
-                const SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: CustomSvgIcon(assetName: 'trash'),
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: CustomRichText(children: [
+                      TextSpan(
+                          text: '$price ',
+                          style: AppTextStyles()
+                              .normalText()
+                              .textColorBold(black)),
+                      TextSpan(
+                          text: 'Coin'.tr(),
+                          style: AppTextStyles()
+                              .normalText()
+                              .textColorNormal(black)),
+                    ])),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
+                  child: CustomSvgIcon(
+                    assetName: 'mincart',
+                    width: 32,
+                    height: 32,
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +22,7 @@ class _LanguagePageState extends State<LanguagePage> {
     final localeProvider = EasyLocalization.of(context);
 
     return Scaffold(
-      appBar: CustomAppBar(title: 'language'.tr(), showBackArrow: true),
+      appBar: CustomAppBar(title: 'Language'.tr(), showBackArrow: true),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
@@ -40,7 +42,10 @@ class _LanguagePageState extends State<LanguagePage> {
                           setState(() {
                             lang.changeLang(value!);
                             localeProvider!.setLocale(const Locale('en'));
-                            languagePageKey = GlobalKey<_LanguagePageState>();
+                            NavigatorHandler.pushReplacement(
+                                const MainAppLayout());
+
+                            // languagePageKey = GlobalKey<_LanguagePageState>();
                           });
                         },
                       );
@@ -59,7 +64,9 @@ class _LanguagePageState extends State<LanguagePage> {
                         setState(() {
                           lang.changeLang(value!);
                           localeProvider!.setLocale(const Locale('ar'));
-                          languagePageKey = GlobalKey<_LanguagePageState>();
+                          NavigatorHandler.pushReplacement(
+                              const MainAppLayout());
+                          // languagePageKey = GlobalKey<_LanguagePageState>();
                         });
                       },
                     );

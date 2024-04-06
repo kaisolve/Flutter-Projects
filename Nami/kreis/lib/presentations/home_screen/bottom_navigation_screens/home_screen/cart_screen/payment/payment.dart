@@ -8,6 +8,7 @@ import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_s
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/widgets/buttom_container.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/map_page/maps.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:kreis/presentations/widgets/custom_rich_text/rich_text.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:provider/provider.dart';
 
@@ -70,30 +71,33 @@ class _PaymentPageState extends State<PaymentPage> {
                                   ' ' +
                                   product['name'].split(' ')[1]),
                           subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              CustomText(
-                                title: '${product['amount']} X',
-                                fontColor: mainColor,
-                              ),
-                              Text.rich(TextSpan(children: [
-                                TextSpan(
-                                    text: '${'Total'.tr()} : ',
-                                    style: AppTextStyles().normalText()),
-                                TextSpan(
-                                    text:
-                                        '${provider.getItemPrice(product['id'])} ',
-                                    style: AppTextStyles()
-                                        .normalText()
-                                        .textColorBold(mainColor)),
-                                TextSpan(
-                                    text: 'Coin'.tr(),
-                                    style: AppTextStyles()
-                                        .normalText()
-                                        .textColorNormal(mainColor))
-                              ]))
-                            ],
-                          ),
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomText(
+                                  title: '${product['amount']}X',
+                                  fontColor: mainColor,
+                                ),
+                                CustomRichText(
+                                  children: [
+                                    TextSpan(
+                                        text: '${'Total'.tr()} : ',
+                                        style: AppTextStyles()
+                                            .normalText()
+                                            .textColorNormal(black)),
+                                    TextSpan(
+                                        text:
+                                            '${provider.getItemPrice(product['id'])} ',
+                                        style: AppTextStyles()
+                                            .normalText()
+                                            .textColorBold(mainColor)),
+                                    TextSpan(
+                                        text: 'Coin'.tr(),
+                                        style: AppTextStyles()
+                                            .normalText()
+                                            .textColorNormal(mainColor)),
+                                  ],
+                                ),
+                              ]),
                           trailing: const CustomText(title: ''),
                         );
                       },

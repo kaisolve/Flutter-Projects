@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
-import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class CartCard extends StatelessWidget {
+class CartCard extends StatefulWidget {
   String image;
   String text;
   String price;
   int amount;
   int id;
-  void Function() onIncrease;
-  void Function() onDecrease;
-  void Function() onDelete;
+  final VoidCallback onIncrease;
+  final VoidCallback onDecrease;
+  final VoidCallback onDelete;
   CartCard(
       {super.key,
       required this.image,
@@ -25,6 +23,11 @@ class CartCard extends StatelessWidget {
       required this.onDecrease,
       required this.onDelete});
 
+  @override
+  State<CartCard> createState() => _CartCardState();
+}
+
+class _CartCardState extends State<CartCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,8 +46,11 @@ class CartCard extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(
-                        width: 100, height: 66.67, child: Image.network(image)),
-                    Text('${text.split(' ')[0]} ${text.split(' ')[1]}'),
+                        width: 100,
+                        height: 66.67,
+                        child: Image.network(widget.image)),
+                    Text(
+                        '${widget.text.split(' ')[0]} ${widget.text.split(' ')[1]}'),
                   ],
                 ),
                 SizedBox(
@@ -53,7 +59,7 @@ class CartCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: GestureDetector(
-                        onTap: onDelete,
+                        onTap: widget.onDelete,
                         child: const CustomSvgIcon(assetName: 'can'),
                       ),
                     ))
@@ -62,7 +68,7 @@ class CartCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BasketRoundIcons(image: 'minus', ontap: onDecrease),
+                BasketRoundIcons(image: 'minus', ontap: widget.onDecrease),
                 Container(
                   width: 124,
                   height: 48,
@@ -71,13 +77,11 @@ class CartCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       color: containerBorder),
                   child: Center(
-                    child: Text(Provider.of<CartProvider>(context)
-                        .getItemAmount(id)
-                        .toString()),
+                    child: Text(widget.amount.toString()),
                   ),
                 ),
-                BasketRoundIcons(image: 'add', ontap: onIncrease),
-                Text(price),
+                BasketRoundIcons(image: 'add', ontap: widget.onIncrease),
+                Text(widget.price),
               ],
             )
           ],
@@ -88,15 +92,20 @@ class CartCard extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class BasketRoundIcons extends StatelessWidget {
+class BasketRoundIcons extends StatefulWidget {
   String image;
   void Function() ontap;
   BasketRoundIcons({super.key, required this.image, required this.ontap});
 
   @override
+  State<BasketRoundIcons> createState() => _BasketRoundIconsState();
+}
+
+class _BasketRoundIconsState extends State<BasketRoundIcons> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ontap,
+      onTap: widget.ontap,
       child: Container(
           width: 40,
           height: 40,
@@ -104,7 +113,7 @@ class BasketRoundIcons extends StatelessWidget {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16), color: containerBorder),
           child: CustomSvgIcon(
-            assetName: image,
+            assetName: widget.image,
           )),
     );
   }

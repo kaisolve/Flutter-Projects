@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:kreis/data/repositories/home_repository.dart';
+import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/categories_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/items.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_widgets/custom_card.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +16,10 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  late HomeRepository homeRepository;
   @override
   void initState() {
     super.initState();
-    homeRepository = HomeRepository();
+    Provider.of<HomeProvider>(context, listen: false).getLatestProducts();
   }
 
   @override
@@ -29,11 +29,18 @@ class _CategoryPageState extends State<CategoryPage> {
           title: 'Categories'.tr(),
           showBackArrow: false,
         ),
-        body: FutureBuilder(
-          future: homeRepository.getCategories(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              List categories = snapshot.data!;
+        body: Consumer<HomeProvider>(
+          builder: (context, provider, _) {
+            if (provider.isloading) {
+              return const CircularProgressIndicator(
+                color: mainColor,
+              );
+            } else if (provider.failedtoload) {
+              return const Text('Error: Failed to load products');
+            } else if (provider.latestProducts.isEmpty) {
+              return const Text('No products available');
+            } else {
+              List categories = provider.categories;
               return Row(
                 children: [
                   // Left side - Scrollable list of categories
@@ -99,12 +106,6 @@ class _CategoryPageState extends State<CategoryPage> {
                       )),
                 ],
               );
-            } else if (snapshot.hasError) {
-              // Display an error message
-              return Text('Error: ${snapshot.error}');
-            } else {
-              // Display a loading indicator
-              return const CircularProgressIndicator();
             }
           },
         ));

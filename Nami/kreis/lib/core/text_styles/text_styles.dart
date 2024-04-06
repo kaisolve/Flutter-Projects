@@ -20,5 +20,5 @@ extension TextStyleExtension on TextStyle {
   TextStyle textColorBold(Color color) => copyWith(
       color: color,
       fontFamily: 'MadaniArabic-SemiBold',
-      fontWeight: FontWeight.bold);
+      fontWeight: FontWeight.w400);
 }

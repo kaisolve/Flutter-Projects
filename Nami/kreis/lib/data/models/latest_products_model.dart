@@ -1,30 +1,31 @@
 import 'package:equatable/equatable.dart';
 import 'package:kreis/data/models/category_model.dart';
 
+// ignore: must_be_immutable
 class LatestProductModel extends Equatable {
-  final num? id;
-  final String? title;
-  final String? image;
-  final num? categoryId;
-  final CategoryModel? category;
-  final num? subCategoryId;
-  final SubCategoryItem? subCategory;
-  final String? details;
-  final num? salesLimit;
-  final num? price;
-  final String? unit;
-  final num? weightUnit;
-  final num? priceWeightUnit;
-  final bool? isOffer;
-  final num? isActive;
-  final String? offerType;
-  final num? offerValue;
-  final String? offerStartDate;
-  final String? offerEndDate;
-  final num? oldPrice;
-  final bool? isFavorite;
+  num? id;
+  String? title;
+  String? image;
+  num? categoryId;
+  CategoryModel? category;
+  num? subCategoryId;
+  SubCategoryItem? subCategory;
+  String? details;
+  num? salesLimit;
+  num? price;
+  String? unit;
+  num? weightUnit;
+  num? priceWeightUnit;
+  bool? isOffer;
+  num? isActive;
+  String? offerType;
+  num? offerValue;
+  String? offerStartDate;
+  String? offerEndDate;
+  num? oldPrice;
+  bool? isFavorite;
 
-  const LatestProductModel({
+  LatestProductModel({
     required this.id,
     required this.title,
     required this.image,

@@ -20,10 +20,12 @@ class AuthProvider with ChangeNotifier {
   AuthRepository authRepository = AuthRepository();
   Preferences preferences = Preferences();
   String? verificationId;
+  int? forceResendingToken;
+
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late UserModel userData;
   String phoneCode = '+20';
-  late String phone;
+  String phone = "";
   String? city;
   late int cityId;
   String? image;
@@ -31,6 +33,7 @@ class AuthProvider with ChangeNotifier {
   Timer? timer;
   bool? isTimerStoped;
   bool? isSignedIn;
+  bool isCheckingVerivfication = false;
 
   void setCity(String city) {
     this.city = city;
@@ -46,6 +49,7 @@ class AuthProvider with ChangeNotifier {
     // isTimerStoped = null;
     // timer = null;
     // phoneController.clear();
+    isCheckingVerivfication = false;
     smsController.clear();
     notifyListeners();
   }
@@ -83,10 +87,13 @@ class AuthProvider with ChangeNotifier {
     phone = phoneController.text.trim();
     notifyListeners();
     if (phone.length == 10) {
+      isCheckingVerivfication = true;
+      notifyListeners();
       signInWithPhone(phoneCode + phone);
     } else if (phone.length == 11) {
       if (phone.startsWith("0")) {
         phone = phone.replaceFirst('0', '');
+        isCheckingVerivfication = true;
         notifyListeners();
         signInWithPhone(phoneCode + phone);
       } else {
@@ -117,6 +124,8 @@ class AuthProvider with ChangeNotifier {
     try {
       await firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
+        timeout: const Duration(seconds: 60),
+        forceResendingToken: forceResendingToken,
         verificationCompleted: (phoneAuthCredential) async {
           await firebaseAuth.signInWithCredential(phoneAuthCredential);
         },
@@ -125,11 +134,21 @@ class AuthProvider with ChangeNotifier {
         },
         codeSent: (verificationId, forceResendingToken) async {
           this.verificationId = verificationId;
+          this.forceResendingToken = forceResendingToken;
+          isCheckingVerivfication = false;
+          notifyListeners();
           otp();
         },
-        codeAutoRetrievalTimeout: (verificationId) async {},
+        codeAutoRetrievalTimeout: (verificationId) async {
+          isCheckingVerivfication = false;
+          this.verificationId = null;
+          notifyListeners();
+        },
       );
     } on FirebaseAuthException catch (e) {
+      isCheckingVerivfication = false;
+      notifyListeners();
+
       CustomScaffoldMessanger.showScaffoledMessanger(
           title: e.message.toString());
     }

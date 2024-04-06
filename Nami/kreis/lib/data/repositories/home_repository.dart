@@ -24,17 +24,16 @@ class HomeRepository {
     }
   }
 
-  Future<List> getCategories() async {
+  Future<List<CategoryModel>> getCategories() async {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       Response response =
           await dioClient.get(AppUrls.baseUrl + AppUrls.categories);
 
       if (response.statusCode == 200) {
-        List<dynamic> categories = response.data['data'];
-        final List<CategoryModel> categoryItems = List.generate(
-            categories.length,
-            (index) => CategoryModel.fromJson(categories[index]));
+        List<dynamic> categoriesData = response.data['data'];
+        final List<CategoryModel> categoryItems =
+            categoriesData.map((data) => CategoryModel.fromJson(data)).toList();
         return categoryItems;
       } else {
         throw Exception('Failed to load categories');
@@ -44,7 +43,7 @@ class HomeRepository {
     }
   }
 
-  Future<List> getSubCategories(int cId) async {
+  Future<List> getSubCategories(num cId) async {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       Response response = await dioClient
@@ -58,10 +57,10 @@ class HomeRepository {
 
         return subCategoryItems.reversed.toList();
       } else {
-        throw Exception('Failed to load categories');
+        throw Exception('Failed to load subCategories');
       }
     } catch (error) {
-      throw Exception('Failed to load categories: $error');
+      throw Exception('Failed to load subCategories: $error');
     }
   }
 
@@ -69,9 +68,9 @@ class HomeRepository {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       // auth checking
-      if (Preferences().getUserData()!.success) {
+      if (Preferences().getUserData().success) {
         dioClient.dio.options.headers['Authorization'] =
-            Preferences().getUserData()?.userToken;
+            Preferences().getUserData().userToken;
       }
       Response response =
           await dioClient.get(AppUrls.baseUrl + AppUrls.latestProducts);

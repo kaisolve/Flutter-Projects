@@ -14,6 +14,7 @@ const Color input2Bg = Color(0xffffffff);
 const Color containerBorder = Color(0xffEEEEEE);
 const Color hintColor = Color(0xff9CA3AF);
 const Color dividerColor = Color(0xffE5E7EB);
+const Color heartColor = Color(0xffBCBCBC);
 
 const Color bottomNavigationColor = Color(0xffF6F6F6);
 const Color bodyBg = Color(0xff1E1E1E);

@@ -130,7 +130,7 @@ class _LoginScreenState extends State<RegisterScreen> {
           Column(
             children: [
               CheckboxListTile(
-                title: CustomText(title: "Invited By SomeOne?".tr()),
+                title: CustomText(title: "Invited By Some One?".tr()),
                 checkboxShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
                 checkColor: white,

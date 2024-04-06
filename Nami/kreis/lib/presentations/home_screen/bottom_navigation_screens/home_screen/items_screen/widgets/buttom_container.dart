@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/core/text_styles/text_styles.dart';
+import 'package:kreis/presentations/widgets/custom_rich_text/rich_text.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
 // ignore: must_be_immutable
@@ -27,9 +29,18 @@ class BuyButtonContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: CustomText(title: '${'Total'.tr()}: $price ${'Coin'.tr()}'),
-          ),
+              padding: const EdgeInsets.all(12.0),
+              child: CustomRichText(children: [
+                TextSpan(
+                    text: '${'Total'.tr()}:',
+                    style: AppTextStyles().normalText().textColorNormal(black)),
+                TextSpan(
+                    text: ' $price ',
+                    style: AppTextStyles().normalText().textColorBold(black)),
+                TextSpan(
+                    text: 'Coin'.tr(),
+                    style: AppTextStyles().normalText().textColorNormal(black)),
+              ])),
           Padding(
               padding: const EdgeInsets.all(12.0),
               child: GestureDetector(

@@ -1,7 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:kreis/data/models/slider_model.dart';
-import 'package:kreis/data/repositories/home_repository.dart';
+import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class ImageSlider extends StatefulWidget {
   const ImageSlider({super.key});
@@ -11,23 +12,26 @@ class ImageSlider extends StatefulWidget {
 }
 
 class _ImageSliderState extends State<ImageSlider> {
-  late HomeRepository homeRepository;
-
-  List<SliderModel> sliderItems = [];
-
   @override
   void initState() {
     super.initState();
-    homeRepository = HomeRepository();
+    Provider.of<HomeProvider>(context, listen: false).getSlider();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: homeRepository.getSliderAndNotificationCount(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          final List sliders = snapshot.data!;
+    return Consumer<HomeProvider>(
+      builder: (context, provider, _) {
+        if (provider.isloading) {
+          return const CircularProgressIndicator(
+            color: mainColor,
+          );
+        } else if (provider.failedtoload) {
+          return const Text('Error: Failed to load slider items');
+        } else if (provider.sliderItems.isEmpty) {
+          return const Text('No slider items available');
+        } else {
+          List sliders = provider.sliderItems;
           return SizedBox(
             width: 375,
             height: 171.5,
@@ -44,17 +48,12 @@ class _ImageSliderState extends State<ImageSlider> {
                       sliders[itemIndex]['image'],
                       width: 343,
                       height: 171.5,
+                      fit: BoxFit.cover,
                     )),
               ),
               options: CarouselOptions(autoPlay: true),
             ),
           );
-        } else if (snapshot.hasError) {
-          // Display an error message
-          return Text('Error: ${snapshot.error}');
-        } else {
-          // Display a loading indicator
-          return const CircularProgressIndicator();
         }
       },
     );

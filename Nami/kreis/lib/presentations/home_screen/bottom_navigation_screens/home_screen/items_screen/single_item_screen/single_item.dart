@@ -1,10 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/models/cart_model.dart';
 import 'package:kreis/data/models/products_model.dart';
-import 'package:kreis/data/repositories/items_repository.dart';
 import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
@@ -17,36 +16,39 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class SingleItemScreen extends StatefulWidget {
   int itemId;
-  SingleItemScreen({super.key, required this.itemId});
+  int index;
+  SingleItemScreen({super.key, required this.itemId, required this.index});
 
   @override
   State<SingleItemScreen> createState() => _SingleItemScreenState();
 }
 
 class _SingleItemScreenState extends State<SingleItemScreen> {
-  CartProvider cartProvider = getIt();
-  ItemsRepository itemsRepository = ItemsRepository();
+  // CartProvider cartProvider = getIt();
+  // ItemsRepository itemsRepository = ItemsRepository();
+  ItemsProvider itemsProvider = getIt();
+  late ProductModel item;
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<ItemsProvider>(context, listen: false).setItem(widget.itemId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    cartProvider = Provider.of<CartProvider>(context, listen: false);
-
     return Scaffold(
       appBar: CustomAppBar(title: 'Product Details'.tr(), showBackArrow: true),
-      body: FutureBuilder(
-        future: Provider.of<ItemsProvider>(context).getItem(widget.itemId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
+      body: Consumer<ItemsProvider>(
+        builder: (context, provider, snapshot) {
+          if (provider.isloading) {
+            return const CircularProgressIndicator(
+              color: mainColor,
             );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
+          } else if (provider.failedtoload) {
+            return const Text('Error: Failed to load item');
           } else {
-            ProductModel item = snapshot.data!;
-
+            item = provider.singleItem;
             return SingleChildScrollView(
               child: SizedBox(
                 width: 375,
@@ -66,11 +68,15 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
                         children: [
                           CustomText(title: item.title!),
                           GestureDetector(
-                              onTap: () {},
+                              onTap: () => provider.changeFavorite(
+                                  Preferences().getUserData().userToken!,
+                                  item.id!,
+                                  widget.index),
                               child: CustomSvgIcon(
                                 assetName: 'heart',
-                                color:
-                                    item.isFavorite == true ? mainColor : white,
+                                color: item.isFavorite == true
+                                    ? mainColor
+                                    : heartColor,
                               )),
                         ],
                       ),
@@ -120,9 +126,8 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: CustomText(
-                                                title: cartProvider
-                                                    .getItemPrice(item.id!)
-                                                    .toString(),
+                                                title:
+                                                    provider.price.toString(),
                                               ),
                                             ),
                                           ]),
@@ -134,14 +139,50 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
                                 child: SizedBox(
                                   width: 327,
                                   height: 48,
-                                  child: AddMinusItems(
-                                    item: item,
-                                    onIncrease: () {
-                                      cartProvider.increaseItemAmount(item.id!);
-                                    },
-                                    onDecrease: () {
-                                      cartProvider.decreaseItemAmount(item.id!);
-                                    },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: GestureDetector(
+                                          onTap: () =>
+                                              provider.updateQuantity(-1),
+                                          child: const CustomSvgIcon(
+                                            assetName: 'minus',
+                                            width: 16,
+                                            height: 3.5,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 12, 4, 12),
+                                        height: 48,
+                                        width: 199,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        child: Center(
+                                          child: CustomText(
+                                            title: provider.quantity.toString(),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: GestureDetector(
+                                          onTap: () =>
+                                              provider.updateQuantity(1),
+                                          child: const CustomSvgIcon(
+                                            assetName: 'add',
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -157,123 +198,25 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
           }
         },
       ),
-      bottomNavigationBar: FutureBuilder<ProductModel>(
-        future: Provider.of<ItemsProvider>(context).getItem(widget.itemId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox(
-              height: kBottomNavigationBarHeight,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+      bottomNavigationBar:
+          Consumer<ItemsProvider>(builder: (context, provider, _) {
+        item = provider.singleItem;
+        return BuyButtonContainer(
+          text: 'Add To Cart'.tr(),
+          price: provider.price,
+          ontap: () async {
+            Provider.of<CartProvider>(context, listen: false).addTocart(
+              CartModel(
+                  id: item.id,
+                  name: item.title,
+                  image: item.image,
+                  price: item.price,
+                  amount: item.amount,
+                  priceWeightUnit: item.priceWeightUnit),
             );
-          } else if (snapshot.hasError) {
-            return SizedBox(
-              height: kBottomNavigationBarHeight,
-              child: Center(
-                child: Text('Error: ${snapshot.error}'),
-              ),
-            );
-          } else {
-            ProductModel item = snapshot.data!;
-
-            return BuyButtonContainer(
-              text: 'Add To Cart'.tr(),
-              price: cartProvider.getItemPrice(item.id!),
-              ontap: () async {
-                // ProductModel item =
-                //     Provider.of<ItemsProvider>(context).item!;
-                Provider.of<CartProvider>(context, listen: false).addTocart(
-                  CartModel(
-                      id: item.id,
-                      name: item.title,
-                      image: item.image,
-                      price: item.price,
-                      amount: item.amount,
-                      priceWeightUnit: item.priceWeightUnit),
-                );
-              },
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-
-//   bottomNavigationBar: BuyButtonContainer(
-//     text: 'Add To Cart'.tr(),
-//     price: item.price!.toInt(),
-//     ontap: () async {
-//       ProductModel item =
-//           Provider.of<ItemsProvider>(context, listen: false).item!;
-//       cartProvider.addTocart(CartModel(
-//           id: item.id,
-//           name: item.title!,
-//           image: item.image!,
-//           price: item.price!,
-//           amount: item.amount!));
-//     },
-//   ),
-// );
-//       } else if (snapshot.hasError) {
-//         return Text('Error: ${snapshot.error}');
-//       } else {
-//         return const CircularProgressIndicator();
-//       }
-//     },
-//   );
-// },
-// );
-//   }
-// }
-// ignore: must_be_immutable
-class AddMinusItems extends StatelessWidget {
-  final ProductModel item;
-  final void Function() onIncrease;
-  final void Function() onDecrease;
-
-  const AddMinusItems({
-    super.key,
-    required this.item,
-    required this.onIncrease,
-    required this.onDecrease,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    int amount = Provider.of<CartProvider>(context).getItemAmount(item.id!);
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: GestureDetector(
-            onTap: onDecrease,
-            child: SvgPicture.asset('assets/images/svgs/minus.svg'),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
-          height: 48,
-          width: 199,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Center(
-            child: Text(amount.toString()),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: GestureDetector(
-            onTap: onIncrease,
-            child: SvgPicture.asset('assets/images/svgs/add.svg'),
-          ),
-        ),
-      ],
+          },
+        );
+      }),
     );
   }
 }

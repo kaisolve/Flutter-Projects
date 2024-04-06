@@ -8,11 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider extends ChangeNotifier {
   SharedPreferences prefs = getIt();
-  late List<Map<String, dynamic>> cartItems;
+  List<Map<String, dynamic>> cartItems = [];
   num totalPrice = 0;
 
   void calculateTotalPrice() {
-    getcartItems();
     totalPrice = 0;
     for (var item in cartItems) {
       totalPrice += getItemPrice(item['id']);
@@ -22,7 +21,6 @@ class CartProvider extends ChangeNotifier {
 
   Future<void> addTocart(CartModel cartModel) async {
     // Retrieve existing cart items
-    await getcartItems();
 
     // Check if the item is already in the cart
     bool isExist = isItemExist(cartModel.id!);
@@ -53,7 +51,6 @@ class CartProvider extends ChangeNotifier {
 
   Future<void> removeItemFromCart(num id) async {
     // Retrieve existing cart items
-    await getcartItems();
 
     // Remove the item from the cart
     cartItems.removeWhere((item) => item['id'] == id);
@@ -66,7 +63,6 @@ class CartProvider extends ChangeNotifier {
 
   Future<void> increaseItemAmount(num id) async {
     // Retrieve existing cart items
-    await getcartItems();
 
     // Increase the amount of the specific item
     var index = cartItems.indexWhere((item) => item['id'] == id);
@@ -84,7 +80,6 @@ class CartProvider extends ChangeNotifier {
 
   Future<void> decreaseItemAmount(num id) async {
     // Retrieve existing cart items
-    await getcartItems();
 
     // Decrease the amount of the specific item
     var index = cartItems.indexWhere((item) => item['id'] == id);
@@ -102,7 +97,6 @@ class CartProvider extends ChangeNotifier {
 
   int getItemAmount(num id) {
     // Retrieve existing cart items
-    getcartItems();
 
     // Get the amount of the specific item
     var index = cartItems.indexWhere((item) => item['id'] == id);
@@ -110,15 +104,12 @@ class CartProvider extends ChangeNotifier {
   }
 
   int getItemPrice(num id) {
-    // Retrieve existing cart items
-    getcartItems();
-
     // Get the amount of the specific item
     var index = cartItems.indexWhere((item) => item['id'] == id);
-    return index != -1 ? cartItems[index]['price'] as int : 0;
+    return index != -1 ? cartItems[index]['price'] : 0;
   }
 
-  Future<void> getcartItems() async {
+  void getcartItems() async {
     List<String>? jsonItems = prefs.getStringList(cartKey);
 
     // If jsonItems is null or empty, initialize cartItems as an empty list
@@ -138,9 +129,8 @@ class CartProvider extends ChangeNotifier {
   }
 
   bool isItemExist(num id) {
-    getcartItems();
-
     // Check if the item is already in the cart
+
     bool isExist = cartItems.any((item) => item['id'] == id);
     return isExist;
   }

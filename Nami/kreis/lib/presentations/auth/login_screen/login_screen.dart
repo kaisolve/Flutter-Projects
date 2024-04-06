@@ -12,7 +12,6 @@ import 'package:kreis/presentations/widgets/custom_asset_image/custom_asset_imag
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:kreis/presentations/widgets/custom_text_form/custom_text_form.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
@@ -34,80 +33,79 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    loginProvider = Provider.of<AuthProvider>(context, listen: false);
-
-    return LoaderOverlay(
-      overlayWidth: 40,
-      overlayHeight: 40,
-      child: Scaffold(
-        appBar: const CustomAppBar(
-          showBackArrow: true,
-          showToolBar: true,
-        ),
-        body: SingleChildScrollView(
-          child: SizedBox(
-            width: 375,
-            height: 493,
-            child: Column(children: [
-              const CustomAssetImage(
-                assetName: 'circle',
-                width: 134.73,
-                height: 120,
+    return Scaffold(
+      appBar: const CustomAppBar(
+        showBackArrow: true,
+        showToolBar: true,
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: 375,
+          height: 493,
+          child: Column(children: [
+            const CustomAssetImage(
+              assetName: 'circle',
+              width: 134.73,
+              height: 120,
+            ),
+            const SizedBox(
+              height: 84,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CustomText(
+                title: 'Hi There !'.tr(),
+                fontWeight: FontWeight.bold,
+                fontColor: greyColor,
+                fontSize: 24,
               ),
-              const SizedBox(
-                height: 84,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CustomText(
+                title: 'Welcome back, Sign in and order now'.tr(),
+                fontColor: greyColor,
+                fontSize: 16,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CustomText(
-                  title: 'Hi There !'.tr(),
-                  fontWeight: FontWeight.bold,
-                  fontColor: greyColor,
-                  fontSize: 24,
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CustomTextFormField(
+                controller: loginProvider.phoneController,
+                textInputType: TextInputType.phone,
+                hint: 'Phone number'.tr(),
+                prefix: const CustomText(
+                  title: '+20',
+                  fontColor: mainColor,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CustomText(
-                  title: 'Welcome back, Sign in and order now'.tr(),
-                  fontColor: greyColor,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CustomTextFormField(
-                  controller: loginProvider.phoneController,
-                  textInputType: TextInputType.phone,
-                  hint: 'Phone number'.tr(),
-                  prefix: const CustomText(
-                    title: '+20',
-                    fontColor: mainColor,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Consumer<AuthProvider>(builder: (context, provider, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CustomButton(
+                      title: 'Login'.tr(),
+                      onTap: () async {
+                        loginProvider.checkPhoneNumber();
+                      },
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CustomButton(
-                  title: 'Login'.tr(),
-                  onTap: () async {
-                    context.loaderOverlay.show();
-                    loginProvider.checkPhoneNumber();
-                    await Future.delayed(const Duration(milliseconds: 500));
-
-                    context.loaderOverlay.hide();
-                  },
-                  fontSize: 16,
-                ),
-              )
-            ]),
-          ),
+                  if (provider.isCheckingVerivfication)
+                    CircularProgressIndicator(color: mainColor),
+                ],
+              );
+            })
+          ]),
         ),
       ),
     );
@@ -115,18 +113,12 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 void otp() {
-  // context.loaderOverlay.hide();
-  AuthProvider loginProvider =
-      Provider.of<AuthProvider>(navigatorKey.currentContext!, listen: false);
+  AuthProvider loginProvider = getIt();
   showModalBottomSheet(
     // ignore: use_build_context_synchronously
     context: navigatorKey.currentContext!,
     isScrollControlled: true,
     builder: (BuildContext context) {
-      // return SizedBox(
-      //   width: 375,
-      //   height: 491,
-      // child:
       return Padding(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -194,7 +186,7 @@ void otp() {
             //               ? ''
             //               : provider.isTimerStoped!
             //                   ? 'Resend code'.tr()
-            //                   : '${provider.timer}',
+            //                   : '${provider.timer}',t
             //           fontColor: mainColor,
             //           fontWeight: FontWeight.bold,
             //           fontSize: 16,
@@ -208,7 +200,7 @@ void otp() {
               height: 12,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.all(16.0),
               child: CustomButton(
                 title: 'Confirm'.tr(),
                 onTap: () async {

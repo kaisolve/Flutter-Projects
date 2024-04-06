@@ -28,8 +28,6 @@ void main() async {
         saveLocale: true,
         useOnlyLangCode: true,
         startLocale: const Locale('ar'),
-        // useFallbackTranslations: true,
-        // fallbackLocale: languages[0],
         child: const MyApp()),
   ));
 }

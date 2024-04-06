@@ -25,13 +25,13 @@ class ItemsRepository {
   }
 
   Future<List<ProductModel>> getProductsByCategoryAndSubcategory(
-      int categoryId, int subcategoryId) async {
+      num categoryId, num subcategoryId) async {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
       // auth checking
-      if (Preferences().getUserData()!.success) {
+      if (Preferences().getUserData().success) {
         dioClient.dio.options.headers['Authorization'] =
-            Preferences().getUserData()!.userToken!;
+            Preferences().getUserData().userToken!;
       }
 
       Response response = await dioClient
@@ -41,7 +41,7 @@ class ItemsRepository {
         List<dynamic> products = response.data['data'];
 
         // Filter products based on category and subcategory
-        final List<ProductModel> filteredProducts = products
+        List<ProductModel> filteredProducts = products
             .where((product) =>
                 product['category_id'] == categoryId &&
                 product['sub_category_id'] == subcategoryId)
@@ -57,7 +57,7 @@ class ItemsRepository {
     }
   }
 
-  void addDelFavorites(String? token, int productId) async {
+  void addDelFavorites(String? token, num productId) async {
     try {
       DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
 
@@ -65,8 +65,6 @@ class ItemsRepository {
       Response response = await dioClient.post(AppUrls.addRemfavorites,
           formData: FormData.fromMap({'product_id': productId}));
       if (response.statusCode == 200) {
-        // If the request is successful, directly update isFavorite status in the UI
-        // itemsProvider.setFavorites(favorite);
       } else {
         throw Exception('Failed to change Favorites: ${response.statusCode}');
       }
