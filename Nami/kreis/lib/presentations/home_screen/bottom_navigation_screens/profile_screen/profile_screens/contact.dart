@@ -1,67 +1,93 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
+import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
+import 'package:kreis/presentations/widgets/custom_text_form/custom_text_form.dart';
 
-class ContactPage extends StatelessWidget {
+class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
 
   @override
+  State<ContactPage> createState() => _ContactPageState();
+}
+
+class _ContactPageState extends State<ContactPage> {
+  ProfileProvider profileProvider = ProfileProvider();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController subjectController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'contact'.tr(), showBackArrow: true),
+      appBar: CustomAppBar(title: 'Contact US'.tr(), showBackArrow: true),
       body: Column(
         children: [
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+          //   child: SizedBox(
+          //       width: 196.42,
+          //       height: 150,
+          //       child: Image.asset('assets/images/pngs/contactus.png')),
+          // ),
+
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-            child: SizedBox(
-                width: 196.42,
-                height: 150,
-                child: Image.asset('assets/images/pngs/contactus.png')),
+            child: CustomTextFormField(
+              controller: nameController,
+              hint: 'Name'.tr(),
+              prefix: const CustomSvgIcon(assetName: 'person'),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-            child: TextField(
-                decoration: InputDecoration(
-              hintText: 'name'.tr(),
-              icon: SvgPicture.asset(
-                  'assets/images/svgs/person.svg'), //icon at head of input
-            )),
+            child: CustomTextFormField(
+              controller: emailController,
+              hint: 'Email'.tr(),
+              prefix: const CustomSvgIcon(assetName: 'at'),
+            ),
           ),
           Padding(
-              padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: TextField(
-                  decoration: InputDecoration(
-                hintText: 'email'.tr(),
-
-                icon: SvgPicture.asset(
-                    'assets/images/svgs/at.svg'), //icon at head of input
-              ))),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child: CustomTextFormField(
+              controller: subjectController,
+              hint: 'Subject'.tr(),
+              prefix: const CustomSvgIcon(assetName: 'mark'),
+            ),
+          ),
           Padding(
-              padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: TextField(
-                  decoration: InputDecoration(
-                hintText: 'title'.tr(),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child: CustomTextFormField(
+              controller: messageController,
+              hint: 'Message'.tr(),
+              prefix: const CustomSvgIcon(assetName: 'message'),
+            ),
+          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+          //   child: CustomTextFormField(
+          //     controller: phoneController,
+          //     hint: 'Phone'.tr(),
+          //     prefix: const CustomSvgIcon(assetName: 'at'),
+          //   ),
+          // ),
 
-                icon: SvgPicture.asset(
-                    'assets/images/svgs/mark.svg'), //icon at head of input
-              ))),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: TextField(
-                  decoration: InputDecoration(
-                hintText: 'message'.tr(),
-
-                icon: SvgPicture.asset(
-                    'assets/images/svgs/message.svg'), //icon at head of input
-              ))),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
             child: SizedBox(
                 width: 341,
                 height: 51,
-                child:
-                    ElevatedButton(onPressed: () {}, child: Text('send'.tr()))),
+                child: CustomButton(
+                  title: 'Send'.tr(),
+                  onTap: () => profileProvider.contactUs(
+                      nameController.text,
+                      subjectController.text,
+                      messageController.text,
+                      phoneController.text),
+                )),
           )
         ],
       ),

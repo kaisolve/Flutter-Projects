@@ -6,6 +6,7 @@ import 'package:kreis/presentations/auth/provider/auth_provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/categories_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/map_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/provider/layout_provider.dart';
@@ -23,6 +24,7 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => ProfileProvider());
   getIt.registerLazySingleton(() => CategoriesProvider());
   getIt.registerLazySingleton(() => HomeProvider());
+  getIt.registerLazySingleton(() => MapProvider());
 
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton(() => sharedPreferences);

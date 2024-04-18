@@ -11,6 +11,8 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
   final InputBorder? border;
+  final Color color;
+  final void Function(String)? onchanged;
 
   const CustomTextFormField(
       {super.key,
@@ -19,7 +21,9 @@ class CustomTextFormField extends StatelessWidget {
       this.prefix,
       this.suffix,
       this.textInputType = TextInputType.text,
-      this.border});
+      this.border,
+      this.color = input2Bg,
+      this.onchanged});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +33,11 @@ class CustomTextFormField extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
           border: Border.all(color: containerBorder, width: 1),
-          color: AppTheme.isDarkMode() ? inputBgDark : input2Bg,
+          color: color,
           borderRadius: BorderRadius.circular(16)),
       child: TextFormField(
         controller: controller,
+        onChanged: onchanged,
         textAlignVertical: TextAlignVertical.center,
         cursorColor: mainColor,
         style: AppTextStyles().normalText().textColorNormal(

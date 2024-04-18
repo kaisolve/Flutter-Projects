@@ -22,7 +22,9 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<CartProvider>(context, listen: false).getcartItems();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CartProvider>(context, listen: false).getcartItems();
+    });
   }
 
   @override

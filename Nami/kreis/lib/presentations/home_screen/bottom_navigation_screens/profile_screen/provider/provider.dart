@@ -15,10 +15,12 @@ class ProfileProvider extends ChangeNotifier {
   bool isloading = true;
   bool isloaded = false;
   bool failedtoload = false;
+  bool cur = true;
   late UserModel user;
   String? image;
   int selectedLanguage = 1;
   Locale language = const Locale('ar');
+
   void changeLang(int lang) {
     selectedLanguage = lang;
     notifyListeners();
@@ -50,6 +52,11 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeOrders(bool cur) {
+    this.cur = cur;
+    notifyListeners();
+  }
+
   void changeLocale(Locale langLoc) {
     language = langLoc;
     notifyListeners();
@@ -60,15 +67,20 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateProfile(
+  Future<void> updateProfile(
       String fname, String lname, String? imagePath, String token) async {
     await profileRepository.updateProfile(
         firstName: fname, lastName: lname, imagePath: imagePath, token: token);
   }
 
-  void logoutUser(String token) {
+  void contactUs(String name, String subject, String message, String phone) {
+    profileRepository.contactUS(
+        name: name, subject: subject, message: message, phone: phone);
+  }
+
+  void logoutUser(String token) async {
     authRepository.logoutUser(token);
-    preferences.clearUserData();
+    await preferences.clearUserData();
   }
 
   void deleteUser(String token) {

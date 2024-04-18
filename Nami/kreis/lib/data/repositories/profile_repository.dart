@@ -74,4 +74,23 @@ class ProfileRepository {
       throw Exception('Failed to load items: $error');
     }
   }
+
+  void contactUS(
+      {required String name,
+      String? email,
+      required String subject,
+      required String message,
+      required String phone}) async {
+    FormData formData = FormData.fromMap({
+      'name': name,
+      'email': email,
+      'subject': subject,
+      'message': message,
+      'phone': phone,
+    });
+    DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+    Response response =
+        await dioClient.post(AppUrls.contactUs, formData: formData);
+    if (response.statusCode == 200) {}
+  }
 }

@@ -100,7 +100,7 @@ class AuthRepository {
       Response response =
           await dioClient.post(AppUrls.logout, formData: FormData.fromMap({}));
       if (response.statusCode == 200) {
-        preferences.clearUserData();
+        await preferences.clearUserData();
       } else {
         throw Exception('Failed to logout user: ${response.statusCode}');
       }

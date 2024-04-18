@@ -10,6 +10,7 @@ import 'package:kreis/presentations/auth/provider/auth_provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_asset_image/custom_asset_image.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
+import 'package:kreis/presentations/widgets/custom_loader_overlay/loader_overlay.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:kreis/presentations/widgets/custom_text_form/custom_text_form.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -87,23 +88,22 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 24,
             ),
             Consumer<AuthProvider>(builder: (context, provider, child) {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CustomButton(
-                      title: 'Login'.tr(),
-                      onTap: () async {
-                        loginProvider.checkPhoneNumber();
-                      },
-                      fontSize: 16,
-                    ),
+              if (loginProvider.isCheckingVerivfication) {
+                return const CircularProgressIndicator(color: mainColor);
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: CustomButton(
+                    title: 'Login'.tr(),
+                    onTap: () async {
+                      loginProvider.checkPhoneNumber();
+                      await LoadingOverlay.of(context)
+                          .during(Future.delayed(const Duration(seconds: 1)));
+                    },
+                    fontSize: 16,
                   ),
-                  if (provider.isCheckingVerivfication)
-                    CircularProgressIndicator(color: mainColor),
-                ],
-              );
+                );
+              }
             })
           ]),
         ),
@@ -114,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 void otp() {
   AuthProvider loginProvider = getIt();
+
   showModalBottomSheet(
     // ignore: use_build_context_synchronously
     context: navigatorKey.currentContext!,

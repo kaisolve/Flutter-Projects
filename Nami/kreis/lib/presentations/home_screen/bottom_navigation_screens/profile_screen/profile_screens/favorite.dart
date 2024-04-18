@@ -4,6 +4,7 @@ import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/single_item_screen/single_item.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/widgets/items_card.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
@@ -57,6 +58,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         onTap: () => NavigatorHandler.push(SingleItemScreen(
                           itemId: favorites[index].id,
                           index: index,
+                          cId: favorites[index].categoryId,
+                          sId: favorites[index].subCategoryId,
                         )),
                         child: ItemsCard(
                           title: favorites[index].title!,
@@ -68,6 +71,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 Preferences().getUserData().userToken!,
                                 favorites[index].id,
                                 index);
+                            Provider.of<HomeProvider>(context, listen: false)
+                                .getLatestProducts();
                           },
                         ),
                       ),

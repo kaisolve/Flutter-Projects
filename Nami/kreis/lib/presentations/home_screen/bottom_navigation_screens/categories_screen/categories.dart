@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/categories_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/items.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:kreis/presentations/widgets/custom_widgets/custom_card.dart';
 import 'package:provider/provider.dart';
 
@@ -53,15 +55,20 @@ class _CategoryPageState extends State<CategoryPage> {
                         itemCount: categories.length,
                         itemBuilder: (context, index) {
                           return Consumer<CategoriesProvider>(
-                            builder: (context, value, child) {
+                            builder: (context, provider, child) {
                               return GestureDetector(
                                 onTap: () {
-                                  value.updateSelectedIndex(index);
+                                  provider.updateSelectedIndex(index);
                                 },
-                                child: CustomCard(
-                                  image: categories[index].image,
-                                  title: categories[index].title,
-                                  // Handle category click
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 12),
+                                  child: CustomCard(
+                                    image: categories[index].image,
+                                    title: categories[index].title,
+                                    color: provider.selectedindex == index
+                                        ? mainColor
+                                        : white,
+                                  ),
                                 ),
                               );
                             },
@@ -77,29 +84,26 @@ class _CategoryPageState extends State<CategoryPage> {
                   Expanded(
                       flex: 3,
                       child: Consumer<CategoriesProvider>(
-                        builder: (context, value, child) {
+                        builder: (context, provider, child) {
                           return ListView.builder(
-                            itemCount: categories[value.selectedindex]
+                            itemCount: categories[provider.selectedindex]
                                 .subCategories
                                 .length,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                  title: Text(categories[value.selectedindex]
+                                title: CustomText(
+                                    title: categories[provider.selectedindex]
+                                        .subCategories[index]
+                                        .title),
+                                onTap: () => NavigatorHandler.push(ItemsPage(
+                                  cIndex: provider.selectedindex,
+                                  sIndex: index,
+                                  cId: categories[provider.selectedindex].id,
+                                  sId: categories[provider.selectedindex]
                                       .subCategories[index]
-                                      .title),
-                                  onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ItemsPage(
-                                                  cId: categories[
-                                                          value.selectedindex]
-                                                      .id,
-                                                  sId: categories[
-                                                          value.selectedindex]
-                                                      .subCategories[index]
-                                                      .id,
-                                                )),
-                                      ));
+                                      .id,
+                                )),
+                              );
                             },
                           );
                         },

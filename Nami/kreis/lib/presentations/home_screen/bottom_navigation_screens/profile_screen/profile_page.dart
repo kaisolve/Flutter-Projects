@@ -1,17 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/navigator/navigator.dart';
+import 'package:kreis/core/text_styles/text_styles.dart';
 import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/injection.dart';
+import 'package:kreis/main.dart';
 import 'package:kreis/presentations/auth/login_screen/login_screen.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/about.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/contact.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/edit_profile.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/favorite.dart';
-import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/language.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/points.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/widgets/text_buttons.dart';
+import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
+import 'package:kreis/presentations/home_screen/provider/layout_provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
@@ -26,13 +32,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfilePage> {
-  ProfileProvider profileProvider = getIt();
   String token = Preferences().getUserData().userToken!;
-
+  ProfileProvider profileProvider = getIt();
   @override
   void initState() {
     super.initState();
-    profileProvider.getUser();
+    // Preferences().getUserData().user!;
   }
 
   @override
@@ -52,7 +57,7 @@ class _ProfileScreenState extends State<ProfilePage> {
                     height: 140,
                     child: Consumer<ProfileProvider>(
                         builder: (context, provider, _) {
-                      // provider.getUser();
+                      provider.getUser();
                       return Column(
                         children: [
                           Container(
@@ -128,10 +133,14 @@ class _ProfileScreenState extends State<ProfilePage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  const CustomSvgIcon(
-                                    assetName: 'points',
-                                    width: 48,
-                                    height: 48,
+                                  GestureDetector(
+                                    onTap: () => NavigatorHandler.push(
+                                        const PointsScreen()),
+                                    child: const CustomSvgIcon(
+                                      assetName: 'points',
+                                      width: 48,
+                                      height: 48,
+                                    ),
                                   ),
                                   CustomText(title: 'Points'.tr())
                                 ],
@@ -159,12 +168,12 @@ class _ProfileScreenState extends State<ProfilePage> {
                                 const EditAccountScreen()),
                           ),
                           CustomTextButton(
-                            arrow: true,
-                            icon: 'language',
-                            text: 'Language'.tr(),
-                            onPressed: () =>
-                                NavigatorHandler.push(LanguagePage()),
-                          ),
+                              arrow: true,
+                              icon: 'language',
+                              text: 'Language'.tr(),
+                              onPressed: () => language()
+                              // NavigatorHandler.push(LanguagePage()),
+                              ),
                           CustomTextButton(
                             arrow: true,
                             icon: 'contact_us',
@@ -205,8 +214,12 @@ class _ProfileScreenState extends State<ProfilePage> {
                     bg: white,
                     fontColor: const Color(0xff707070),
                     title: 'Logout'.tr(),
-                    onTap: () {
+                    onTap: () async {
                       profileProvider.logoutUser(token);
+                      // await LoadingOverlay.of(context)
+                      //     .during(Future.delayed(const Duration(seconds: 1)));
+                      Provider.of<LayoutProvider>(context, listen: false)
+                          .selectedindex = 0;
                       NavigatorHandler.pushAndRemoveUntil(const LoginScreen());
                     },
                   )
@@ -216,4 +229,84 @@ class _ProfileScreenState extends State<ProfilePage> {
           ),
         ));
   }
+}
+
+void language() {
+  showModalBottomSheet(
+    context: navigatorKey.currentContext!,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      final localeProvider = EasyLocalization.of(context);
+
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(24, 24, 16, 24),
+        // bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Consumer<ProfileProvider>(
+          builder: (context, lang, child) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      title: 'Language'.tr(),
+                      style: AppTextStyles()
+                          .normalText(fontSize: fontR18)
+                          .textColorBold(black),
+                    ),
+                    GestureDetector(
+                      onTap: () => NavigatorHandler.pop(),
+                      child: const CustomSvgIcon(
+                        assetName: 'close',
+                        width: 24,
+                        height: 24,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Radio(
+                      activeColor: mainColor,
+                      value: 0,
+                      groupValue: lang.selectedLanguage,
+                      onChanged: (value) {
+                        lang.changeLang(value!);
+                      },
+                    ),
+                    CustomText(title: 'English'.tr()),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Radio(
+                      activeColor: mainColor,
+                      value: 1,
+                      groupValue: lang.selectedLanguage,
+                      onChanged: (value) {
+                        lang.changeLang(value!);
+                      },
+                    ),
+                    CustomText(title: 'Arabic'.tr()),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  child: CustomButton(
+                      title: 'Confirm'.tr(),
+                      onTap: () {
+                        NavigatorHandler.pushReplacement(const MainAppLayout());
+                        lang.selectedLanguage == 1
+                            ? localeProvider!.setLocale(const Locale('ar'))
+                            : localeProvider!.setLocale(const Locale('en'));
+                      }),
+                ),
+              ],
+            );
+          },
+        ),
+      );
+    },
+  );
 }

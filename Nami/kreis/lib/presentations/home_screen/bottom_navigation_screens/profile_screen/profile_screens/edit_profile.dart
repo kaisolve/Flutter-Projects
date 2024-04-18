@@ -5,9 +5,12 @@ import 'package:gap/gap.dart';
 import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/core/utils/upload_image.dart';
+import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
+import 'package:kreis/presentations/widgets/custom_loader_overlay/loader_overlay.dart';
 import 'package:kreis/presentations/widgets/custom_text_form/custom_text_form.dart';
 import 'package:provider/provider.dart';
 
@@ -20,21 +23,23 @@ class EditAccountScreen extends StatefulWidget {
 
 class _EditAccountScreenState extends State<EditAccountScreen> {
   Preferences preferences = Preferences();
-  ProfileProvider profileProvider = ProfileProvider();
+  ProfileProvider profileProvider = getIt();
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   File? image;
 
   void selectImage() async {
-    // ignore: unused_local_variable
     image = await pickImage(context);
-    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    profileProvider.getUser();
+
+    ///  for solving setState() or markNeedsBuild() called during build.
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      profileProvider.getUser();
+    });
   }
 
   @override
@@ -111,13 +116,15 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
                 child: CustomButton(
                   title: 'Confirm'.tr(),
-                  onTap: () {
-                    profileProvider.updateProfile(
-                        firstName.text.trim(),
-                        lastName.text.trim(),
-                        image?.path,
-                        preferences.getUserData().userToken!);
-                    NavigatorHandler.pop();
+                  onTap: () async {
+                    await LoadingOverlay.of(context).during(
+                        profileProvider.updateProfile(
+                            firstName.text.trim(),
+                            lastName.text.trim(),
+                            image?.path,
+                            preferences.getUserData().userToken!));
+                    profileProvider.getUser();
+                    NavigatorHandler.pushReplacement(const MainAppLayout());
                   },
                   fontSize: 16,
                 )),

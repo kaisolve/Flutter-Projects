@@ -10,6 +10,7 @@ class LayoutProvider extends ChangeNotifier {
     const CategoryPage(),
     const ProfilePage(),
   ];
+
   void updateSelectedIndex(int index) {
     selectedindex = index;
     notifyListeners();

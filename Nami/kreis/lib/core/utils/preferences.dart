@@ -34,7 +34,7 @@ class Preferences {
         success: success);
   }
 
-  void clearUserData() async {
+  Future<void> clearUserData() async {
     await sharedPreferences.clear();
   }
 }

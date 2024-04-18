@@ -14,6 +14,7 @@ class AppUrls {
   static const String products = 'user/home/products';
   static const String addRemfavorites = 'user/home/add-remove-favorites';
   static const String myFavorites = 'user/profile/myFavorites';
+  static const String contactUs = '/user/contact-us';
   static String productsDetails(num categoryId, num subcategoryId) {
     return 'user/home/products?category_id=$categoryId&sub_category_id=$subcategoryId';
   }

@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/presentations/home_screen/provider/layout_provider.dart';
+import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:provider/provider.dart';
 
-class MainAppLayout extends StatelessWidget {
+class MainAppLayout extends StatefulWidget {
   const MainAppLayout({super.key});
+
+  @override
+  State<MainAppLayout> createState() => _MainAppLayoutState();
+}
+
+class _MainAppLayoutState extends State<MainAppLayout> {
+  @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +40,31 @@ class MainAppLayout extends StatelessWidget {
                   onTap: (index) {
                     provider.updateSelectedIndex(index);
                   },
-                  items: buttonItems),
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: CustomSvgIcon(
+                        assetName:
+                            provider.selectedindex == 0 ? 'home2' : 'home',
+                      ),
+                      label: '',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: CustomSvgIcon(
+                        assetName: provider.selectedindex == 1
+                            ? 'categories2'
+                            : 'categories',
+                      ),
+                      label: '',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: CustomSvgIcon(
+                        assetName: provider.selectedindex == 2
+                            ? 'settings2'
+                            : 'settings',
+                      ),
+                      label: '',
+                    ),
+                  ]),
             );
           },
         );

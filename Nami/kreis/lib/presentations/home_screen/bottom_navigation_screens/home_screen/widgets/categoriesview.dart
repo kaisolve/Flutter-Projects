@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/data/models/category_model.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:kreis/presentations/widgets/custom_widgets/custom_card.dart';
 import 'package:provider/provider.dart';
 
@@ -30,9 +31,9 @@ class _CategoryViewState extends State<CategoryView> {
               color: mainColor,
             );
           } else if (provider.failedtoload) {
-            return const Text('Error: Failed to load categories');
+            return const CustomText(title: 'Error: Failed to load categories');
           } else if (provider.categories.isEmpty) {
-            return const Text('No categories available');
+            return const CustomText(title: 'No categories available');
           } else {
             List<CategoryModel> categoryItems = provider.categories;
             return SizedBox(

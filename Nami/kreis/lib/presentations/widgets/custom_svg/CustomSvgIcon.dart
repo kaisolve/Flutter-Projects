@@ -9,12 +9,13 @@ class CustomSvgIcon extends StatelessWidget {
   final double? height;
   final Color? color;
 
-  const CustomSvgIcon(
-      {super.key,
-      required this.assetName,
-      this.width = 20.0,
-      this.height = 20.0,
-      this.color});
+  const CustomSvgIcon({
+    super.key,
+    required this.assetName,
+    this.width = 20.0,
+    this.height = 20.0,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {

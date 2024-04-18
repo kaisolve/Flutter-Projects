@@ -5,7 +5,8 @@ import 'package:kreis/data/repositories/items_repository.dart';
 class ItemsProvider extends ChangeNotifier {
   ItemsRepository itemsRepository = ItemsRepository();
   List products = [];
-  ProductModel singleItem = ProductModel();
+  List filteredProducts = [];
+  late ProductModel singleItem;
   bool isloading = true;
   bool isloaded = false;
   bool failedtoload = false;
@@ -15,20 +16,35 @@ class ItemsProvider extends ChangeNotifier {
   int quantity = 1;
   bool favorite = false;
 
-  void setItem(num itemId) {
-    getProductsByCategoryAndSubcategory(categoryId, subCategoryId);
-    singleItem = products.firstWhere((product) => product.id == itemId);
-    singleItem.price = singleItem.priceWeightUnit;
-    price = singleItem.priceWeightUnit!;
-    singleItem.amount = 1;
-    quantity = 1;
+  // void setSingleItem(num itemId) {}
+  void setItem(num itemId, num categoryId, num subCategoryId) async {
+    isloading = true;
     notifyListeners();
+
+    try {
+      await getProductsByCategoryAndSubcategory(categoryId, subCategoryId);
+      singleItem = products.firstWhere((product) => product.id == itemId);
+      singleItem.price = singleItem.priceWeightUnit;
+      price = singleItem.priceWeightUnit!;
+      singleItem.amount = 1;
+      quantity = 1;
+      failedtoload = false;
+      isloaded = true;
+      notifyListeners();
+    } catch (error) {
+      failedtoload = true;
+      throw Exception('Failed to set item: $error');
+    } finally {
+      isloading = false;
+      notifyListeners();
+    }
   }
 
-  void getProductsByCategoryAndSubcategory(num cId, num sId) async {
+  Future<void> getProductsByCategoryAndSubcategory(num cId, num sId) async {
     try {
       products =
           await itemsRepository.getProductsByCategoryAndSubcategory(cId, sId);
+      filteredProducts = products;
 
       notifyListeners();
       failedtoload = false;
@@ -70,7 +86,15 @@ class ItemsProvider extends ChangeNotifier {
     favProduct.isFavorite = !favProduct.isFavorite!;
     products.removeAt(index);
     products.insert(index, favProduct);
-    setItem(productId);
+    setItem(productId, categoryId, subCategoryId);
+    notifyListeners();
+  }
+
+  void filterProducts(String query) {
+    filteredProducts = products
+        .where((product) =>
+            product.title.toLowerCase().contains(query.toLowerCase()))
+        .toList();
     notifyListeners();
   }
 }

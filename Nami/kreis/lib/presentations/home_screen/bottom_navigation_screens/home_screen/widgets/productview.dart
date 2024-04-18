@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
+import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/utils/preferences.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/single_item_screen/single_item.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/widgets/items_card.dart';
-import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/items.dart';
+import 'package:kreis/presentations/widgets/custom_loader_overlay/loader_overlay.dart';
+import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:provider/provider.dart';
 
 class ProductsView extends StatefulWidget {
@@ -35,9 +38,9 @@ class _ProductsViewState extends State<ProductsView> {
             color: mainColor,
           );
         } else if (provider.failedtoload) {
-          return const Text('Error: Failed to load products');
+          return const CustomText(title: 'Error: Failed to load products');
         } else if (provider.latestProducts.isEmpty) {
-          return const Text('No products available');
+          return const CustomText(title: 'No products available');
         } else {
           List productsItems = provider.latestProducts;
           return SizedBox(
@@ -50,22 +53,25 @@ class _ProductsViewState extends State<ProductsView> {
               itemCount: productsItems.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ItemsPage(
-                      cId: productsItems[index].categoryId,
-                      sId: productsItems[index].subCategoryId,
-                    ),
-                  )),
+                  onTap: () {
+                    NavigatorHandler.push(SingleItemScreen(
+                        index: index,
+                        itemId: productsItems[index].id,
+                        cId: productsItems[index].categoryId,
+                        sId: productsItems[index].subCategoryId));
+                  },
                   child: ItemsCard(
                     title: productsItems[index].title,
                     image: productsItems[index].image,
                     price: productsItems[index].price,
                     isFavorite: productsItems[index].isFavorite,
-                    ontap: () {
+                    ontap: () async {
                       provider.changeFavorite(
                           Preferences().getUserData().userToken!,
                           productsItems[index].id,
                           index);
+                      await LoadingOverlay.of(context)
+                          .during(Future.delayed(const Duration(seconds: 1)));
                     },
                   ),
                 );

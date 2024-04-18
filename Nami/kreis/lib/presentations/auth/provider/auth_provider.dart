@@ -6,7 +6,7 @@ import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/models/user_model.dart';
 import 'package:kreis/data/repositories/auth_repository.dart';
-import 'package:kreis/presentations/auth/login_screen/login_screen.dart';
+import 'package:kreis/presentations/auth/otp_screen/otp_screen.dart';
 import 'package:kreis/presentations/auth/register_screen/register_screen.dart';
 import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
 import 'package:kreis/presentations/widgets/dialogs/scaffold_messanger.dart';
@@ -87,14 +87,11 @@ class AuthProvider with ChangeNotifier {
     phone = phoneController.text.trim();
     notifyListeners();
     if (phone.length == 10) {
-      isCheckingVerivfication = true;
-      notifyListeners();
       signInWithPhone(phoneCode + phone);
     } else if (phone.length == 11) {
       if (phone.startsWith("0")) {
         phone = phone.replaceFirst('0', '');
-        isCheckingVerivfication = true;
-        notifyListeners();
+
         signInWithPhone(phoneCode + phone);
       } else {
         CustomScaffoldMessanger.showScaffoledMessanger(
@@ -112,6 +109,7 @@ class AuthProvider with ChangeNotifier {
 
   void checkSmsCode() async {
     String smsCode = smsController.text.trim();
+
     if (smsCode.length == 6) {
       verifyOtp(verificationId: verificationId!, userOtp: smsCode);
     } else {
@@ -127,7 +125,8 @@ class AuthProvider with ChangeNotifier {
         timeout: const Duration(seconds: 60),
         forceResendingToken: forceResendingToken,
         verificationCompleted: (phoneAuthCredential) async {
-          await firebaseAuth.signInWithCredential(phoneAuthCredential);
+          firebaseAuth.signInWithCredential(phoneAuthCredential);
+          isCheckingVerivfication = true;
         },
         verificationFailed: (error) async {
           throw Exception(error.message);
@@ -135,12 +134,14 @@ class AuthProvider with ChangeNotifier {
         codeSent: (verificationId, forceResendingToken) async {
           this.verificationId = verificationId;
           this.forceResendingToken = forceResendingToken;
-          isCheckingVerivfication = false;
-          notifyListeners();
-          otp();
+          NavigatorHandler.push(const OtpScreen());
+
+          // isCheckingVerivfication = false;
+          // notifyListeners();
+          // otp();
         },
         codeAutoRetrievalTimeout: (verificationId) async {
-          isCheckingVerivfication = false;
+          // isCheckingVerivfication = false;
           this.verificationId = null;
           notifyListeners();
         },
@@ -159,6 +160,8 @@ class AuthProvider with ChangeNotifier {
     required String userOtp,
   }) async {
     try {
+      // isCheckingVerivfication = true;
+      // notifyListeners();
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: userOtp);
       await firebaseAuth.signInWithCredential(credential);
@@ -171,7 +174,6 @@ class AuthProvider with ChangeNotifier {
 
   void checkSignIn() async {
     UserAuthResult result = await authRepository.loginUser(phone);
-
     if (result.success) {
       preferences.saveUserDataToSP(result);
       NavigatorHandler.pushAndRemoveUntil(const MainAppLayout());
