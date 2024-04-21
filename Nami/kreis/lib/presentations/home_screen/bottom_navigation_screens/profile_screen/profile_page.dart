@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
@@ -13,6 +14,7 @@ import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profil
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/contact.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/edit_profile.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/favorite.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/myorders.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/points.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/widgets/text_buttons.dart';
@@ -95,10 +97,14 @@ class _ProfileScreenState extends State<ProfilePage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  const CustomSvgIcon(
-                                    assetName: 'order',
-                                    width: 48,
-                                    height: 48,
+                                  GestureDetector(
+                                    onTap: () => NavigatorHandler.push(
+                                        const MyOrdersScreen()),
+                                    child: const CustomSvgIcon(
+                                      assetName: 'order',
+                                      width: 48,
+                                      height: 48,
+                                    ),
                                   ),
                                   CustomText(title: 'My Orders'.tr())
                                 ],
@@ -213,6 +219,7 @@ class _ProfileScreenState extends State<ProfilePage> {
                     height: 48,
                     bg: white,
                     fontColor: const Color(0xff707070),
+                    border: Border.all(color: const Color(0xff707070)),
                     title: 'Logout'.tr(),
                     onTap: () async {
                       profileProvider.logoutUser(token);

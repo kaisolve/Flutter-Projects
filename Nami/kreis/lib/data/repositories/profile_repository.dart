@@ -93,4 +93,31 @@ class ProfileRepository {
         await dioClient.post(AppUrls.contactUs, formData: formData);
     if (response.statusCode == 200) {}
   }
+
+  Future<PointsData> getPoints() async {
+    try {
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      if (Preferences().getUserData().success) {
+        dioClient.dio.options.headers['Authorization'] =
+            Preferences().getUserData().userToken;
+      }
+      Response response = await dioClient.get(AppUrls.pointsHistory);
+      if (response.statusCode == 200) {
+        num totalPoints = response.data['data']['points'];
+        final history = response.data['data']['history'];
+
+        return PointsData(history: history, points: totalPoints);
+      } else {
+        throw Exception('Failed to get points data');
+      }
+    } catch (error) {
+      throw Exception('Failed to get points data: $error');
+    }
+  }
+}
+
+class PointsData {
+  num? points;
+  List? history;
+  PointsData({this.history, this.points});
 }

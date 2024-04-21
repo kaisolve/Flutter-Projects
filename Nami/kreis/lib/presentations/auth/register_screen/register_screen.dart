@@ -137,9 +137,9 @@ class _LoginScreenState extends State<RegisterScreen> {
                 activeColor: mainColor,
                 value: checkedValue,
                 onChanged: (newValue) {
-                  setState(() {
-                    checkedValue = newValue ?? false;
-                  });
+                  // setState(() {
+                  //   checkedValue = newValue ?? false;
+                  // });
                 },
                 controlAffinity: ListTileControlAffinity.leading,
               ),

@@ -12,6 +12,8 @@ class ProfileProvider extends ChangeNotifier {
   ItemsRepository itemsRepository = ItemsRepository();
   Preferences preferences = Preferences();
   List favorates = [];
+  List pointsHistory = [];
+  num totalPoints = 0;
   bool isloading = true;
   bool isloaded = false;
   bool failedtoload = false;
@@ -48,7 +50,13 @@ class ProfileProvider extends ChangeNotifier {
         favorates.firstWhere((element) => element.id == productId);
     favProduct.isFavorite = !favProduct.isFavorite!;
     favorates.removeAt(index);
-    // favorates.insert(index, favProduct);
+    notifyListeners();
+  }
+
+  void getPoints() async {
+    PointsData pointsData = await profileRepository.getPoints();
+    pointsHistory = pointsData.history!;
+    totalPoints = pointsData.points!;
     notifyListeners();
   }
 

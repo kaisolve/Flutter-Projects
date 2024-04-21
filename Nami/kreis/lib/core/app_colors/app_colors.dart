@@ -17,6 +17,7 @@ const Color hintColor = Color(0xff9CA3AF);
 const Color dividerColor = Color(0xffE5E7EB);
 const Color heartColor = Color(0xffBCBCBC);
 const Color pointsBorder = Color(0xffC3C3C3);
+const Color orderBorderColor = Color(0xffE4D9C4);
 
 const Color bottomNavigationColor = Color(0xffF6F6F6);
 const Color bodyBg = Color(0xff1E1E1E);

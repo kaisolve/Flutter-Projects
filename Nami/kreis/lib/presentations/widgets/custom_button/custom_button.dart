@@ -15,6 +15,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onTap;
   final double? width;
   final double? height;
+  final BoxBorder? border;
   EdgeInsetsGeometry? padding;
 
   CustomButton(
@@ -25,13 +26,14 @@ class CustomButton extends StatelessWidget {
       this.fontColor = white,
       this.bg = mainColor,
       required this.onTap,
+      this.border,
       this.width,
       this.height,
       this.padding});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: padding,
@@ -40,7 +42,7 @@ class CustomButton extends StatelessWidget {
         height: height ?? 56.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xff707070)),
+          border: border,
           color: bg,
         ),
         child: CustomText(

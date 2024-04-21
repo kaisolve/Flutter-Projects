@@ -122,7 +122,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 onTap: () async {
                   otpProvider.checkSmsCode();
                   await LoadingOverlay.of(context)
-                      .during(Future.delayed(const Duration(seconds: 1)));
+                      .during(Future.delayed(const Duration(seconds: 3)));
                 },
                 fontSize: fontR16,
                 fontWeight: FontWeight.normal,

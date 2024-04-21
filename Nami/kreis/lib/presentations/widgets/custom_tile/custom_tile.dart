@@ -12,6 +12,7 @@ class CustomListTile extends StatelessWidget {
   String? trailingIcon;
   bool arrow;
   void Function()? ontap;
+  Color? tileColor;
   CustomListTile(
       {super.key,
       required this.text,
@@ -19,6 +20,7 @@ class CustomListTile extends StatelessWidget {
       this.icon,
       required this.arrow,
       this.trailingIcon,
+      this.tileColor,
       this.ontap});
 
   @override
@@ -36,7 +38,7 @@ class CustomListTile extends StatelessWidget {
                   color: containerBorder,
                 )
               : null,
-          color: input2Bg,
+          color: tileColor == null ? null : input2Bg,
         ),
         child: ListTile(
           leading: icon != null ? CustomSvgIcon(assetName: icon!) : null,
