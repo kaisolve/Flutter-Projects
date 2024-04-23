@@ -38,7 +38,7 @@ class CustomListTile extends StatelessWidget {
                   color: containerBorder,
                 )
               : null,
-          color: tileColor == null ? null : input2Bg,
+          // color: tileColor == null ? null : input2Bg,
         ),
         child: ListTile(
           leading: icon != null ? CustomSvgIcon(assetName: icon!) : null,

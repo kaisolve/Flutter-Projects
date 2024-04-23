@@ -4,15 +4,18 @@ import 'package:kreis/data/models/products_model.dart';
 import 'package:kreis/data/models/user_model.dart';
 import 'package:kreis/data/repositories/auth_repository.dart';
 import 'package:kreis/data/repositories/items_repository.dart';
+import 'package:kreis/data/repositories/order_repository.dart';
 import 'package:kreis/data/repositories/profile_repository.dart';
 
 class ProfileProvider extends ChangeNotifier {
   AuthRepository authRepository = AuthRepository();
   ProfileRepository profileRepository = ProfileRepository();
   ItemsRepository itemsRepository = ItemsRepository();
+  OrderRepository orderRepository = OrderRepository();
   Preferences preferences = Preferences();
   List favorates = [];
   List pointsHistory = [];
+  List orders = [];
   num totalPoints = 0;
   bool isloading = true;
   bool isloaded = false;
@@ -62,6 +65,12 @@ class ProfileProvider extends ChangeNotifier {
 
   void changeOrders(bool cur) {
     this.cur = cur;
+    notifyListeners();
+  }
+
+  void getOrders() async {
+    orders = await orderRepository.getOrder(cur ? 'new' : 'old');
+    // list containing list of data,
     notifyListeners();
   }
 

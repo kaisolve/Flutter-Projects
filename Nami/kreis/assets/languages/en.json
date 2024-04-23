@@ -18,6 +18,7 @@
     "Confirm":"Confirm",
     "Address":"Address",
     "Payment Method":"Payment Method",
+    "Payment":"Payment",
     "Invoice":"Invoice",
     "Notes":"Notes",
     "Use Points":"Use Points",
@@ -42,6 +43,7 @@
     "Favorites":"Favorites",
     "favorates is empty":"No favorates available",
     "Points":"Points",
+    "Item In Cart":"Item In Cart",
     "You Invited":"You Invited",
     "Invite Friend":"Invite Friend",
     "History":"History",
@@ -57,5 +59,6 @@
     "Name":"Name",
     "Email":"Email",
     "Message Title":"Message Title",
-    "Message":"Message"
+    "Message":"Message",
+    "Delivery":"Delivery"
 }

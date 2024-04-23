@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/widget/cart_card.dart';
@@ -22,9 +23,9 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<CartProvider>(context, listen: false).getcartItems();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    Provider.of<CartProvider>(context, listen: false).getcartItems();
+    // });
   }
 
   @override
@@ -75,11 +76,11 @@ class _CartPageState extends State<CartPage> {
             price: provider.totalPrice,
             ontap: () => provider.cartItems.isNotEmpty
                 ? NavigatorHandler.push(
-                    PaymentPage(
-                      price: provider.totalPrice,
-                    ),
+                    const PaymentPage(),
                   )
                 : {},
+            color: mainColor,
+            fontColor: white,
           );
         },
       ),

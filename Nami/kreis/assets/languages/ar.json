@@ -42,6 +42,7 @@
     "Favorites":"المفضلة",
     "favorates is empty":"المفضله فارغة",
     "Points":"النقاط",
+    "Item In Cart":"المنتج في السلة",
     "You Invited":"لقد قمت بدعوة",
     "Invite Friend":"دعوة صديق",
     "History":"السجل",
@@ -57,5 +58,8 @@
     "Name":"الاسم",
     "Email":"البريد الالكتروني",
     "Message Title":"عنوان الرسالة",
-    "Message":"الرسالة"
+    "Message":"الرسالة",
+    "Delivery":"التوصيل",
+    "Payment":"الدفع"
+
 }

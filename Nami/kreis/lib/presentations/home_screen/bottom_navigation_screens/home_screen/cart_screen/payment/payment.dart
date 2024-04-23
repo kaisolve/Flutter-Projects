@@ -4,11 +4,9 @@ import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
 import 'package:kreis/injection.dart';
-import 'package:kreis/main.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/payment/invoice.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/payment/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/map_screen/provider/provider.dart';
-import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
-import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
 import 'package:kreis/presentations/widgets/custom_tile/custom_tile.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/widgets/buttom_container.dart';
@@ -20,21 +18,21 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class PaymentPage extends StatefulWidget {
-  num price;
-  PaymentPage({super.key, required this.price});
+  const PaymentPage({super.key});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  // CartProvider cartProvider = getIt();
-  MapProvider mapProvider = getIt();
+  CartProvider cartProvider = getIt();
+  // MapProvider mapProvider = getIt();
+  PaymentProvider paymentProvider = getIt();
 
   @override
   void initState() {
     super.initState();
-    // cartProvider.getcartItems();
+    cartProvider = Provider.of<CartProvider>(context, listen: false);
   }
 
   @override
@@ -55,18 +53,11 @@ class _PaymentPageState extends State<PaymentPage> {
                 child: Consumer<CartProvider>(
                   builder: (context, provider, child) {
                     return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: provider.cartItems.length,
                       itemBuilder: (context, index) {
                         Map<String, dynamic> product =
                             provider.cartItems[index];
-                        // return Container(
-                        //   width: 319,
-                        //   height: 56,
-                        // decoration: BoxDecoration(borderRadius: ,color: ),
-                        // child:
                         return ListTile(
-                          // tileColor: mainColor.withAlpha(20),
                           leading: SizedBox(
                             width: 72,
                             height: 48,
@@ -115,26 +106,23 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
               ),
             ),
-            Consumer<MapProvider>(builder: (context, provider, _) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                child: CustomListTile(
-                  ontap: () {
-                    NavigatorHandler.push(
-                      const MapScreen(),
-                    );
-                  },
-                  arrow: true,
-                  icon: 'location',
-                  text: 'Address'.tr(),
-                  subtext: provider.location,
-                ),
-              );
-            }),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
               child: CustomListTile(
-                ontap: () => paymentMathod(),
+                ontap: () {
+                  NavigatorHandler.push(
+                    const MapScreen(),
+                  );
+                },
+                arrow: true,
+                icon: 'location',
+                text: 'Address'.tr(),
+                subtext: Provider.of<MapProvider>(context).location,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+              child: CustomListTile(
                 arrow: true,
                 icon: 'cash',
                 text: 'Payment Method'.tr(),
@@ -146,6 +134,7 @@ class _PaymentPageState extends State<PaymentPage> {
               height: 165,
               child: TextField(
                 keyboardType: TextInputType.multiline,
+                controller: paymentProvider.notes,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
                   border: OutlineInputBorder(
@@ -161,52 +150,52 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
       bottomNavigationBar: BuyButtonContainer(
           text: 'Confirm'.tr(),
-          price: widget.price,
+          price: cartProvider.totalPrice,
+          color: mainColor,
+          fontColor: white,
           ontap: () => NavigatorHandler.push(
-                PayCheckPage(
-                  price: widget.price,
-                ),
+                const PayCheckPage(),
               )),
     );
   }
 }
 
-void paymentMathod() {
-  showModalBottomSheet(
-    context: navigatorKey.currentContext!,
-    isScrollControlled: true,
-    builder: (BuildContext context) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(24, 24, 16, 24),
-        // bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomListTile(
-                ontap: () {},
-                text: 'Cash'.tr(),
-                trailingIcon: 'cash_pay',
-                arrow: false),
-            CustomListTile(
-                text: 'Visa'.tr(), trailingIcon: 'visa_pay', arrow: false),
-            CustomListTile(
-                text: 'MasterCard'.tr(),
-                trailingIcon: 'card_pay',
-                arrow: false),
-            CustomListTile(
-                text: 'Apple Pay'.tr(),
-                trailingIcon: 'apple_pay',
-                arrow: false),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              child: CustomButton(
-                  title: 'Confirm'.tr(),
-                  onTap: () =>
-                      NavigatorHandler.pushReplacement(const MainAppLayout())),
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
+// void paymentMathod() {
+//   showModalBottomSheet(
+//     context: navigatorKey.currentContext!,
+//     isScrollControlled: true,
+//     builder: (BuildContext context) {
+//       return Padding(
+//         padding: const EdgeInsets.fromLTRB(24, 24, 16, 24),
+//         // bottom: MediaQuery.of(context).viewInsets.bottom),
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             CustomListTile(
+//                 ontap: () {},
+//                 text: 'Cash'.tr(),
+//                 trailingIcon: 'cash_pay',
+//                 arrow: false),
+//             CustomListTile(
+//                 text: 'Visa'.tr(), trailingIcon: 'visa_pay', arrow: false),
+//             CustomListTile(
+//                 text: 'MasterCard'.tr(),
+//                 trailingIcon: 'card_pay',
+//                 arrow: false),
+//             CustomListTile(
+//                 text: 'Apple Pay'.tr(),
+//                 trailingIcon: 'apple_pay',
+//                 arrow: false),
+//             Padding(
+//               padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+//               child: CustomButton(
+//                   title: 'Confirm'.tr(),
+//                   onTap: () =>
+//                       NavigatorHandler.pushReplacement(const MainAppLayout())),
+//             ),
+//           ],
+//         ),
+//       );
+//     },
+//   );
+// }

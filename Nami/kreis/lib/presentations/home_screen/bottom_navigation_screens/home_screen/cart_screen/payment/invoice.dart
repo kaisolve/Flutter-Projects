@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
@@ -18,25 +17,24 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class PayCheckPage extends StatefulWidget {
-  num price;
-  PayCheckPage({super.key, required this.price});
+  const PayCheckPage({
+    super.key,
+  });
 
   @override
   State<PayCheckPage> createState() => _PayCheckPageState();
 }
 
 class _PayCheckPageState extends State<PayCheckPage> {
-  // ignore: non_constant_identifier_names
-  // var map_address = "add address";
-
-  // ignore: non_constant_identifier_names
-  var add_notes = "add notes";
-  bool checkedValue = false;
   ProfileProvider profileProvider = getIt();
+  PaymentProvider paymentProvider = getIt();
+  CartProvider cartProvider = getIt();
+  MapProvider mapProvider = getIt();
   @override
   void initState() {
     super.initState();
-    profileProvider.getPoints();
+    cartProvider = Provider.of<CartProvider>(context, listen: false);
+    mapProvider = Provider.of<MapProvider>(context, listen: false);
   }
 
   @override
@@ -63,13 +61,13 @@ class _PayCheckPageState extends State<PayCheckPage> {
                         arrow: false,
                         icon: 'location',
                         text: 'Address'.tr(),
-                        subtext: Provider.of<MapProvider>(context).location,
+                        subtext: mapProvider.location,
                       ),
                       CustomListTile(
                         arrow: false,
                         icon: 'address_pointer',
                         text: 'Address'.tr(),
-                        subtext: Provider.of<MapProvider>(context).location,
+                        subtext: mapProvider.location,
                       ),
                       CustomListTile(
                         arrow: false,
@@ -81,7 +79,7 @@ class _PayCheckPageState extends State<PayCheckPage> {
                         arrow: false,
                         icon: 'notes',
                         text: 'Notes'.tr(),
-                        subtext: add_notes,
+                        subtext: paymentProvider.notes.text,
                       ),
                     ],
                   ),
@@ -93,7 +91,7 @@ class _PayCheckPageState extends State<PayCheckPage> {
                   child: Center(
                     child: Container(
                       width: 343,
-                      height: 292,
+                      height: 350,
                       decoration: BoxDecoration(
                         color: containerBorder,
                         borderRadius: BorderRadius.circular(20),
@@ -101,10 +99,16 @@ class _PayCheckPageState extends State<PayCheckPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          CustomText(
-                            title: 'Products'.tr(),
-                            fontWeight: FontWeight.w400,
-                            fontColor: greyColor,
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: CustomText(
+                                title: 'Products'.tr(),
+                                fontWeight: FontWeight.w400,
+                                fontColor: greyColor,
+                              ),
+                            ),
                           ),
                           Consumer<CartProvider>(
                               builder: (context, provider, _) {
@@ -112,7 +116,6 @@ class _PayCheckPageState extends State<PayCheckPage> {
                               width: 311,
                               height: 96,
                               child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: provider.cartItems.length,
                                 itemBuilder: (context, index) {
                                   Map<String, dynamic> product =
@@ -136,8 +139,22 @@ class _PayCheckPageState extends State<PayCheckPage> {
                                               fontColor: greyColor,
                                             ),
                                           ),
-                                          CustomText(
-                                            title: product['price'].toString(),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: CustomRichText(children: [
+                                              TextSpan(
+                                                  text: '${product['price']} ',
+                                                  style: AppTextStyles()
+                                                      .normalText(fontSize: 18)
+                                                      .textColorBold(black)),
+                                              TextSpan(
+                                                  text: 'Coin'.tr(),
+                                                  style: AppTextStyles()
+                                                      .normalText(
+                                                          fontSize: fontR14)
+                                                      .textColorNormal(
+                                                          greyColor))
+                                            ]),
                                           ),
                                         ],
                                       )
@@ -147,64 +164,6 @@ class _PayCheckPageState extends State<PayCheckPage> {
                               ),
                             );
                           }),
-                          const Divider(
-                            color: greyColor,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 203,
-                                child: CheckboxListTile(
-                                  title: CustomText(
-                                    title: "Use Points".tr(),
-                                    style: AppTextStyles()
-                                        .normalText(fontSize: fontR14)
-                                        .textColorNormal(greyColor),
-                                  ),
-                                  subtitle: CustomRichText(children: [
-                                    TextSpan(
-                                        text:
-                                            '( ${profileProvider.totalPoints.toString()} ) ',
-                                        style: AppTextStyles()
-                                            .normalText(fontSize: 16)
-                                            .textColorBold(black)),
-                                    TextSpan(
-                                        text: 'Points'.tr(),
-                                        style: AppTextStyles()
-                                            .normalText(fontSize: fontR14)
-                                            .textColorNormal(black))
-                                  ]),
-                                  checkboxShape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
-                                  checkColor: white,
-                                  activeColor: mainColor,
-                                  value: provider.ischecked,
-                                  onChanged: (newValue) {
-                                    provider.isChecked(newValue!);
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: CustomRichText(children: [
-                                  TextSpan(
-                                      text:
-                                          '${profileProvider.totalPoints ~/ 10} ', //remainder division
-                                      style: AppTextStyles()
-                                          .normalText(fontSize: fontR16)
-                                          .textColorBold(black)),
-                                  TextSpan(
-                                      text: 'Coin'.tr(),
-                                      style: AppTextStyles()
-                                          .normalText(fontSize: fontR14)
-                                          .textColorNormal(greyColor))
-                                ]),
-                              )
-                            ],
-                          ),
                           const Divider(
                             color: greyColor,
                           ),
@@ -223,7 +182,7 @@ class _PayCheckPageState extends State<PayCheckPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: CustomRichText(children: [
                                   TextSpan(
-                                      text: '${widget.price} ',
+                                      text: '${cartProvider.totalPrice} ',
                                       style: AppTextStyles()
                                           .normalText(fontSize: 18)
                                           .textColorBold(mainColor)),
@@ -249,28 +208,25 @@ class _PayCheckPageState extends State<PayCheckPage> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
         child: CustomButton(
-          title: 'Send Order'.tr(),
-          onTap: () {},
-        ),
+            title: 'Send Order'.tr(),
+            onTap: () {
+              List details = [];
+              for (var item in cartProvider.cartItems) {
+                details.add({
+                  "product_id": item['id'],
+                  "qty": item['amount'],
+                  "net_cost": item['price']
+                });
+              }
+              paymentProvider.storeOrders(
+                  address: mapProvider.location,
+                  lat: mapProvider.lat!,
+                  lng: mapProvider.lng!,
+                  notes: paymentProvider.notes.text,
+                  total: cartProvider.totalPrice,
+                  details: details);
+            }),
       ),
-      // GestureDetector(
-      //   onTap: () {},
-      //   child: Padding(
-      //     padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
-      //     child: Container(
-      //       width: 343,
-      //       height: 45,
-      //       decoration: BoxDecoration(
-      //         borderRadius: BorderRadius.circular(12),
-      //         color: mainColor,
-      //       ),
-      //       child: Center(
-      //         child: Text('Send Order'.tr(),
-      //             style: const TextStyle(color: white)),
-      //       ),
-      //     ),
-      //   ),
-      // )
     );
   }
 }

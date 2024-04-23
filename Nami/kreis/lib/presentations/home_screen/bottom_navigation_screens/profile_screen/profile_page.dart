@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/constants/constants.dart';
 import 'package:kreis/core/navigator/navigator.dart';

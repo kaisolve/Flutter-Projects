@@ -10,11 +10,16 @@ class BuyButtonContainer extends StatelessWidget {
   void Function() ontap;
   num price;
   String text;
-  BuyButtonContainer(
-      {super.key,
-      required this.ontap,
-      required this.price,
-      required this.text});
+  Color color;
+  Color fontColor;
+  BuyButtonContainer({
+    super.key,
+    required this.ontap,
+    required this.color,
+    required this.price,
+    required this.text,
+    required this.fontColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +54,13 @@ class BuyButtonContainer extends StatelessWidget {
                   width: 141,
                   height: 45,
                   decoration: BoxDecoration(
-                      color: const Color(0xffdf1c26),
+                      border: Border.all(color: mainColor),
+                      color: color,
                       borderRadius: BorderRadius.circular(12)),
                   child: Center(
                     child: CustomText(
                       title: text.tr(),
-                      fontColor: white,
+                      fontColor: fontColor,
                     ),
                   ),
                 ),

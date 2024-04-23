@@ -16,6 +16,12 @@ class MyOrdersScreen extends StatefulWidget {
 
 class _MyOrdersScreenState extends State<MyOrdersScreen> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<ProfileProvider>(context, listen: false).getOrders();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
@@ -56,23 +62,16 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             SizedBox(
               height: 698,
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: provider.orders.length,
                 itemBuilder: (context, index) {
-                  return provider.cur
-                      ? OrdersCard(
-                          id: '#6562352',
-                          date: '11/11/2022',
-                          time: '03:23',
-                          address: 'address',
-                          status: provider.cur,
-                        )
-                      : OrdersCard(
-                          id: '#6562352',
-                          date: '11/11/2022',
-                          time: '03:23',
-                          address: 'address',
-                          status: provider.cur,
-                        );
+                  List orders = provider.orders;
+                  return OrdersCard(
+                    id: orders[0][0]['id'],
+                    date: orders[0][0]['date'],
+                    time: orders[0][0]['time'],
+                    address: orders[0][0]['address'],
+                    status: provider.cur,
+                  );
                 },
               ),
             )

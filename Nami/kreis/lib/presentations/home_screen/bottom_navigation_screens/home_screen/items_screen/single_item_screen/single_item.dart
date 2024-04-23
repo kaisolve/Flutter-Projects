@@ -63,17 +63,10 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
           } else if (provider.failedtoload) {
             return const Text('Error: Failed to load item');
           } else {
-            isInSP = Provider.of<CartProvider>(context).cartItems.isNotEmpty;
+            isInSP =
+                Provider.of<CartProvider>(context).isItemExist(widget.itemId);
             item = provider.singleItem;
-            // return
-            //  Column(
-            //         crossAxisAlignment: CrossAxisAlignment.stretch,
-            //           children: [Expanded(
-            //   child: SingleChildScrollView(
-            //     child: SizedBox(
-            //         width: 375,
-            //         height: 634.67,
-            //         child:
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -293,10 +286,12 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
                   builder: (context, provider, _) {
                     item = provider.singleItem;
                     return BuyButtonContainer(
-                        text: 'Add To Cart'.tr(),
+                        color: isInSP ? white : mainColor,
+                        text: isInSP ? 'Item In Cart'.tr() : 'Add To Cart'.tr(),
                         price: isInSP
                             ? cartProvider.getItemPrice(item.id!)
                             : provider.price,
+                        fontColor: !isInSP ? white : mainColor,
                         ontap: () async {
                           Provider.of<CartProvider>(context, listen: false)
                               .addTocart(
