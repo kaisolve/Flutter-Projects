@@ -37,7 +37,6 @@ class _ProfileScreenState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    // Preferences().getUserData().user!;
   }
 
   @override
@@ -221,8 +220,6 @@ class _ProfileScreenState extends State<ProfilePage> {
                     title: 'Logout'.tr(),
                     onTap: () async {
                       profileProvider.logoutUser(token);
-                      // await LoadingOverlay.of(context)
-                      //     .during(Future.delayed(const Duration(seconds: 1)));
                       Provider.of<LayoutProvider>(context, listen: false)
                           .selectedindex = 0;
                       NavigatorHandler.pushAndRemoveUntil(const LoginScreen());

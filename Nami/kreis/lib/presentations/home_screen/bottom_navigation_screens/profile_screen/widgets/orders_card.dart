@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/constants/constants.dart';
+import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/profile_screens/order_details.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 
@@ -13,7 +16,7 @@ class OrdersCard extends StatelessWidget {
   String date;
   String time;
   String address;
-  bool status;
+  String status;
 
   OrdersCard(
       {super.key,
@@ -29,7 +32,7 @@ class OrdersCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: Container(
         width: 343,
-        height: !status ? 200 : 143,
+        height: status != "new" ? 200 : 143,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16), color: containerBorder),
         child: Column(
@@ -46,9 +49,14 @@ class OrdersCard extends StatelessWidget {
                         .normalText(fontSize: fontR18)
                         .textColorBold(mainColor),
                   ),
-                  CustomText(
-                    title: 'Details'.tr(),
-                    fontColor: mainColor,
+                  GestureDetector(
+                    onTap: () async {
+                      NavigatorHandler.push(SingleOrder(id: id));
+                    },
+                    child: CustomText(
+                      title: 'Details'.tr(),
+                      fontColor: mainColor,
+                    ),
                   ),
                 ],
               ),
@@ -72,7 +80,7 @@ class OrdersCard extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Visibility(
-                    visible: !status,
+                    visible: status != "new",
                     child: Container(
                       width: 110,
                       height: 41,
@@ -103,7 +111,16 @@ class OrdersCard extends StatelessWidget {
 class CustomTextIcons extends StatelessWidget {
   String icon;
   String text;
-  CustomTextIcons({super.key, required this.icon, required this.text});
+  Color? iconColor;
+  EdgeInsetsGeometry? padding;
+  TextStyle? style;
+  CustomTextIcons(
+      {super.key,
+      this.style,
+      this.padding,
+      required this.icon,
+      this.iconColor,
+      required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -111,14 +128,15 @@ class CustomTextIcons extends StatelessWidget {
       children: [
         CustomSvgIcon(
           assetName: icon,
-          color: mainColor,
+          color: iconColor ?? mainColor,
           width: 20,
           height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 8),
+          padding: padding ?? const EdgeInsets.only(right: 8),
           child: CustomText(
             title: text,
+            style: style,
           ),
         )
       ],

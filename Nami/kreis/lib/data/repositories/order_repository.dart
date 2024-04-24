@@ -35,12 +35,11 @@ class OrderRepository {
       if (response.statusCode == 200) {
         List<dynamic> orders =
             response.data['data']; // list of each send order click
-        final List<OrderDetailsModel> specificOrders = List.generate(
+        final List<OrderDetailsModel> orderItems = List.generate(
             orders.length,
-            (index) => OrderDetailsModel.fromJson(
-                orders[index]['details'])); // list of details
-
-        return specificOrders;
+            (index) =>
+                OrderDetailsModel.fromJson(orders[index])); // list of orders
+        return orderItems;
       } else {
         throw Exception('Failed to Get Orders');
       }
@@ -49,6 +48,26 @@ class OrderRepository {
     }
   }
 
-  void getOneOrder() {}
+  Future<OrderDetailsModel> getOneOrder(String id) async {
+    try {
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      if (Preferences().getUserData().success) {
+        dioClient.dio.options.headers['Authorization'] =
+            Preferences().getUserData().userToken!;
+      }
+      Response response = await dioClient.get('${AppUrls.orders}/$id');
+      if (response.statusCode == 200) {
+        OrderDetailsModel orders =
+            OrderDetailsModel.fromJson(response.data['data']);
+        print('object');
+        return orders;
+      } else {
+        throw Exception('Failed to Get Orders');
+      }
+    } catch (error) {
+      throw Exception('Failed to Get Orders: $error');
+    }
+  }
+
   void cancelOrder() {}
 }

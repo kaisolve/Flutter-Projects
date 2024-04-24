@@ -17,6 +17,7 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final BoxBorder? border;
   EdgeInsetsGeometry? padding;
+  String? icon;
 
   CustomButton(
       {super.key,
@@ -29,7 +30,8 @@ class CustomButton extends StatelessWidget {
       this.border,
       this.width,
       this.height,
-      this.padding});
+      this.padding,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,19 @@ class CustomButton extends StatelessWidget {
           border: border,
           color: bg,
         ),
-        child: CustomText(
+        child:
+            // Padding(
+            //   padding: const EdgeInsets.all(10),
+            //   child: CustomTextIcons(
+            //     iconColor: greyColor,
+            //     icon: icon ?? '',
+            //     text: title,
+            //     style: AppTextStyles()
+            //         .normalText(fontSize: fontSize)
+            //         .textColorNormal(fontColor),
+            //   ),
+            // )
+            CustomText(
           title: title,
           fontSize: fontSize,
           fontColor: fontColor,

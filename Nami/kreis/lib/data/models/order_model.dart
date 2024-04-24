@@ -75,11 +75,11 @@ class OrdersModel extends Equatable {
 }
 
 class OrderDetailsModel {
-  num? id;
+  int? id;
   UserModel? user;
-  String? driverCancelReason;
+  dynamic driverCancelReason;
   String? address;
-  String? addressDetails;
+  dynamic addressDetails;
   num? latitude;
   num? longitude;
   String? status;
@@ -96,7 +96,7 @@ class OrderDetailsModel {
   num? taxValue;
   num? deliveryPrice;
   num? grandTotal;
-  dynamic notes;
+  String? notes;
   String? createdAt;
   String? date;
   String? time;

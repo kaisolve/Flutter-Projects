@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kreis/core/utils/preferences.dart';
+import 'package:kreis/data/models/order_model.dart';
 import 'package:kreis/data/models/products_model.dart';
 import 'package:kreis/data/models/user_model.dart';
 import 'package:kreis/data/repositories/auth_repository.dart';
@@ -13,9 +14,11 @@ class ProfileProvider extends ChangeNotifier {
   ItemsRepository itemsRepository = ItemsRepository();
   OrderRepository orderRepository = OrderRepository();
   Preferences preferences = Preferences();
+
   List favorates = [];
   List pointsHistory = [];
-  List orders = [];
+  List<OrderDetailsModel> orders = [];
+  OrderDetailsModel singleOrder = OrderDetailsModel();
   num totalPoints = 0;
   bool isloading = true;
   bool isloaded = false;
@@ -32,6 +35,9 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   void getFavorates() async {
+    isloaded = false;
+    isloading = true;
+    notifyListeners();
     try {
       favorates = await profileRepository.getFavorite();
       notifyListeners();
@@ -57,10 +63,24 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   void getPoints() async {
-    PointsData pointsData = await profileRepository.getPoints();
-    pointsHistory = pointsData.history!;
-    totalPoints = pointsData.points!;
+    isloaded = false;
+    isloading = true;
     notifyListeners();
+    try {
+      PointsData pointsData = await profileRepository.getPoints();
+      pointsHistory = pointsData.history!;
+      totalPoints = pointsData.points!;
+      notifyListeners();
+      failedtoload = false;
+      isloaded = true;
+      notifyListeners();
+    } catch (error) {
+      failedtoload = true;
+      throw Exception('Failed to load points: $error');
+    } finally {
+      isloading = false;
+      notifyListeners();
+    }
   }
 
   void changeOrders(bool cur) {
@@ -68,10 +88,41 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getOrders() async {
-    orders = await orderRepository.getOrder(cur ? 'new' : 'old');
-    // list containing list of data,
+  void getOrders(String status) async {
+    isloaded = false;
+    isloading = true;
     notifyListeners();
+    try {
+      // orders is list of all orders so you can go to details to get specific data
+      orders = await orderRepository.getOrder(status);
+      failedtoload = false;
+      isloaded = true;
+      notifyListeners();
+    } catch (error) {
+      failedtoload = true;
+      throw Exception('Failed to get orders: $error');
+    } finally {
+      isloading = false;
+      notifyListeners();
+    }
+  }
+
+  void getSingleOrder(String id) async {
+    isloaded = false;
+    isloading = true;
+    notifyListeners();
+    try {
+      singleOrder = await orderRepository.getOneOrder(id);
+      failedtoload = false;
+      isloaded = true;
+      notifyListeners();
+    } catch (error) {
+      failedtoload = true;
+      throw Exception('Failed to get single order: $error');
+    } finally {
+      isloading = false;
+      notifyListeners();
+    }
   }
 
   void changeLocale(Locale langLoc) {
