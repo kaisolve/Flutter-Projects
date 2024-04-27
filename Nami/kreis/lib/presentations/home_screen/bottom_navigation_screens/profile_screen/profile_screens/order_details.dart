@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/constants/constants.dart';
+import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
 import 'package:kreis/data/models/order_model.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/widgets/orders_card.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
+import 'package:kreis/presentations/widgets/custom_loader_overlay/loader_overlay.dart';
 import 'package:kreis/presentations/widgets/custom_rich_text/rich_text.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
@@ -88,8 +88,8 @@ class _SingleOrderState extends State<SingleOrder> {
                                   ),
                                 ),
                               ),
-                              const CustomText(
-                                title: 'Order Is Recieved',
+                              CustomText(
+                                title: 'Order Is Recieved'.tr(),
                               ),
                             ],
                           ),
@@ -123,7 +123,7 @@ class _SingleOrderState extends State<SingleOrder> {
                                       padding: const EdgeInsets.fromLTRB(
                                           14, 12, 14, 12),
                                       child: CustomButton(
-                                        title: 'Edit',
+                                        title: 'Edit'.tr(),
                                         onTap: () {},
                                         width: 143.5,
                                         height: 48,
@@ -136,8 +136,15 @@ class _SingleOrderState extends State<SingleOrder> {
                                       padding: const EdgeInsets.fromLTRB(
                                           14, 12, 14, 12),
                                       child: CustomButton(
-                                        title: 'Cancel',
-                                        onTap: () {},
+                                        title: 'Cancel'.tr(),
+                                        onTap: () async {
+                                          provider.cancelOrder(order.id!);
+                                          provider.getOrders('new');
+                                          await LoadingOverlay.of(context)
+                                              .during(Future.delayed(
+                                                  const Duration(seconds: 1)));
+                                          NavigatorHandler.pop();
+                                        },
                                         width: 143.5,
                                         height: 48,
                                         bg: white,

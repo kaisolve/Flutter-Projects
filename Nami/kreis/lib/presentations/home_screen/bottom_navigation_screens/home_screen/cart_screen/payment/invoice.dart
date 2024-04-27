@@ -2,12 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kreis/core/app_colors/app_colors.dart';
 import 'package:kreis/core/constants/constants.dart';
+import 'package:kreis/core/navigator/navigator.dart';
 import 'package:kreis/core/text_styles/text_styles.dart';
 import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/payment/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/map_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
+import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
+import 'package:kreis/presentations/widgets/custom_asset_image/custom_asset_image.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
 import 'package:kreis/presentations/widgets/custom_rich_text/rich_text.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
@@ -97,10 +100,9 @@ class _PayCheckPageState extends State<PayCheckPage> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 8, 0),
                             child: Align(
                               alignment: Alignment.topRight,
                               child: CustomText(
@@ -114,7 +116,7 @@ class _PayCheckPageState extends State<PayCheckPage> {
                               builder: (context, provider, _) {
                             return SizedBox(
                               width: 311,
-                              height: 96,
+                              height: 260,
                               child: ListView.builder(
                                 itemCount: provider.cartItems.length,
                                 itemBuilder: (context, index) {
@@ -209,7 +211,7 @@ class _PayCheckPageState extends State<PayCheckPage> {
         padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
         child: CustomButton(
             title: 'Send Order'.tr(),
-            onTap: () {
+            onTap: () async {
               List details = [];
               for (var item in cartProvider.cartItems) {
                 details.add({
@@ -225,6 +227,19 @@ class _PayCheckPageState extends State<PayCheckPage> {
                   notes: paymentProvider.notes.text,
                   total: cartProvider.totalPrice,
                   details: details);
+              await showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  surfaceTintColor: input2Bg,
+                  title: const CustomAssetImage(
+                    assetName: 'order',
+                    width: 303,
+                    height: 203,
+                  ),
+                  content: Text('Your Order Has been Sent Successfully'.tr()),
+                ),
+              );
+              NavigatorHandler.pushReplacement(const MainAppLayout());
             }),
       ),
     );

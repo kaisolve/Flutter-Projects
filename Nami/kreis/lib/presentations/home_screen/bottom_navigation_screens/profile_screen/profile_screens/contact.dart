@@ -28,13 +28,13 @@ class _ContactPageState extends State<ContactPage> {
       appBar: CustomAppBar(title: 'Contact US'.tr(), showBackArrow: true),
       body: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-          //   child: SizedBox(
-          //       width: 196.42,
-          //       height: 150,
-          //       child: Image.asset('assets/images/pngs/contactus.png')),
-          // ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child: SizedBox(
+                width: 196.42,
+                height: 150,
+                child: Image.asset('assets/images/pngs/contactus.png')),
+          ),
 
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),

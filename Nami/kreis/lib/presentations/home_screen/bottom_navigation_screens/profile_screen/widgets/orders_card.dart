@@ -49,13 +49,16 @@ class OrdersCard extends StatelessWidget {
                         .normalText(fontSize: fontR18)
                         .textColorBold(mainColor),
                   ),
-                  GestureDetector(
-                    onTap: () async {
-                      NavigatorHandler.push(SingleOrder(id: id));
-                    },
-                    child: CustomText(
-                      title: 'Details'.tr(),
-                      fontColor: mainColor,
+                  Visibility(
+                    visible: status == "new",
+                    child: GestureDetector(
+                      onTap: () async {
+                        NavigatorHandler.push(SingleOrder(id: id));
+                      },
+                      child: CustomText(
+                        title: 'Details'.tr(),
+                        fontColor: mainColor,
+                      ),
                     ),
                   ),
                 ],

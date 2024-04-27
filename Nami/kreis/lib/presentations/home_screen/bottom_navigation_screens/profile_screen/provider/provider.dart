@@ -89,21 +89,12 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   void getOrders(String status) async {
-    isloaded = false;
-    isloading = true;
-    notifyListeners();
     try {
       // orders is list of all orders so you can go to details to get specific data
       orders = await orderRepository.getOrder(status);
-      failedtoload = false;
-      isloaded = true;
       notifyListeners();
     } catch (error) {
-      failedtoload = true;
       throw Exception('Failed to get orders: $error');
-    } finally {
-      isloading = false;
-      notifyListeners();
     }
   }
 
@@ -123,6 +114,10 @@ class ProfileProvider extends ChangeNotifier {
       isloading = false;
       notifyListeners();
     }
+  }
+
+  void cancelOrder(int id) async {
+    await orderRepository.cancelOrder(id);
   }
 
   void changeLocale(Locale langLoc) {

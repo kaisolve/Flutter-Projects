@@ -60,6 +60,13 @@
     "Message Title":"عنوان الرسالة",
     "Message":"الرسالة",
     "Delivery":"التوصيل",
-    "Payment":"الدفع"
+    "Payment":"الدفع",
+    "Your Order Has been Sent Successfully":"تم ارسال الطلب بنجاح",
+    "Done Order":"طلب منتهي",
+    "Order Details":"تفاصيل الطلب",
+    "Order Is Recieved":"تم استلام الطلب",
+    "Edit":"تعديل",
+    "Cancel":"الغاء",
+    "Specific Item.. ?":"منتج معين.. ؟"
 
 }

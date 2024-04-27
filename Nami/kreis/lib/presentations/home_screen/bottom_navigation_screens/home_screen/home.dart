@@ -13,6 +13,7 @@ import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_s
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profile_screen/provider/provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
+import 'package:kreis/presentations/widgets/custom_text_form/custom_text_form.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -59,19 +60,19 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // SizedBox(
-            //   width: 370,
-            //   height: 54,
-            //   child: CustomTextFormField(
-            //     controller: textEditingController,
-            //     hint: 'Specific Item.. ?',
-            //     prefix: const CustomSvgIcon(
-            //       assetName: 'search',
-            //       width: 20,
-            //       height: 20,
-            //     ),
-            //   ),
-            // ),
+            SizedBox(
+              width: 370,
+              height: 54,
+              child: CustomTextFormField(
+                controller: textEditingController,
+                hint: 'Specific Item.. ?'.tr(),
+                prefix: const CustomSvgIcon(
+                  assetName: 'search',
+                  width: 20,
+                  height: 20,
+                ),
+              ),
+            ),
             const ImageSlider(),
             HomeHeaders(
               text1: "Categories".tr(),

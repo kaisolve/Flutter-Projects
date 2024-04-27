@@ -159,7 +159,7 @@ class _ProfileScreenState extends State<ProfilePage> {
                     height: 328,
                     child: Container(
                       decoration: BoxDecoration(
-                          color: const Color(0xffF6F6F6),
+                          color: bottomNavigationColor,
                           borderRadius: BorderRadius.circular(16)),
                       child: Column(
                         children: [
@@ -174,9 +174,7 @@ class _ProfileScreenState extends State<ProfilePage> {
                               arrow: true,
                               icon: 'language',
                               text: 'Language'.tr(),
-                              onPressed: () => language()
-                              // NavigatorHandler.push(LanguagePage()),
-                              ),
+                              onPressed: () => language()),
                           CustomTextButton(
                             arrow: true,
                             icon: 'contact_us',
@@ -242,7 +240,6 @@ void language() {
 
       return Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 16, 24),
-        // bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Consumer<ProfileProvider>(
           builder: (context, lang, child) {
             return Column(

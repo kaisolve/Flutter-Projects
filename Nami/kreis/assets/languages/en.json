@@ -60,5 +60,12 @@
     "Email":"Email",
     "Message Title":"Message Title",
     "Message":"Message",
-    "Delivery":"Delivery"
+    "Delivery":"Delivery",
+    "Your Order Has been Sent Successfully":"Your Order Has been Sent Successfully",
+    "Done Order":"Done Order",
+    "Order Details":"Order Details",
+    "Order Is Recieved":"Order Is Recieved",
+    "Edit":"Edit",
+    "Cancel":"Cancel",
+    "Specific Item.. ?":"Specific Item.. ?"
 }

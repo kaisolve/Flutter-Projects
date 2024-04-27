@@ -59,7 +59,6 @@ class OrderRepository {
       if (response.statusCode == 200) {
         OrderDetailsModel orders =
             OrderDetailsModel.fromJson(response.data['data']);
-        print('object');
         return orders;
       } else {
         throw Exception('Failed to Get Orders');
@@ -69,5 +68,20 @@ class OrderRepository {
     }
   }
 
-  void cancelOrder() {}
+  Future<void> cancelOrder(int id) async {
+    try {
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      if (Preferences().getUserData().success) {
+        dioClient.dio.options.headers['Authorization'] =
+            Preferences().getUserData().userToken!;
+      }
+      Response response = await dioClient.delete('${AppUrls.orders}/$id');
+      if (response.statusCode == 200) {
+      } else {
+        throw Exception('Failed to Delete Order');
+      }
+    } catch (error) {
+      throw Exception('Failed to Delete Order: $error');
+    }
+  }
 }

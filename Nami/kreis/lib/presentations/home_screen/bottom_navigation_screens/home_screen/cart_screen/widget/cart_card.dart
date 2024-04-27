@@ -68,7 +68,7 @@ class _CartCardState extends State<CartCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BasketRoundIcons(image: 'minus', ontap: widget.onDecrease),
+                CartRoundIcons(image: 'minus', ontap: widget.onDecrease),
                 Container(
                   width: 124,
                   height: 48,
@@ -80,7 +80,7 @@ class _CartCardState extends State<CartCard> {
                     child: Text(widget.amount.toString()),
                   ),
                 ),
-                BasketRoundIcons(image: 'add', ontap: widget.onIncrease),
+                CartRoundIcons(image: 'add', ontap: widget.onIncrease),
                 Text(widget.price),
               ],
             )
@@ -92,16 +92,16 @@ class _CartCardState extends State<CartCard> {
 }
 
 // ignore: must_be_immutable
-class BasketRoundIcons extends StatefulWidget {
+class CartRoundIcons extends StatefulWidget {
   String image;
   void Function() ontap;
-  BasketRoundIcons({super.key, required this.image, required this.ontap});
+  CartRoundIcons({super.key, required this.image, required this.ontap});
 
   @override
-  State<BasketRoundIcons> createState() => _BasketRoundIconsState();
+  State<CartRoundIcons> createState() => _CartRoundIconsState();
 }
 
-class _BasketRoundIconsState extends State<BasketRoundIcons> {
+class _CartRoundIconsState extends State<CartRoundIcons> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

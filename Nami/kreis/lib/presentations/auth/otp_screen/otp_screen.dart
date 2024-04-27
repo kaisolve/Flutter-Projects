@@ -13,8 +13,6 @@ import '../../../core/app_colors/app_colors.dart';
 import '../../widgets/custom_button/custom_button.dart';
 
 class OtpScreen extends StatefulWidget {
-  // final String phone;
-
   const OtpScreen({super.key});
 
   @override

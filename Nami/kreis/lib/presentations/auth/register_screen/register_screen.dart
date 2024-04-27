@@ -26,17 +26,15 @@ class _LoginScreenState extends State<RegisterScreen> {
   AuthProvider registerProvider = getIt();
 
   CitiesRepositories citiesRepositories = CitiesRepositories();
-
+  File? image;
   void selectImage() async {
     // ignore: unused_local_variable
-    File? image = await pickImage(context);
+    image = await pickImage(context);
   }
 
-  bool checkedValue = false;
-  String? selectedValue;
   @override
   Widget build(BuildContext context) {
-    registerProvider = Provider.of<AuthProvider>(context, listen: false);
+    // registerProvider = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppBar(
         showBackArrow: true,
@@ -47,25 +45,23 @@ class _LoginScreenState extends State<RegisterScreen> {
         child: Column(children: [
           const Gap(20.5),
           InkWell(
-            onTap: () => selectImage(),
-            child: registerProvider.image != null
-                ? Container(
-                    width: 124,
-                    height: 124,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: FileImage(registerProvider.image! as File)),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(width: 1.46),
-                    ),
-                  )
-                : const CustomAssetImage(
-                    assetName: 'profile',
-                    width: 134.73,
-                    height: 120,
-                  ),
-          ),
+              onTap: () => selectImage(),
+              child: image == null
+                  ? const CustomAssetImage(
+                      assetName: 'profile',
+                      width: 134.73,
+                      height: 120,
+                    )
+                  : Container(
+                      width: 124,
+                      height: 124,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.fill, image: FileImage(image!)),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(width: 1.46),
+                      ),
+                    )),
           const Gap(8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -135,15 +131,13 @@ class _LoginScreenState extends State<RegisterScreen> {
                     borderRadius: BorderRadius.circular(5)),
                 checkColor: white,
                 activeColor: mainColor,
-                value: checkedValue,
+                value: registerProvider.ischecked,
                 onChanged: (newValue) {
-                  // setState(() {
-                  //   checkedValue = newValue ?? false;
-                  // });
+                  registerProvider.isInvited(newValue!);
                 },
                 controlAffinity: ListTileControlAffinity.leading,
               ),
-              if (checkedValue)
+              if (registerProvider.ischecked)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
                   child: CustomTextFormField(

@@ -21,7 +21,7 @@ class AuthProvider with ChangeNotifier {
   Preferences preferences = Preferences();
   String? verificationId;
   int? forceResendingToken;
-
+  bool ischecked = false;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late UserModel userData;
   String phoneCode = '+20';
@@ -200,10 +200,12 @@ class AuthProvider with ChangeNotifier {
           title: 'Fill Necessary Fields'.tr());
     }
   }
+
+  void isInvited(bool value) {
+    ischecked = value;
+    notifyListeners();
+  }
 }
-
-
-
 
 
 

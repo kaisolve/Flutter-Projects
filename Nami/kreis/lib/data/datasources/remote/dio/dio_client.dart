@@ -65,4 +65,24 @@ class DioClient {
       rethrow;
     }
   }
+
+  Future<Response> delete(
+    String uri, {
+    FormData? formData,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      // ignore: unused_local_variable
+      final sharedPreferences = await SharedPreferences.getInstance();
+
+      var data = queryParameters ?? {};
+      var response =
+          await dio.delete(uri, data: formData ?? FormData.fromMap(data));
+      return response;
+    } on FormatException catch (_) {
+      throw const FormatException("Unable to process the data");
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
