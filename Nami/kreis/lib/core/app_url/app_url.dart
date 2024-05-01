@@ -17,6 +17,7 @@ class AppUrls {
   static const String contactUs = 'user/contact-us';
   static const String pointsHistory = 'user/profile/pointsHistory';
   static const String orders = 'user/orders';
+  static const String about = 'setting';
   static String productsDetails(num categoryId, num subcategoryId) {
     return 'user/home/products?category_id=$categoryId&sub_category_id=$subcategoryId';
   }

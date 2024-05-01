@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: CustomTextFormField(
                 controller: loginProvider.phoneController,
                 textInputType: TextInputType.phone,
-                hint: 'Phone number'.tr(),
+                hint: 'Phone Number'.tr(),
                 prefix: const CustomText(
                   title: '+20',
                   fontColor: mainColor,

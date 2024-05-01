@@ -34,6 +34,10 @@ class Preferences {
         success: success);
   }
 
+  Future<void> clearSpecificData(String key) async {
+    await sharedPreferences.remove(key);
+  }
+
   Future<void> clearUserData() async {
     await sharedPreferences.clear();
   }

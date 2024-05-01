@@ -12,6 +12,7 @@ import 'package:kreis/presentations/home_screen/bottom_navigation_screens/profil
 import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.dart';
 import 'package:kreis/presentations/widgets/custom_asset_image/custom_asset_image.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
+import 'package:kreis/presentations/widgets/custom_loader_overlay/loader_overlay.dart';
 import 'package:kreis/presentations/widgets/custom_rich_text/rich_text.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:kreis/presentations/widgets/custom_tile/custom_tile.dart';
@@ -227,7 +228,10 @@ class _PayCheckPageState extends State<PayCheckPage> {
                   notes: paymentProvider.notes.text,
                   total: cartProvider.totalPrice,
                   details: details);
+              await LoadingOverlay.of(context)
+                  .during(Future.delayed(const Duration(seconds: 1)));
               await showDialog<String>(
+                // ignore: use_build_context_synchronously
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   surfaceTintColor: input2Bg,
@@ -236,10 +240,15 @@ class _PayCheckPageState extends State<PayCheckPage> {
                     width: 303,
                     height: 203,
                   ),
-                  content: Text('Your Order Has been Sent Successfully'.tr()),
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomText(
+                        title: 'Your Order Has been Sent Successfully'.tr()),
+                  ),
                 ),
               );
-              NavigatorHandler.pushReplacement(const MainAppLayout());
+              paymentProvider.notes.clear();
+              NavigatorHandler.pushAndRemoveUntil(const MainAppLayout());
             }),
       ),
     );

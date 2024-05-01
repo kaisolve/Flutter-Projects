@@ -2,6 +2,7 @@
     package="com.example.kreis">
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="kreis"
         android:name="${applicationName}"
@@ -25,6 +26,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
@@ -37,4 +43,5 @@
             android:value="AIzaSyCSR-6DR3ffb0VOFUBvXoMluWk10wZAOUo"/>
         <!-- android:enableOnBackInvokedCallback="true" -->
     </application>
+    
 </manifest>

@@ -20,9 +20,11 @@ import 'package:kreis/presentations/home_screen/main_app_layout/main_app_layout.
 import 'package:kreis/presentations/home_screen/provider/layout_provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:kreis/presentations/widgets/custom_button/custom_button.dart';
+import 'package:kreis/presentations/widgets/custom_loader_overlay/loader_overlay.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -95,8 +97,13 @@ class _ProfileScreenState extends State<ProfilePage> {
                               child: Column(
                                 children: [
                                   GestureDetector(
-                                    onTap: () => NavigatorHandler.push(
-                                        const MyOrdersScreen()),
+                                    onTap: () async {
+                                      await LoadingOverlay.of(context).during(
+                                          Future.delayed(
+                                              const Duration(seconds: 1)));
+                                      NavigatorHandler.push(
+                                          const MyOrdersScreen());
+                                    },
                                     child: const CustomSvgIcon(
                                       assetName: 'order',
                                       width: 48,
@@ -190,11 +197,20 @@ class _ProfileScreenState extends State<ProfilePage> {
                                 NavigatorHandler.push(const AboutUs()),
                           ),
                           CustomTextButton(
-                            arrow: true,
-                            icon: 'rate',
-                            text: 'Rate App'.tr(),
-                            onPressed: () {},
-                          ),
+                              arrow: true,
+                              icon: 'rate',
+                              text: 'Rate App'.tr(),
+                              onPressed: () {
+                                launchUrls('https://flutter.dev');
+                              }
+                              // Uri(
+                              //   scheme: 'https',
+                              //   host: 'play.google.com',
+                              //   path:
+                              //       "store/apps/details?id=com.example.kreis",
+                              // ),
+                              // mode: LaunchMode.externalApplication),
+                              ),
                           CustomTextButton(
                             arrow: false,
                             icon: 'delete',
@@ -308,4 +324,12 @@ void language() {
       );
     },
   );
+}
+
+Future<void> launchUrls(String urlString) async {
+  if (await canLaunchUrl(Uri.parse(urlString))) {
+    await launchUrl(Uri.parse(urlString), mode: LaunchMode.inAppBrowserView);
+  } else {
+    throw 'Could not launch $urlString';
+  }
 }

@@ -8,8 +8,8 @@ import 'package:kreis/injection.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/cart_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/provider/provider.dart';
 import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/items_screen/widgets/buttom_container.dart';
+import 'package:kreis/presentations/home_screen/bottom_navigation_screens/home_screen/provider/provider.dart';
 import 'package:kreis/presentations/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:kreis/presentations/widgets/custom_loader_overlay/loader_overlay.dart';
 import 'package:kreis/presentations/widgets/custom_svg/CustomSvgIcon.dart';
 import 'package:kreis/presentations/widgets/custom_text/custom_text.dart';
 import 'package:provider/provider.dart';
@@ -103,10 +103,9 @@ class _SingleItemScreenState extends State<SingleItemScreen> {
                                                     .userToken!,
                                                 item.id!,
                                                 widget.index);
-                                            await LoadingOverlay.of(context)
-                                                .during(Future.delayed(
-                                                    const Duration(
-                                                        seconds: 1)));
+                                            Provider.of<HomeProvider>(context,
+                                                    listen: false)
+                                                .getLatestProducts();
                                           },
                                           child: CustomSvgIcon(
                                             assetName: 'heart',

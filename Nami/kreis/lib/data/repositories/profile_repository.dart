@@ -114,6 +114,25 @@ class ProfileRepository {
       throw Exception('Failed to get points data: $error');
     }
   }
+
+  Future<String> aboutUs() async {
+    try {
+      DioClient dioClient = DioClient(baseUrl: AppUrls.baseUrl);
+      if (Preferences().getUserData().success) {
+        dioClient.dio.options.headers['Authorization'] =
+            Preferences().getUserData().userToken;
+      }
+      Response response = await dioClient.get(AppUrls.about);
+      if (response.statusCode == 200) {
+        String about = response.data['data']['about_us'];
+        return about;
+      } else {
+        throw Exception('Failed to get settings data');
+      }
+    } catch (error) {
+      throw Exception('Failed to get settings data: $error');
+    }
+  }
 }
 
 class PointsData {

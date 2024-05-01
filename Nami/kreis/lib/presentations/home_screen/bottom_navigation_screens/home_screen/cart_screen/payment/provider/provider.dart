@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:kreis/core/constants/constants.dart';
+import 'package:kreis/core/utils/preferences.dart';
 import 'package:kreis/data/models/order_model.dart';
 import 'package:kreis/data/repositories/order_repository.dart';
 
@@ -7,9 +9,6 @@ class PaymentProvider extends ChangeNotifier {
   TextEditingController notes = TextEditingController();
   OrderRepository orderRepository = OrderRepository();
 
-// void setNotes(){
-
-// }
   void storeOrders(
       {required num lat,
       required num lng,
@@ -32,6 +31,7 @@ class PaymentProvider extends ChangeNotifier {
         texValue: total * 0.15,
         grandTotal: total + total * 0.15,
         details: details));
+    Preferences().clearSpecificData(cartKey);
     notifyListeners();
   }
 }

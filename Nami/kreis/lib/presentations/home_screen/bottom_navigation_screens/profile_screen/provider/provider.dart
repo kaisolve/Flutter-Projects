@@ -14,7 +14,7 @@ class ProfileProvider extends ChangeNotifier {
   ItemsRepository itemsRepository = ItemsRepository();
   OrderRepository orderRepository = OrderRepository();
   Preferences preferences = Preferences();
-
+  String? about;
   List favorates = [];
   List pointsHistory = [];
   List<OrderDetailsModel> orders = [];
@@ -89,13 +89,24 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   void getOrders(String status) async {
+    // isloaded = false;
+    // isloading = true;
+    // notifyListeners();
     try {
       // orders is list of all orders so you can go to details to get specific data
       orders = await orderRepository.getOrder(status);
       notifyListeners();
+      // failedtoload = false;
+      // isloaded = true;
+      // notifyListeners();
     } catch (error) {
-      throw Exception('Failed to get orders: $error');
+      // failedtoload = true;
+      throw Exception('Failed to load orders: $error');
     }
+    // finally {
+    //   isloading = false;
+    //   notifyListeners();
+    // }
   }
 
   void getSingleOrder(String id) async {
@@ -110,6 +121,25 @@ class ProfileProvider extends ChangeNotifier {
     } catch (error) {
       failedtoload = true;
       throw Exception('Failed to get single order: $error');
+    } finally {
+      isloading = false;
+      notifyListeners();
+    }
+  }
+
+  void aboutUS() async {
+    isloaded = false;
+    isloading = true;
+    notifyListeners();
+    try {
+      about = await profileRepository.aboutUs();
+      notifyListeners();
+      failedtoload = false;
+      isloaded = true;
+      notifyListeners();
+    } catch (error) {
+      failedtoload = true;
+      throw Exception('Failed to load settings: $error');
     } finally {
       isloading = false;
       notifyListeners();
