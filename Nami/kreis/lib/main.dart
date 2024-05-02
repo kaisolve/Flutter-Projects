@@ -14,11 +14,11 @@ void main() async {
 
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: 'AIzaSyCoyxqkJBQ9hj9dVfzXZMDDBwt5lRhRVtw',
-          appId: '1:161099138507:android:7f1c8845127df9708ea24e',
-          messagingSenderId: '161099138507',
-          projectId: 'kreis-417313',
-          storageBucket: 'kreis-417313.appspot.com'));
+          apiKey: 'AIzaSyB7XiRYB4Hj7IKcMz4Mw6AzmlFDY_4dRxw',
+          appId: '1:255319230487:android:c40be6bb15bb027fa7f452',
+          messagingSenderId: '255319230487',
+          projectId: 'kreis-1bc0e',
+          storageBucket: 'kreis-1bc0e.appspot.com'));
 
   await EasyLocalization.ensureInitialized();
   runApp(AppMultiProvider(
