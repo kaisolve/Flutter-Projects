@@ -43,5 +43,5 @@
             android:value="AIzaSyCSR-6DR3ffb0VOFUBvXoMluWk10wZAOUo"/>
         <!-- android:enableOnBackInvokedCallback="true" -->
     </application>
-    
+
 </manifest>

@@ -201,7 +201,8 @@ class _ProfileScreenState extends State<ProfilePage> {
                               icon: 'rate',
                               text: 'Rate App'.tr(),
                               onPressed: () {
-                                launchUrls('https://flutter.dev');
+                                launchUrls(
+                                    'https://play.google.com/store/apps/details?id=com.example.kreis');
                               }
                               // Uri(
                               //   scheme: 'https',
