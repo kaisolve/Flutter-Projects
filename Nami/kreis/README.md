@@ -29,9 +29,9 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 3. Submit a pull request with a detailed explanation of your changes.
 
 ## More Info About The App:
-[App Description Site](https://ecommerce.project-nami.xyz/ar)  
-[App Design](https://www.figma.com/proto/u0csWbiHObNaddvJbTIDuh/Circle?type=design&node-id=1-151&t=9LD5vESa5Se6UelN-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A98&mode=design)
-[App API](https://documenter.getpostman.com/view/13312101/2s9YCASAXD)
+[App Description WebSite](https://ecommerce.project-nami.xyz/ar)  
+[App Design](https://www.figma.com/proto/u0csWbiHObNaddvJbTIDuh/Circle?type=design&node-id=1-151&t=9LD5vESa5Se6UelN-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A98&mode=design)  
+[App API](https://documenter.getpostman.com/view/13312101/2s9YCASAXD)  
 [APP Video]()
 
 ## Contact
