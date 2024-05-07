@@ -4,7 +4,7 @@
 Kreis is an e-commerce application built with Flutter, featuring login/sign-up, order management, API integration, and more. This project uses the Provider package for state management, Firebase for phone authentication, and a clean architecture design. It supports multiple languages and includes features like favorites and location-based services.
 
 ## Features
-**State Management:** Utilizes Provider for state management.
+**State Management:** Utilizes Provider for state management.  
 **User Authentication:** Supports phone authentication via Firebase and login using API.
 **Clean Architecture:** Follows a clean architecture design for code organization.
 **Localization:** Supports English and Arabic languages with easy localization.
