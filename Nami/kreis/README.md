@@ -32,7 +32,7 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 [App Description WebSite](https://ecommerce.project-nami.xyz/ar)  
 [App Design](https://www.figma.com/proto/u0csWbiHObNaddvJbTIDuh/Circle?type=design&node-id=1-151&t=9LD5vESa5Se6UelN-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A98&mode=design)  
 [App API](https://documenter.getpostman.com/view/13312101/2s9YCASAXD)  
-[APP Video]()
+[APP Video](https://www.linkedin.com/posts/kailearn_flutter-ecommerce-project-activity-7193610584808947712-ug6D?utm_source=share&utm_medium=member_desktop)
 
 ## Contact
 For questions or support, feel free to open an issue on GitHub or contact me at **kaiozwork@gmail.com.**
