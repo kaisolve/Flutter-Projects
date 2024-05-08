@@ -1,7 +1,7 @@
-# Kreis - E-commerce App with Flutter
+# Circle - E-commerce App with Flutter
  <!-- Insert your logo or any image representing the project -->
 
-Kreis is an e-commerce application built with Flutter, featuring login/sign-up, order management, API integration, and more. This project uses the Provider package for state management, Firebase for phone authentication, and a clean architecture design. It supports multiple languages and includes features like favorites and location-based services.  
+Circle is an e-commerce application built with Flutter, featuring login/sign-up, order management, API integration, and more. This project uses the Provider package for state management, Firebase for phone authentication, and a clean architecture design. It supports multiple languages and includes features like favorites and location-based services.  
 
 ## Features
 **State Management:** Utilizes Provider for state management.  
